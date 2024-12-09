@@ -22,7 +22,7 @@ export const NavbarTop = () => {
       maxWidth="lg">
       <NavbarBrand>
         <Image
-          src="/guayaba-cover.png"
+          src="./guayaba-cover.png"
           alt="logo"
           width={190}
           height={60}
