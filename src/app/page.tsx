@@ -1,5 +1,13 @@
+import { Newsletter } from "@/components/newsletter";
+
 const Landing = () => {
-  return <div className=""></div>;
+  return (
+    <main className="bg mx-auto max-w-screen-xl">
+      <section>
+        <Newsletter />
+      </section>
+    </main>
+  );
 };
 
 export default Landing;

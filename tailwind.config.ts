@@ -1,6 +1,7 @@
 import type { Config } from "tailwindcss";
 import { nextui } from "@nextui-org/react";
 import { fontFamily } from "tailwindcss/defaultTheme";
+import tailwindcssAnimate from "tailwindcss-animate";
 
 const config: Config = {
   content: [
@@ -23,6 +24,7 @@ const config: Config = {
         sans: ["var(--font-sans)", ...fontFamily.sans],
       },
       colors: {
+        cardbg: "rgb(0, 24, 46)",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -106,6 +108,14 @@ const config: Config = {
             "background-position": "0% 0%",
           },
         },
+        bounce: {
+          "0%, 100%": {
+            transform: "translateY(0)",
+          },
+          "50%": {
+            transform: "translateY(-10px)",
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -116,7 +126,7 @@ const config: Config = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate"), nextui()],
+  plugins: [tailwindcssAnimate, nextui()],
   darkMode: ["class"],
 };
 
