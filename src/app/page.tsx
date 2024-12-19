@@ -1,10 +1,14 @@
 import { Newsletter } from "@/components/newsletter";
+import { Events } from "@/components/events";
 
 const Landing = () => {
   return (
-    <main className="bg mx-auto max-w-screen-xl">
+    <main className="mx-auto max-w-screen-xl h-auto">
       <section>
         <Newsletter />
+      </section>
+      <section>
+        <Events />
       </section>
     </main>
   );

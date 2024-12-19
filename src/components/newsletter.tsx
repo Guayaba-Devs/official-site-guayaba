@@ -13,25 +13,26 @@ export const Newsletter = () => {
       <h3 className="text-primary text-4xl font-bold mb-7">Newsletter</h3>
 
       <div className="grid grid-cols-5 gap-6">
-        <Card className="grid col-span-3 bg-gradient-to-b from-secondary to-primary px-4 py-2 max-h-[270px]">
+        <Card className="grid col-span-3 bg-gray-900 px-4 py-2 max-h-[270px] border border-gray-600">
           <CardHeader className="text-gray-200 font-semibold text-2xl mb-6">
             Conoce nuestras noticias y novedades
           </CardHeader>
           <CardBody>
             <Input
               label="Email"
-              labelPlacement="inside"
+              labelPlacement="outside"
               size="lg"
               value={email}
               type="email"
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Ingresa tu email"
-              variant="flat"
+              variant="faded"
+              color="primary"
             />
           </CardBody>
           <CardFooter className="w-full">
             <Button
-              className="text-white w-full font-medium text-lg"
+              className="text-white w-full font-medium text-lg bg-secondary border border-gray-500"
               color="secondary"
               size="lg">
               Suscribirme
