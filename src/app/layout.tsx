@@ -4,6 +4,9 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Config } from "@/lib/config";
 import { NavbarTop } from "../components/navbar";
+import { Hero } from "@/components/hero";
+import { LogoSection } from "@/components/marquee/logoSection";
+import { TeamSection } from "@/components/team";
 
 const fontSans = FontSans({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -22,7 +25,9 @@ export default function RootLayout({
       <body className={cn("min-h-screen bg antialiased", fontSans.variable)}>
         <Config>
           <NavbarTop />
-          {children}
+          <Hero />
+          <LogoSection />
+          <TeamSection />
         </Config>
       </body>
     </html>
