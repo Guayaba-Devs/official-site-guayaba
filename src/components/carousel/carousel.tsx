@@ -42,15 +42,17 @@ const data = [
     title: "Ivan Ramirez",
     src: "https://images.unsplash.com/photo-1713869791518-a770879e60dc?q=80&w=2333&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     socialLinks: [
-      { icon: <IconBrandGithub />, url: "https://github.com/john" },
-      { icon: <IconBrandLinkedin />, url: "https://facebook.com/john" },
-      { icon: <IconBrandInstagram />, url: "https://instagram.com" },
+      { icon: <IconBrandGithub />, url: "https://github.com/Texhnolyze47" },
+      {
+        icon: <IconBrandLinkedin />,
+        url: "https://www.linkedin.com/in/ivan-ramirezu/",
+      },
     ],
   },
   {
     category: "Full Stack Developer & Mobile",
     title: "Ian Vega",
-    src: "https://images.unsplash.com/photo-1599202860130-f600f4948364?q=80&w=2515&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    src: "/ian-perfil.jpg",
     socialLinks: [
       { icon: <IconBrandGithub />, url: "https://github.com/joh" },
       {
@@ -68,8 +70,11 @@ const data = [
     title: "Pablo Aguilar",
     src: "https://images.unsplash.com/photo-1602081957921-9137a5d6eaee?q=80&w=2793&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     socialLinks: [
-      { icon: <IconBrandGithub />, url: "https://github.com/john" },
-      { icon: <IconBrandLinkedin />, url: "https://facebook.com/john" },
+      { icon: <IconBrandGithub />, url: "https://github.com/JuanPablo-Coder" },
+      {
+        icon: <IconBrandLinkedin />,
+        url: "https://www.linkedin.com/in/juan-bablo-rodriguez-aguilar-1b7633295/",
+      },
       {
         icon: <IconBrandInstagram />,
         url: "https://www.instagram.com/pablo_roab/",
@@ -81,8 +86,14 @@ const data = [
     title: "Atenea Aguilar",
     src: "https://images.unsplash.com/photo-1602081957921-9137a5d6eaee?q=80&w=2793&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     socialLinks: [
-      { icon: <IconBrandLinkedin />, url: "https://facebook.com/john" },
-      { icon: <IconBrandInstagram />, url: "https://instagram.com" },
+      {
+        icon: <IconBrandLinkedin />,
+        url: "https://www.linkedin.com/in/atenea-oishy-rodríguez-aguilar-097905147/",
+      },
+      {
+        icon: <IconBrandInstagram />,
+        url: "https://www.instagram.com/kimdan.roasb/",
+      },
     ],
   },
   {
@@ -90,8 +101,14 @@ const data = [
     title: "Miker Gutierrez",
     src: "/mike-perfil.jpeg",
     socialLinks: [
-      { icon: <IconBrandLinkedin />, url: "https://facebook.com/john" },
-      { icon: <IconBrandInstagram />, url: "https://instagram.com" },
+      {
+        icon: <IconBrandLinkedin />,
+        url: "https://www.linkedin.com/in/erick-gutierrez/",
+      },
+      {
+        icon: <IconBrandInstagram />,
+        url: "https://www.instagram.com/miker_xn/",
+      },
     ],
   },
 ];
