@@ -1,0 +1,80 @@
+name: GitHub Pages Preview Deployment
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - closed
+
+jobs:
+  deploy:
+    if: github.event.action != 'closed' 
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+        
+      - name: Build project
+        run: npm run build
+
+      - name: Deploy Preview
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          destination_dir: "previews/pr-${{ github.event.pull_request.number }}"
+
+  comment:
+    if: github.event.action != 'closed' 
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Comment on PR
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const prNumber = context.payload.pull_request.number;
+            const previewUrl = `https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/previews/pr-${prNumber}`;
+            github.issues.createComment({
+              issue_number: prNumber,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `🎉 El preview está listo para revisión: [Ver Preview](${previewUrl})`
+            });
+
+  cleanup:
+    if: github.event.action == 'closed'
+    runs-on: ubuntu-latest
+
+    steps:
+      
+      - name: Setup Git
+        run: |
+          git config --global user.name "${{ github.actor }}"
+          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+
+      
+      - name: Clone gh-pages branch
+        run: |
+          git clone --branch gh-pages https://github.com/${{ github.repository }} gh-pages
+          cd gh-pages
+
+      
+      - name: Remove Preview Directory
+        run: |
+          cd gh-pages
+          rm -rf "previews/pr-${{ github.event.pull_request.number }}"
+          git add .
+          git commit -m "Remove preview for PR #${{ github.event.pull_request.number }}"
+          git push
