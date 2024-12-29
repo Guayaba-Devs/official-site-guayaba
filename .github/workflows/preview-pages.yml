@@ -1,79 +1,30 @@
-name: Preview
+# .github/workflows/preview.yml
+name: Deploy PR previews
 
 on:
-  pull_request_target:
+  pull_request:
     types:
       - opened
-      - synchronize
       - reopened
+      - synchronize
       - closed
 
-concurrency:
-  group: preview-${{ github.event_name }}-${{ github.event.number || github.ref_name }}
-  cancel-in-progress: true
+concurrency: preview-${{ github.ref }}
 
 jobs:
-  deploy:
-    name: Deploy Preview for Pull Request
+  deploy-preview:
     runs-on: ubuntu-20.04
-    env:
-      PAGES_BASE: https://guayaba-devs.github.io/official-site-guayaba # Base URL de tu repositorio GitHub Pages
-      PREVIEW_REPO: guayaba-devs/official-site-guayaba # Reemplaza con el nombre de tu repositorio si es necesario
-
     steps:
-      - name: Checkout Pull Request
-        if: ${{ startsWith(github.event_name, 'pull_request') && github.event.action != 'closed' }}
+      - name: Checkout
         uses: actions/checkout@v3
-        with:
-          ref: refs/pull/${{ github.event.pull_request.number }}/merge
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        if: ${{ github.event.action != 'closed' }}
-        with:
-          node-version: "18"
-          cache: yarn
-
-      - name: Install dependencies with Yarn
-        if: ${{ github.event.action != 'closed' }}
-        run: yarn install --frozen-lockfile
-
-      - name: Build static files for GitHub Pages
-        if: ${{ github.event.action != 'closed' }}
+      - name: Install and Build
+        if: github.event.action != 'closed'
         run: |
-          yarn build # Construye el proyecto Next.js
-          yarn export # Exporta el proyecto como archivos estáticos para GitHub Pages
+          yarn install --frozen-lockfile
+          yarn build
 
-      - name: Determine base URL
-        if: ${{ github.event.action != 'closed' }}
-        id: baseurl
-        run: |
-          if [ "${{ github.event_name }}" == "pull_request_target" ]; then
-            full="${{ env.PAGES_BASE }}/pr/${{ github.event.number }}"
-          else
-            full="${{ env.PAGES_BASE }}/branch/${{ github.ref_name }}"
-          fi
-
-          relative=/$(echo $full | cut -d/ -f4-)
-
-          echo "full=$full" >> $GITHUB_OUTPUT
-          echo "relative=$relative" >> $GITHUB_OUTPUT
-        shell: bash
-
-      - name: Deploy to GitHub Pages
-        if: ${{ github.event.action != 'closed' }}
-        uses: EndBug/pages-preview@v1
+      - name: Deploy preview
+        uses: rossjrw/pr-preview-action@v1
         with:
-          build_dir: ./out # La carpeta 'out' es la salida generada por 'next export'
-          preview_base_url: ${{ env.PAGES_BASE }}
-          preview_repo: ${{ env.PREVIEW_REPO }}
-          preview_token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Comment with preview link
-        if: ${{ github.event.action != 'closed' }}
-        uses: peter-evans/create-or-update-comment@v2
-        with:
-          issue-number: ${{ github.event.pull_request.number }}
-          body: |
-            🚀 ¡Tu Pull Request ha sido desplegado en GitHub Pages! 🎉
-            Puedes ver la vista previa aquí: [Vista Previa](https://guayaba-devs.github.io/official-site-guayaba/pr-${{ github.event.pull_request.number }})
+          source-dir: ./build/
