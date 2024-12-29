@@ -23,10 +23,10 @@ jobs:
           node-version: "18"
 
       - name: Install dependencies
-        run: npm install
+        run: yarn install
 
       - name: Build project
-        run: npm run build
+        run: yarn build
 
       - name: Deploy Preview
         uses: peaceiris/actions-gh-pages@v3
@@ -46,10 +46,12 @@ jobs:
           script: |
             const prNumber = context.payload.pull_request.number;
             const previewUrl = `https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/previews/pr-${prNumber}`;
-            await github.issues.createComment({
-              issue_number: prNumber,
+
+            // Comentario en el Pull Request
+            await github.pulls.createReviewComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
+              pull_number: prNumber,
               body: `🎉 El preview está listo para revisión: [Ver Preview](${previewUrl})`
             });
 
