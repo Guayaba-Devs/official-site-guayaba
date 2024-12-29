@@ -271,7 +271,7 @@ export const Card = ({
           </motion.p>
         </div>
         {/* Redes Sociales en la Tarjeta */}
-        <div className="flex justify-center gap-2 mt-auto absolute bottom-0 z-40 w-full p-4">
+        <div className="flex justify-center gap-2 mt-auto absolute bottom-0 z-40 w-full p-4 glass-bg">
           {card.socialLinks.map((link, i) => (
             <a
               href={link.url}
