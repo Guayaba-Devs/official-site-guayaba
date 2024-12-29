@@ -16,7 +16,7 @@ export const InfoSection = () => {
         Conectamos talento y oportunidades desde cualquier parte del mundo.
       </p>
       <div className="mt-6">
-        <button className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-lg hover:bg-blue-500 transition-transform transform hover:scale-105">
+        <button className="px-6 py-3 bg-blue-800 text-white font-semibold rounded-lg shadow-lg hover:bg-blue-500 transition-transform transform hover:scale-105">
           Únete Ahora
         </button>
       </div>
