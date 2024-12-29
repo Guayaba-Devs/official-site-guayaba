@@ -37,6 +37,7 @@ jobs:
 
   comment:
     if: github.event.action != 'closed'
+    needs: deploy
     runs-on: ubuntu-latest
 
     steps:
