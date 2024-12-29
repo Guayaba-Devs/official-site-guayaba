@@ -1,79 +1,79 @@
-name: GitHub Pages Preview Deployment
+name: Preview
 
 on:
-  pull_request:
+  pull_request_target:
     types:
       - opened
-      - reopened
       - synchronize
+      - reopened
       - closed
+
+concurrency:
+  group: preview-${{ github.event_name }}-${{ github.event.number || github.ref_name }}
+  cancel-in-progress: true
 
 jobs:
   deploy:
-    if: github.event.action != 'closed'
-    runs-on: ubuntu-latest
+    name: Deploy Preview for Pull Request
+    runs-on: ubuntu-20.04
+    env:
+      PAGES_BASE: https://guayaba-devs.github.io/official-site-guayaba # Base URL de tu repositorio GitHub Pages
+      PREVIEW_REPO: guayaba-devs/official-site-guayaba # Reemplaza con el nombre de tu repositorio si es necesario
 
     steps:
-      - name: Checkout code
+      - name: Checkout Pull Request
+        if: ${{ startsWith(github.event_name, 'pull_request') && github.event.action != 'closed' }}
         uses: actions/checkout@v3
+        with:
+          ref: refs/pull/${{ github.event.pull_request.number }}/merge
 
-      - name: Set up Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v3
+        if: ${{ github.event.action != 'closed' }}
         with:
-          node-version: "18"
+          node-version: "16"
+          cache: yarn
 
-      - name: Install dependencies
-        run: yarn install
+      - name: Install dependencies with Yarn
+        if: ${{ github.event.action != 'closed' }}
+        run: yarn install --frozen-lockfile
 
-      - name: Build project
-        run: yarn build
+      - name: Build static files for GitHub Pages
+        if: ${{ github.event.action != 'closed' }}
+        run: |
+          yarn build # Construye el proyecto Next.js
+          yarn export # Exporta el proyecto como archivos estáticos para GitHub Pages
 
-      - name: Deploy Preview
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Determine base URL
+        if: ${{ github.event.action != 'closed' }}
+        id: baseurl
+        run: |
+          if [ "${{ github.event_name }}" == "pull_request_target" ]; then
+            full="${{ env.PAGES_BASE }}/pr/${{ github.event.number }}"
+          else
+            full="${{ env.PAGES_BASE }}/branch/${{ github.ref_name }}"
+          fi
+
+          relative=/$(echo $full | cut -d/ -f4-)
+
+          echo "full=$full" >> $GITHUB_OUTPUT
+          echo "relative=$relative" >> $GITHUB_OUTPUT
+        shell: bash
+
+      - name: Deploy to GitHub Pages
+        if: ${{ github.event.action != 'closed' }}
+        uses: EndBug/pages-preview@v1
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
-          destination_dir: "previews/pr-${{ github.event.pull_request.number }}"
+          build_dir: ./out # La carpeta 'out' es la salida generada por 'next export'
+          preview_base_url: ${{ env.PAGES_BASE }}
+          preview_repo: ${{ env.PREVIEW_REPO }}
+          preview_token: ${{ secrets.GITHUB_TOKEN }}
 
-  comment:
-    if: github.event.action != 'closed'
-    needs: deploy
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Comment on PR
-        uses: actions/github-script@v6
+      - name: Comment with preview link
+        if: ${{ github.event.action != 'closed' }}
+        uses: peter-evans/create-or-update-comment@v2
         with:
-          script: |
-            const prNumber = context.payload.pull_request.number;
-            const previewUrl = `https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/previews/pr-${prNumber}`;
-
-            // Comentario en el Pull Request
-            await github.pulls.createReviewComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: prNumber,
-              body: `🎉 El preview está listo para revisión: [Ver Preview](${previewUrl})`
-            });
-
-  cleanup:
-    if: github.event.action == 'closed'
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Setup Git
-        run: |
-          git config --global user.name "${{ github.actor }}"
-          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
-
-      - name: Clone gh-pages branch
-        run: |
-          git clone --branch gh-pages https://github.com/${{ github.repository }} gh-pages
-          cd gh-pages
-
-      - name: Remove Preview Directory
-        run: |
-          rm -rf "previews/pr-${{ github.event.pull_request.number }}"
-          git add .
-          git commit -m "Remove preview for PR #${{ github.event.pull_request.number }}" || echo "No changes to commit"
-          git push
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            🚀 ¡Tu Pull Request ha sido desplegado en GitHub Pages! 🎉
+            Puedes ver la vista previa aquí: [Vista Previa](https://guayaba-devs.github.io/official-site-guayaba/pr-${{ github.event.pull_request.number }})
