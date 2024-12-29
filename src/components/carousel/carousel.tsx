@@ -6,7 +6,6 @@ import {
   IconBrandGithub,
   IconBrandLinkedin,
 } from "@tabler/icons-react";
-import { icons } from "lucide-react";
 
 export function CarouselTeam() {
   const cards = data.map((card, index) => (
