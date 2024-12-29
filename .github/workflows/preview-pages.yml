@@ -10,7 +10,7 @@ on:
 
 jobs:
   deploy:
-    if: github.event.action != 'closed' 
+    if: github.event.action != 'closed'
     runs-on: ubuntu-latest
 
     steps:
@@ -20,11 +20,11 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: "18"
 
       - name: Install dependencies
         run: npm install
-        
+
       - name: Build project
         run: npm run build
 
@@ -36,7 +36,7 @@ jobs:
           destination_dir: "previews/pr-${{ github.event.pull_request.number }}"
 
   comment:
-    if: github.event.action != 'closed' 
+    if: github.event.action != 'closed'
     runs-on: ubuntu-latest
 
     steps:
@@ -46,7 +46,7 @@ jobs:
           script: |
             const prNumber = context.payload.pull_request.number;
             const previewUrl = `https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/previews/pr-${prNumber}`;
-            github.issues.createComment({
+            await github.issues.createComment({
               issue_number: prNumber,
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -58,23 +58,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      
       - name: Setup Git
         run: |
           git config --global user.name "${{ github.actor }}"
           git config --global user.email "${{ github.actor }}@users.noreply.github.com"
 
-      
       - name: Clone gh-pages branch
         run: |
           git clone --branch gh-pages https://github.com/${{ github.repository }} gh-pages
           cd gh-pages
 
-      
       - name: Remove Preview Directory
         run: |
-          cd gh-pages
           rm -rf "previews/pr-${{ github.event.pull_request.number }}"
           git add .
-          git commit -m "Remove preview for PR #${{ github.event.pull_request.number }}"
+          git commit -m "Remove preview for PR #${{ github.event.pull_request.number }}" || echo "No changes to commit"
           git push
