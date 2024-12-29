@@ -10,7 +10,7 @@ export const InfoSection = () => {
       className="text-center lg:text-left"
     >
       <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-800 leading-tight">
-        Bienvenido a <span className="text-blue-100">Guayaba Devs</span>
+        Somos <span className="text-blue-100">Guayaba Devs</span>
       </h1>
       <p className="mt-4 text-lg sm:text-xl text-gray-600 max-w-lg mx-auto lg:mx-0">
         Conectamos talento y oportunidades desde cualquier parte del mundo.
