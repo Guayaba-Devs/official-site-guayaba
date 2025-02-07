@@ -8,7 +8,13 @@ import { Hero } from "@/components/hero";
 import { LogoSection } from "@/components/marquee/logoSection";
 import { TeamSection } from "@/components/team";
 
-const fontSans = FontSans({ subsets: ["latin"], variable: "--font-sans" });
+const fontSans = FontSans({
+  subsets: ["latin"],
+  variable: "--font-sans",
+  display: "swap",
+  adjustFontFallback: false,
+  preload: false,
+});
 
 export const metadata: Metadata = {
   title: "Guayaba Devs",
