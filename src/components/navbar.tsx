@@ -19,10 +19,11 @@ export const NavbarTop = () => {
       isMenuOpen={isMenuOpen}
       onMenuOpenChange={setIsMenuOpen}
       className="bg-gradient-to-r from-primary to-secondary h-20"
-      maxWidth="lg">
+      maxWidth="lg"
+    >
       <NavbarBrand>
         <Image
-          src="./guayaba-cover.png"
+          src="/guayaba-cover.png"
           alt="logo"
           width={190}
           height={60}
@@ -32,7 +33,8 @@ export const NavbarTop = () => {
 
       <NavbarContent
         className="hidden sm:flex gap-4 md:gap-14 md:text-base text-white font-semibold"
-        justify="center">
+        justify="center"
+      >
         <NavbarItem>
           <Link href={"#nosotros"} className="text-xl">
             Nosotros
