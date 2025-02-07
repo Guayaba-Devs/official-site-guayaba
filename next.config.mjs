@@ -8,6 +8,9 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  experimental: {
+    urlImports: ["https://fonts.gstatic.com/"],
+  },
 };
 
 export default nextConfig;
