@@ -9,10 +9,10 @@ interface Logo {
 
 export const LogoSection = () => {
   const logos: Logo[] = [
-    { src: "/NAO_Tecmilenio.png", alt: "Digital Nao Logo" },
-    { src: "/github-campus-experts.svg", alt: "Github Campus Experts Logo" },
-    { src: "/backpack.png", alt: "Student Developer Pack" },
-    { src: "/notion-logo.png", alt: "Notion" },
+    { src: "./NAO_Tecmilenio.png", alt: "Digital Nao Logo" },
+    { src: "./github-campus-experts.svg", alt: "Github Campus Experts Logo" },
+    { src: "./backpack.png", alt: "Student Developer Pack" },
+    { src: "./notion-logo.png", alt: "Notion" },
   ];
 
   return (
