@@ -10,21 +10,19 @@ interface Logo {
 export const LogoSection = () => {
   const logos: Logo[] = [
     {
-      src: `${process.env.NEXT_PUBLIC_BASE_PATH || ""}/NAO_Tecmilenio.png`,
+      src: `/NAO_Tecmilenio.png`,
       alt: "Digital Nao Logo",
     },
     {
-      src: `${
-        process.env.NEXT_PUBLIC_BASE_PATH || ""
-      }/github-campus-experts.svg`,
+      src: `/github-campus-experts.svg`,
       alt: "Github Campus Experts Logo",
     },
     {
-      src: `${process.env.NEXT_PUBLIC_BASE_PATH || ""}/backpack.png`,
+      src: `/backpack.png`,
       alt: "Student Developer Pack",
     },
     {
-      src: `${process.env.NEXT_PUBLIC_BASE_PATH || ""}/notion-logo.png`,
+      src: `/notion-logo.png`,
       alt: "Notion",
     },
   ];

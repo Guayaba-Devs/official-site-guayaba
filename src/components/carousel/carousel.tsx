@@ -23,7 +23,7 @@ const data = [
   {
     category: "Full Stack Developer",
     title: "Josafat Jimenez",
-    src: `${process.env.NEXT_PUBLIC_BASE_PATH || ""}/josa-perfil.jpg`,
+    src: `/josa-perfil.jpg`,
     socialLinks: [
       { icon: <IconBrandGithub />, url: "https://github.com/josafatjimenezB" },
       {
@@ -39,7 +39,7 @@ const data = [
   {
     category: "Full Stack Developer",
     title: "Ivan Ramirez",
-    src: `${process.env.NEXT_PUBLIC_BASE_PATH || ""}/ivan-perfil.jpeg`,
+    src: `/ivan-perfil.jpeg`,
     socialLinks: [
       { icon: <IconBrandGithub />, url: "https://github.com/Texhnolyze47" },
       {
@@ -51,7 +51,7 @@ const data = [
   {
     category: "Full Stack Developer & Mobile",
     title: "Ian Vega",
-    src: `${process.env.NEXT_PUBLIC_BASE_PATH || ""}/ian-perfil.jpg`,
+    src: `/ian-perfil.jpg`,
     socialLinks: [
       { icon: <IconBrandGithub />, url: "https://github.com/joh" },
       {
@@ -67,7 +67,7 @@ const data = [
   {
     category: "Software Developer",
     title: "Pablo Aguilar",
-    src: `${process.env.NEXT_PUBLIC_BASE_PATH || ""}/pablo-perfil.jpg`,
+    src: `/pablo-perfil.jpg`,
     socialLinks: [
       { icon: <IconBrandGithub />, url: "https://github.com/JuanPablo-Coder" },
       {
@@ -83,7 +83,7 @@ const data = [
   {
     category: "Diseño Gráfico",
     title: "Atenea Aguilar",
-    src: `${process.env.NEXT_PUBLIC_BASE_PATH || ""}/ate-perfil.jpeg`,
+    src: `/ate-perfil.jpeg`,
     socialLinks: [
       {
         icon: <IconBrandLinkedin />,
@@ -98,7 +98,7 @@ const data = [
   {
     category: "Marketing",
     title: "Miker Gutierrez",
-    src: `${process.env.NEXT_PUBLIC_BASE_PATH || ""}/mike-perfil.jpeg`,
+    src: `/mike-perfil.jpeg`,
     socialLinks: [
       {
         icon: <IconBrandLinkedin />,

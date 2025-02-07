@@ -23,7 +23,7 @@ export const NavbarTop = () => {
     >
       <NavbarBrand>
         <Image
-          src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/guayaba-cover.png`}
+          src={`/guayaba-cover.png`}
           alt="logo"
           width={190}
           height={60}
