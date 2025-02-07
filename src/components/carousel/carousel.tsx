@@ -23,7 +23,7 @@ const data = [
   {
     category: "Full Stack Developer",
     title: "Josafat Jimenez",
-    src: "https://images.unsplash.com/photo-1593508512255-86ab42a8e620?q=80&w=3556&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    src: "/josa-perfil.jpg",
     socialLinks: [
       { icon: <IconBrandGithub />, url: "https://github.com/josafatjimenezB" },
       {
@@ -39,7 +39,7 @@ const data = [
   {
     category: "Full Stack Developer",
     title: "Ivan Ramirez",
-    src: "https://images.unsplash.com/photo-1713869791518-a770879e60dc?q=80&w=2333&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    src: "/ivan-perfil.jpeg",
     socialLinks: [
       { icon: <IconBrandGithub />, url: "https://github.com/Texhnolyze47" },
       {
@@ -67,7 +67,7 @@ const data = [
   {
     category: "Software Developer",
     title: "Pablo Aguilar",
-    src: "https://images.unsplash.com/photo-1602081957921-9137a5d6eaee?q=80&w=2793&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    src: "/pablo-perfil.jpg",
     socialLinks: [
       { icon: <IconBrandGithub />, url: "https://github.com/JuanPablo-Coder" },
       {
@@ -83,7 +83,7 @@ const data = [
   {
     category: "Diseño Gráfico",
     title: "Atenea Aguilar",
-    src: "https://images.unsplash.com/photo-1602081957921-9137a5d6eaee?q=80&w=2793&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    src: "/ate-perfil.jpeg",
     socialLinks: [
       {
         icon: <IconBrandLinkedin />,
