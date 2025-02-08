@@ -6,8 +6,8 @@
   :root {
     --font-sans: "Inter", sans-serif;
     --secondary-background: 230, 37%, 97%;
-    
-    --background: 0 0% 100%;
+
+    --background: 210 100% 5%;
 
     --card: 0 0% 100%;
     --card-foreground: 240 10% 3.9%;
@@ -91,8 +91,6 @@
   .bg-secondaryLight {
     background-color: hsl(var(--secondary-background));
   }
-
-
 }
 
 @layer base {

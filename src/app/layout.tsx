@@ -26,7 +26,11 @@ export default function RootLayout({}: Readonly<{
 }>) {
   return (
     <html lang="en">
-      <body className={cn("min-h-screen bg antialiased", fontSans.variable)}>
+      <body
+        className={cn(
+          "min-h-screen bg antialiased mx-auto overflow-auto",
+          fontSans.variable
+        )}>
         <Config>
           <NavbarTop />
           <Hero />

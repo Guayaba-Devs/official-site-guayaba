@@ -1,150 +1,126 @@
 "use client";
 
-import * as Tooltip from "@radix-ui/react-tooltip";
-import {
-  MotionValue,
-  animate,
-  motion,
-  useMotionValue,
-  useSpring,
-  useTransform,
-} from "framer-motion";
-import { ReactNode, useRef } from "react";
+import React, { PropsWithChildren, useRef } from "react";
+import { cva, type VariantProps } from "class-variance-authority";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 
-const SCALE = 2.25;
-const DISTANCE = 110;
-const NUDGE = 40;
-const SPRING = {
-  mass: 0.1,
-  stiffness: 170,
-  damping: 12,
-};
-const APPS = [
-  "Safari",
-  "Mail",
-  "Messages",
-  "Photos",
-  "Notes",
-  "Calendar",
-  "Reminders",
-  "Music",
-];
+import { cn } from "@/lib/utils";
 
-export const Dock = () => {
-  const mouseLeft = useMotionValue(-Infinity);
-  const mouseRight = useMotionValue(-Infinity);
-  const left = useTransform(mouseLeft, [0, 40], [0, -40]);
-  const right = useTransform(mouseRight, [0, 40], [0, -40]);
-  const leftSpring = useSpring(left, SPRING);
-  const rightSpring = useSpring(right, SPRING);
-
-  return (
-    <>
-      <motion.div
-        onMouseMove={(e) => {
-          const { left, right } = e.currentTarget.getBoundingClientRect();
-          const offsetLeft = e.clientX - left;
-          const offsetRight = right - e.clientX;
-          mouseLeft.set(offsetLeft);
-          mouseRight.set(offsetRight);
-        }}
-        onMouseLeave={() => {
-          mouseLeft.set(-Infinity);
-          mouseRight.set(-Infinity);
-        }}
-        className="mx-auto hidden h-16 items-end gap-3 px-2 pb-3 sm:flex relative">
-        <motion.div
-          className="absolute rounded-2xl inset-y-0 bg-gray-700 border border-gray-600 -z-10"
-          style={{ left: leftSpring, right: rightSpring }}
-        />
-
-        {Array.from(Array(APPS.length).keys()).map((i) => (
-          <AppIcon key={i} mouseLeft={mouseLeft}>
-            {APPS[i]}
-          </AppIcon>
-        ))}
-      </motion.div>
-
-      <div className="sm:hidden">
-        <div className="mx-auto flex h-16 max-w-full items-end gap-4 overflow-x-scroll rounded-2xl bg-gray-700 px-4 pb-3 sm:hidden">
-          {Array.from(Array(8).keys()).map((i) => (
-            <div
-              key={i}
-              className="aspect-square w-10 flex-shrink-0 rounded-full bg-gray-100"
-            />
-          ))}
-        </div>
-        <p className="mt-4 text-center text-xs font-medium text-gray-300">
-          View at 640px with a mouse
-          <br /> to see the interaction.
-        </p>
-      </div>
-    </>
-  );
-};
-
-function AppIcon({
-  mouseLeft,
-  children,
-}: {
-  mouseLeft: MotionValue;
-  children: ReactNode;
-}) {
-  const ref = useRef<HTMLButtonElement>(null);
-
-  const distance = useTransform(() => {
-    const bounds = ref.current
-      ? { x: ref.current.offsetLeft, width: ref.current.offsetWidth }
-      : { x: 0, width: 0 };
-
-    return mouseLeft.get() - bounds.x - bounds.width / 2;
-  });
-
-  const scale = useTransform(distance, [-DISTANCE, 0, DISTANCE], [1, SCALE, 1]);
-  const x = useTransform(() => {
-    const d = distance.get();
-    if (d === -Infinity) {
-      return 0;
-    } else if (d < -DISTANCE || d > DISTANCE) {
-      return Math.sign(d) * -1 * NUDGE;
-    } else {
-      return (-d / DISTANCE) * NUDGE * scale.get();
-    }
-  });
-
-  const scaleSpring = useSpring(scale, SPRING);
-  const xSpring = useSpring(x, SPRING);
-  const y = useMotionValue(0);
-
-  return (
-    <Tooltip.Provider delayDuration={0}>
-      <Tooltip.Root>
-        <Tooltip.Trigger asChild>
-          <motion.button
-            ref={ref}
-            style={{ x: xSpring, scale: scaleSpring, y }}
-            onClick={() => {
-              animate(y, [0, -40, 0], {
-                repeat: 2,
-                ease: [
-                  [0, 0, 0.2, 1],
-                  [0.8, 0, 1, 1],
-                ],
-                duration: 0.7,
-              });
-            }}
-            className="aspect-square block w-10 rounded-full bg-white shadow origin-bottom"
-          />
-        </Tooltip.Trigger>
-        <Tooltip.Portal>
-          <Tooltip.Content
-            sideOffset={10}
-            className="bg-gray-700 shadow shadow-black border border-gray-600 px-2 py-1.5 text-sm rounded text-white font-medium">
-            {children}
-            <Tooltip.Arrow />
-          </Tooltip.Content>
-        </Tooltip.Portal>
-      </Tooltip.Root>
-    </Tooltip.Provider>
-  );
+export interface DockProps extends VariantProps<typeof dockVariants> {
+  className?: string;
+  magnification?: number;
+  distance?: number;
+  direction?: "top" | "middle" | "bottom";
+  children: React.ReactNode;
 }
+
+const DEFAULT_MAGNIFICATION = 60;
+const DEFAULT_DISTANCE = 140;
+
+const dockVariants = cva(
+  "supports-backdrop-blur:bg-white/10 supports-backdrop-blur:dark:bg-black/10 mx-auto mt-8 flex h-[58px] w-max gap-2 rounded-2xl border p-2 backdrop-blur-md"
+);
+
+const Dock = React.forwardRef<HTMLDivElement, DockProps>(
+  (
+    {
+      className,
+      children,
+      magnification = DEFAULT_MAGNIFICATION,
+      distance = DEFAULT_DISTANCE,
+      direction = "bottom",
+      ...props
+    },
+    ref
+  ) => {
+    const mouseX = useMotionValue(Infinity);
+
+    const renderChildren = () => {
+      return React.Children.map(children, (child) => {
+        if (React.isValidElement(child) && child.type === DockIcon) {
+          return React.cloneElement(child, {
+            ...child.props,
+            mouseX: mouseX,
+            magnification: magnification,
+            distance: distance,
+          });
+        }
+        return child;
+      });
+    };
+
+    return (
+      <motion.div
+        ref={ref}
+        onMouseMove={(e) => mouseX.set(e.pageX)}
+        onMouseLeave={() => mouseX.set(Infinity)}
+        {...props}
+        className={cn(dockVariants({ className }), {
+          "items-start": direction === "top",
+          "items-center": direction === "middle",
+          "items-end": direction === "bottom",
+        })}>
+        {renderChildren()}
+      </motion.div>
+    );
+  }
+);
+
+Dock.displayName = "Dock";
+
+export interface DockIconProps {
+  size?: number;
+  magnification?: number;
+  distance?: number;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  mouseX?: any;
+  className?: string;
+  children?: React.ReactNode;
+  props?: PropsWithChildren;
+}
+
+const DockIcon = ({
+  magnification = DEFAULT_MAGNIFICATION,
+  distance = DEFAULT_DISTANCE,
+  mouseX = [],
+  className,
+  children,
+  ...props
+}: DockIconProps) => {
+  const ref = useRef<HTMLDivElement>(null);
+
+  const distanceCalc = useTransform(mouseX, (val: number) => {
+    const bounds = ref.current?.getBoundingClientRect() ?? { x: 0, width: 0 };
+
+    return val - bounds.x - bounds.width / 2;
+  });
+
+  const widthSync = useTransform(
+    distanceCalc,
+    [-distance, 0, distance],
+    [40, magnification, 40]
+  );
+
+  const width = useSpring(widthSync, {
+    mass: 0.1,
+    stiffness: 150,
+    damping: 12,
+  });
+
+  return (
+    <motion.div
+      ref={ref}
+      style={{ width }}
+      className={cn(
+        "flex aspect-square cursor-pointer items-center justify-center rounded-full",
+        className
+      )}
+      {...props}>
+      {children}
+    </motion.div>
+  );
+};
+
+DockIcon.displayName = "DockIcon";
+
+export { Dock, DockIcon, dockVariants };

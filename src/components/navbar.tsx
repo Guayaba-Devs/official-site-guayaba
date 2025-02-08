@@ -25,7 +25,7 @@ export const NavbarTop = () => {
         <Image
           src={`images/guayaba-cover.png`}
           alt="logo"
-          width={190}
+          width={200}
           height={60}
           className="mr-6"
         />
