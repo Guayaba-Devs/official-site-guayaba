@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { Twitter, Github, Instagram } from "lucide-react";
+import { Github, Instagram } from "lucide-react";
 
 const Footer = () => {
   return (
