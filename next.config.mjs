@@ -11,7 +11,10 @@ const nextConfig = {
       },
       { hostname: "drive.google.com" },
     ],
-  },
+    unoptimized: true,
+  }
+  output: "export",
+  basePath: process.env.NEXT_PUBLIC_BASE_PATH || "",
 };
 
 export default nextConfig;
