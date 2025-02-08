@@ -4,7 +4,7 @@ import Image from "next/image";
 
 export const Events = () => {
   return (
-    <div>
+    <div className="mt-6 px-4 md:px-8 lg:px-12">
       <h3 className="text-4xl font-bold text-primary dark:text-gray-200 mt-[8.5%] mb-[2.5%]">
         Posts
       </h3>

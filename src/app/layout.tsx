@@ -7,6 +7,8 @@ import { NavbarTop } from "../components/navbar";
 import { Hero } from "@/components/hero";
 import { LogoSection } from "@/components/marquee/logoSection";
 import { TeamSection } from "@/components/team";
+import { Newsletter } from "@/components/newsletter";
+import { Events } from "@/components/events";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -30,12 +32,19 @@ export default function RootLayout({}: Readonly<{
         className={cn(
           "min-h-screen bg antialiased mx-auto overflow-auto",
           fontSans.variable
-        )}>
+        )}
+      >
         <Config>
           <NavbarTop />
           <Hero />
           <LogoSection />
           <TeamSection />
+          <section>
+            <Newsletter />
+          </section>
+          <section>
+            <Events />
+          </section>
         </Config>
       </body>
     </html>
