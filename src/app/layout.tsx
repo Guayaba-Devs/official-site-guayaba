@@ -9,6 +9,7 @@ import { LogoSection } from "@/components/marquee/logoSection";
 import { TeamSection } from "@/components/team";
 import { Newsletter } from "@/components/newsletter";
 import { Events } from "@/components/events";
+import Footer from "@/components/footer";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -45,6 +46,7 @@ export default function RootLayout({}: Readonly<{
           <section>
             <Events />
           </section>
+          <Footer />
         </Config>
       </body>
     </html>

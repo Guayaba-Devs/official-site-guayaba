@@ -11,6 +11,9 @@ const nextConfig = {
       },
       { hostname: "drive.google.com" },
     ],
+
+    domains: ["instagram.flov1-1.fna.fbcdn.net", "via.placeholder.com"],
+
     unoptimized: true,
   },
   output: "export",

@@ -4,18 +4,18 @@ import Image from "next/image";
 
 export const Events = () => {
   return (
-    <div className="mt-6 px-4 md:px-8 lg:px-12">
-      <h3 className="text-4xl font-bold text-primary dark:text-gray-200 mt-[8.5%] mb-[2.5%]">
+    <div className="mt-6 px-4 md:px-8 lg:px-12 w-full h-auto py-4">
+      <h3 className="text-xl md:text-3xl lg:text-5xl font-bold text-primary dark:text-gray-200 mt-[8.5%] mb-6 md:mb-8">
         Posts
       </h3>
-      <BentoGrid className="max-w-7xl mx-auto md:auto-rows-[22rem] gap-6 pb-[2%]">
+      <BentoGrid className="w-full mx-auto md:auto-rows-[22rem] gap-6 pb-[2%]">
         {items.map((item, i) => (
           <BentoGridItem
             key={i}
             title={item.title}
             description={item.description}
             header={item.header}
-            className={item.className}
+            className={`${item.className} w-full h-full`}
             link={item.link}
           />
         ))}
