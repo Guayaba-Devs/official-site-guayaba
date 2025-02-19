@@ -3,7 +3,7 @@ import { CarouselTeam } from "./carousel/carousel";
 
 export const TeamSection = () => {
   return (
-    <section className="w-full bg-black h-auto text-white flex flex-col items-end">
+    <section id="members" className="w-full bg-black h-auto text-white flex flex-col items-end">
       <div className="w-full md:w-9/12 bg-gradient-to-r from-primary to-secondary mt-16 h-20 md:h-32 flex items-center content-start rounded-s-xl">
         <h2 className="text-xl md:text-5xl font-bold font-sans text-right ml-8">
           Miembros

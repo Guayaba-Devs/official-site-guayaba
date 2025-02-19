@@ -13,6 +13,16 @@ import Image from "next/image";
 export const NavbarTop = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  const smoothScroll = (e: React.MouseEvent<HTMLAnchorElement>, id: string): void => {
+    e.preventDefault();
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+  };
   return (
     <Navbar
       shouldHideOnScroll
@@ -36,27 +46,40 @@ export const NavbarTop = () => {
         justify="center"
       >
         <NavbarItem>
-          <Link href={"#nosotros"} className="text-xl">
+          <a 
+          href="#about-us"
+          onClick={(e) => smoothScroll(e,'about-us')}
+          className="text-xl">
             Nosotros
-          </Link>
+          </a>
         </NavbarItem>
         <NavbarItem>
-          <Link href={"#servicios"} className="text-xl">
+          <a href={"#members"}
+           onClick={(e) => smoothScroll(e,'members')}
+           className="text-xl">
             Miembros
-          </Link>
+          </a>
         </NavbarItem>
         <NavbarItem>
-          <Link href={"#contacto"} className="text-xl">
+          <Link 
+          href={"#newsletter"}
+          onClick={(e) => smoothScroll(e, 'newsletter')}
+          className="text-xl"
+          >
             Newsletter
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <Link href={"#contacto"} className="text-xl">
+          <Link 
+          href={"#posts"} 
+          className="text-xl"
+          onClick={(e) => smoothScroll(e, 'posts')}
+          >
             Posts
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <Link href={"#contacto"} className="text-xl">
+          <Link href={"#"} className="text-xl">
             FAQ
           </Link>
         </NavbarItem>

@@ -30,6 +30,7 @@ export const Hero = () => {
 
   return (
     <div
+      id="about-us"
       className="bg-secondaryLight dark:bg-gradient-to-br dark:from-[hsl(var(--secondary))] dark:to-[hsl(var(--primary))] relative flex flex-col lg:flex-row items-center justify-between px-6 lg:px-16 py-20 lg:py-28 gap-8"
       style={{ minHeight: "calc(100vh - 70px)" }}
     >

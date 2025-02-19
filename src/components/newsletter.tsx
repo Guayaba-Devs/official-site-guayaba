@@ -9,7 +9,7 @@ export const Newsletter = () => {
   const [email, setEmail] = useState("");
 
   return (
-    <section className="mt-6 px-4 md:px-8 lg:px-12">
+    <section id="newsletter" className="mt-6 px-4 md:px-8 lg:px-12">
       <h3 className="text-primary text-xl md:text-3xl lg:text-5xl font-bold mb-7 text-center md:text-left">
         Newsletter
       </h3>
