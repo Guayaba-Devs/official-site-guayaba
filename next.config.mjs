@@ -12,7 +12,12 @@ const nextConfig = {
       { hostname: "drive.google.com" },
     ],
 
-    domains: ["instagram.flov1-1.fna.fbcdn.net", "via.placeholder.com"],
+    domains: [
+      "instagram.flov1-1.fna.fbcdn.net",
+      "scontent-dfw5-1.cdninstagram.com",
+      "via.placeholder.com",
+      "instagram.com",
+    ],
 
     unoptimized: true,
   },

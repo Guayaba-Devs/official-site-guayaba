@@ -28,7 +28,7 @@ const ImageHeader1 = () => {
   return (
     <div className="flex justify-between">
       <Image
-        src="https://instagram.flov1-1.fna.fbcdn.net/v/t51.29350-15/468807482_1074273897822253_9076279028647990472_n.webp?stp=dst-jpg_e35_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi4xNDQweDE0NDAuc2RyLmYyOTM1MC5kZWZhdWx0X2ltYWdlIn0&_nc_ht=instagram.flov1-1.fna.fbcdn.net&_nc_cat=101&_nc_oc=Q6cZ2AH1BrSLmP-D75iqcHhTbbWkcwKzSEmrdXoqyhGgdby_WkVNwHCx9s53pXFEyf8DJZ_vEKxHNKEZeHxArHVVHoGd&_nc_ohc=GOUX29u2WuYQ7kNvgFocyH0&_nc_gid=250d05b567724a1eba8627420d9972b3&edm=AP4sbd4BAAAA&ccb=7-5&ig_cache_key=MzUxMjI1Mzc5MDgxOTE2MTA1Mg%3D%3D.3-ccb7-5&oh=00_AYBOtI4FWYFK6n5ssJARNDUtZ_1GHzB7fXUAyuzooD3c3A&oe=676A1F1F&_nc_sid=7a9f4b"
+        src="https://www.instagram.com/p/DC-CDmFyz3r/media/?size=m"
         alt="Imagen 1"
         width={220}
         height={180}
