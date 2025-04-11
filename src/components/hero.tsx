@@ -53,7 +53,7 @@ export const Hero = () => {
 
           <motion.div
             variants={fadeIn("up", "spring", 1.2, 1)}
-            className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4"
+            className="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4"
           >
             <a
               href="https://github.com/Guayaba-Devs"
