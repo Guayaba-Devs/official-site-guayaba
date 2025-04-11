@@ -62,10 +62,10 @@ export const LogoSection = () => {
         variants={fadeIn("up", "tween", 0.6, 1)}
         className="relative w-full  py-6"
       >
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/30 via-transparent to-secondary/30 z-20" />
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/30 animate-marquee via-transparent to-secondary/30 z-20" />
 
         <Marquee speed={45} gradient={false}>
-          {[...logos, ...logos].map((logo, index) => (
+          {logos.map((logo, index) => (
             <motion.div
               key={index}
               whileHover={{ scale: 1.05 }}
