@@ -1,102 +1,133 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { Image } from "@nextui-org/react";
 import { motion } from "framer-motion";
-import { InfoSection } from "./hero/infoSection";
-
-type Particle = {
-  id: string;
-  left: number;
-  top: number;
-};
+import { staggerContainer, fadeIn, zoomIn, textVariant } from "@/utils/motion";
+import { Particles } from "@/components/particles";
+import { useEffect, useState } from "react";
 
 export const Hero = () => {
-  const [isMounted, setIsMounted] = useState(false);
-  const codeSymbols = ["{ }", "< />", 'console.log("🍈");', "git commit"];
-  const [particles, setParticles] = useState<Particle[]>([]);
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    setIsMounted(true);
-    const generateParticles = () =>
-      Array.from({ length: 20 }).map((_, i) => ({
-        id: `particle-${i}`,
-        left: Math.random() * 100,
-        top: Math.random() * 100,
-      }));
-    setParticles(generateParticles());
+    setIsClient(true);
   }, []);
-
-  if (!isMounted) return null;
-
   return (
-    <div
-      className="bg-secondaryLight dark:bg-gradient-to-br dark:from-[hsl(var(--secondary))] dark:to-[hsl(var(--primary))] relative flex flex-col lg:flex-row items-center justify-between px-6 lg:px-16 py-20 lg:py-28 gap-8"
-      style={{ minHeight: "calc(100vh - 70px)" }}
+    <motion.div
+      variants={staggerContainer()}
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true, amount: 0.25 }}
+      className="min-h-screen bg-background relative overflow-hidden font-sans"
     >
-      <div className="w-full lg:w-1/2 text-center lg:text-left space-y-8">
-        <InfoSection />
+      <motion.div
+        variants={zoomIn(0.5, 1)}
+        className="absolute inset-0 bg-[url('/images/grid.svg')] bg-center opacity-[3%]"
+      />
+
+      <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background z-10" />
+
+      <div className="container mx-auto px-4 h-screen flex items-center justify-center">
+        <div className="max-w-6xl w-full text-center relative z-20 px-4 sm:px-6 lg:px-8">
+          <motion.div
+            variants={zoomIn(0.5, 1)}
+            className="mx-auto mb-6 sm:mb-8 w-24 h-24 sm:w-32 sm:h-32 bg-primary-foreground rounded-full flex items-center justify-center shadow-2xl shadow-primary/30"
+          >
+            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full flex items-center justify-center">
+              <Image
+                className="w-full h-full object-cover"
+                src="images/mascota.png"
+                alt="mascota guayabadevs"
+              />
+            </div>
+          </motion.div>
+
+          <motion.h1
+            variants={textVariant(0.8)}
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 sm:mb-6 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent"
+          >
+            Guayabadevs
+          </motion.h1>
+
+          <motion.p
+            variants={fadeIn("up", "spring", 1, 1)}
+            className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-muted-foreground mb-8 sm:mb-12 font-medium max-w-2xl mx-auto px-2"
+          >
+            Creando desarrolladores{" "}
+            <span className="text-primary font-bold">fructíferos</span>
+          </motion.p>
+
+          <motion.div
+            variants={fadeIn("up", "spring", 1.2, 1)}
+            className="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4"
+          >
+            <a
+              href="https://github.com/Guayaba-Devs"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <button className="bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-3 sm:px-8 sm:py-4 rounded-full text-base sm:text-lg font-bold transition-all transform hover:scale-105 flex items-center justify-center gap-2 shadow-lg shadow-primary/20">
+                <span>Únete a la comunidad</span>
+                <svg
+                  className="w-4 h-4 sm:w-5 sm:h-5 animate-bounce-horizontal"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M17 8l4 4m0 0l-4 4m4-4H3"
+                  />
+                </svg>
+              </button>
+            </a>
+
+            <a
+              href="https://www.instagram.com/guayaba_devs_official/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <button className="border border-primary text-primary hover:bg-primary/5 px-6 py-3 sm:px-8 sm:py-4 rounded-full text-base sm:text-lg font-medium transition-all transform hover:scale-105 flex items-center justify-center gap-2">
+                <span>Próximos eventos</span>
+                <svg
+                  className="w-4 h-4 sm:w-5 sm:h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 14l-7 7m0 0l-7-7m7 7V3"
+                  />
+                </svg>
+              </button>
+            </a>
+          </motion.div>
+        </div>
       </div>
 
-      <div className="w-full lg:w-1/2 flex justify-center h-[400px] lg:h-[600px]">
-        <motion.div
-          className="relative w-full max-w-xl h-full"
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1.2, type: "spring" }}
-        >
-          <div className="absolute inset-0 bg-gradient-to-br from-[hsl(var(--secondary)/0.2)] to-[hsl(var(--primary)/0.1)] dark:from-[hsl(var(--secondary)/0.4)] dark:to-[hsl(var(--primary)/0.3)] rounded-3xl shadow-lg backdrop-blur-xl border-2 border-[hsl(var(--border))]">
-            <div className="absolute inset-0 flex items-center justify-center p-4 lg:p-8">
-              <div className="text-3xl lg:text-5xl font-mono space-y-4 text-secondary dark:text-primary">
-                {codeSymbols.map((text, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ y: 40, opacity: 0 }}
-                    animate={{ y: 0, opacity: 0.9 }}
-                    transition={{
-                      delay: index * 0.3,
-                      duration: 1.5,
-                      repeat: Infinity,
-                      repeatType: "mirror",
-                      ease: "easeInOut",
-                    }}
-                    whileHover={{ scale: 1.1 }}
-                    className="cursor-pointer hover:text-[hsl(var(--secondary)/0.8)] dark:hover:text-[hsl(var(--primary)/0.8)] transition-all"
-                  >
-                    {text}
-                  </motion.div>
-                ))}
-              </div>
-            </div>
+      {isClient && (
+        <Particles
+          quantity={window.innerWidth < 640 ? 15 : 30}
+          maxSize={window.innerWidth < 640 ? 3 : 4}
+          speed={80}
+          className="hidden sm:block"
+        />
+      )}
 
-            <div className="absolute inset-0 overflow-hidden rounded-3xl">
-              {particles.map((particle) => (
-                <motion.div
-                  key={particle.id}
-                  className="absolute w-2 h-2 bg-secondary/80 dark:bg-primary rounded-full z-20"
-                  initial={{
-                    opacity: 0,
-                    x: Math.random() * 100 - 50,
-                    y: Math.random() * 100 - 50,
-                  }}
-                  animate={{
-                    opacity: [0, 0.8, 0],
-                    scale: [1, 2, 1],
-                  }}
-                  transition={{
-                    duration: 2 + Math.random() * 2,
-                    repeat: Infinity,
-                    delay: Math.random() * 2,
-                  }}
-                  style={{
-                    left: `${particle.left}%`,
-                    top: `${particle.top}%`,
-                  }}
-                />
-              ))}
-            </div>
-          </div>
-        </motion.div>
-      </div>
-    </div>
+      <motion.div
+        variants={zoomIn(0.5, 1)}
+        className="hidden sm:block absolute top-1/4 left-20 w-48 h-48 bg-primary rounded-full mix-blend-screen opacity-10 blur-3xl animate-float"
+      />
+
+      <motion.div
+        variants={zoomIn(0.5, 1)}
+        className="hidden sm:block absolute bottom-20 right-32 w-64 h-64 bg-secondary rounded-full mix-blend-screen opacity-10 blur-3xl animate-float-delayed"
+      />
+    </motion.div>
   );
 };

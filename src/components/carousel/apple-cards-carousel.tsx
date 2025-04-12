@@ -132,7 +132,7 @@ export const Carousel = ({ items, initialScroll = 0 }: CarouselProps) => {
             ))}
           </div>
         </div>
-        <div className="flex justify-end gap-2 mr-10">
+        <div className="flex justify-end gap-2 mr-10 overflow-hidden">
           <button
             className="relative z-40 h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center disabled:opacity-50"
             onClick={scrollLeft}
@@ -271,7 +271,7 @@ export const Card = ({
           </motion.p>
         </div>
         {/* Redes Sociales en la Tarjeta */}
-        <div className="flex justify-center gap-2 mt-auto absolute bottom-0 z-40 w-full p-4 glass-bg">
+        <div className="flex justify-center gap-2 mt-auto absolute bottom-0 z-40 w-full p-4 glass-bg rounded-b-3xl">
           {card.socialLinks.map((link, i) => (
             <a
               href={link.url}

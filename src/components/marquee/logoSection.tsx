@@ -1,6 +1,7 @@
-import React from "react";
+"use client";
+import { motion } from "framer-motion";
 import Marquee from "./marquee";
-import "./marquee.css";
+import { fadeIn, staggerContainer, textVariant } from "@/utils/motion";
 
 interface Logo {
   src: string;
@@ -28,29 +29,57 @@ export const LogoSection = () => {
   ];
 
   return (
-    <div className="w-full bg-gray-900 text-white py-2 bg-gradient-to-r from-primary to-secondary">
-      <div className="text-center mb-8 px-6 md:px-4">
-        <h2 className="text-2xl font-bold md:text-4xl mb-4 md:mt-14">
-          Con el respaldo de líderes en la industria
-        </h2>
-        <p className="text-lg mt-2 md:text-xl">
-          Juntos fortalecemos la innovación y el crecimiento de la comunidad
-          tecnológica
-        </p>
+    <motion.div
+      variants={staggerContainer()}
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true, amount: 0.25 }}
+      className="w-full bg-gradient-to-r from-primary to-secondary py-8 md:py-12 overflow-x-hidden"
+    >
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <motion.div
+          variants={textVariant(0.5)}
+          className="text-center mb-8 md:mb-12"
+        >
+          <motion.h2
+            variants={fadeIn("up", "spring", 0.2, 1)}
+            className="text-3xl font-bold md:text-4xl lg:text-5xl mb-4 text-white"
+          >
+            Con el respaldo de líderes en la industria
+          </motion.h2>
+          <motion.p
+            variants={fadeIn("up", "spring", 0.4, 1)}
+            className="text-lg md:text-xl text-gray-200 mt-4 max-w-2xl mx-auto"
+          >
+            Juntos fortalecemos la innovación y el crecimiento de la comunidad
+            tecnológica
+          </motion.p>
+        </motion.div>
       </div>
-      <div className="overflow-hidden w-full py-5 h-20 marquee md:mb-4">
-        <Marquee speed={50} gradient={"false"}>
+
+      <motion.div
+        variants={fadeIn("up", "tween", 0.6, 1)}
+        className="relative w-full  py-6"
+      >
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/30 animate-marquee via-transparent to-secondary/30 z-20" />
+
+        <Marquee speed={45} gradient={false}>
           {logos.map((logo, index) => (
-            <div key={index} className="inline-block mx-5 text-center">
+            <motion.div
+              key={index}
+              whileHover={{ scale: 1.05 }}
+              transition={{ type: "spring", stiffness: 300 }}
+              className="inline-block mx-4 md:mx-8 px-2 py-3 rounded-xl"
+            >
               <img
                 src={logo.src}
                 alt={logo.alt}
-                className="h-12 md:h-16 object-contain grayscale-0 aspect-auto"
+                className="h-12 md:h-16 w-auto max-w-[160px] md:max-w-[350px] object-contain hover:grayscale-0 transition-all duration-300"
               />
-            </div>
+            </motion.div>
           ))}
         </Marquee>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 };
