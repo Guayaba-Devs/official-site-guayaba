@@ -1,7 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import { CarouselTeam } from "./carousel/carousel";
-import Particles from "./particles";
+import { Particles } from "@/components/particles";
 import { staggerContainer, fadeIn, slideIn } from "@/utils/motion";
 
 export const TeamSection = () => {

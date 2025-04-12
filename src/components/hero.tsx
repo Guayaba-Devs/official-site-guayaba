@@ -3,9 +3,15 @@
 import { Image } from "@nextui-org/react";
 import { motion } from "framer-motion";
 import { staggerContainer, fadeIn, zoomIn, textVariant } from "@/utils/motion";
-import Particles from "./particles";
+import { Particles } from "@/components/particles";
+import { useEffect, useState } from "react";
 
 export const Hero = () => {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
   return (
     <motion.div
       variants={staggerContainer()}
@@ -104,12 +110,14 @@ export const Hero = () => {
         </div>
       </div>
 
-      <Particles
-        quantity={window.innerWidth < 640 ? 15 : 30}
-        maxSize={window.innerWidth < 640 ? 3 : 4}
-        speed={12}
-        className="hidden sm:block"
-      />
+      {isClient && (
+        <Particles
+          quantity={window.innerWidth < 640 ? 15 : 30}
+          maxSize={window.innerWidth < 640 ? 3 : 4}
+          speed={80}
+          className="hidden sm:block"
+        />
+      )}
 
       <motion.div
         variants={zoomIn(0.5, 1)}

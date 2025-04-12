@@ -2,10 +2,10 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { Github, Instagram } from "lucide-react";
-import Particles from "./particles";
+import { Particles } from "@/components/particles";
 import { staggerContainer, fadeIn, slideIn } from "@/utils/motion";
 
-const Footer = () => {
+export const Footer = () => {
   return (
     <motion.footer
       variants={staggerContainer()}
@@ -118,5 +118,3 @@ const Footer = () => {
     </motion.footer>
   );
 };
-
-export default Footer;

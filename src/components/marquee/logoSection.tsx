@@ -57,7 +57,6 @@ export const LogoSection = () => {
         </motion.div>
       </div>
 
-      {/* Marquee a pantalla completa */}
       <motion.div
         variants={fadeIn("up", "tween", 0.6, 1)}
         className="relative w-full  py-6"
