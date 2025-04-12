@@ -30,7 +30,7 @@ export const Hero = () => {
             <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full flex items-center justify-center">
               <Image
                 className="w-full h-full object-cover"
-                src="/images/mascota.png"
+                src="images/mascota.png"
                 alt="mascota guayabadevs"
               />
             </div>

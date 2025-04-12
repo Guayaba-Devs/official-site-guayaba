@@ -23,7 +23,7 @@ const data = [
   {
     category: "Full Stack Developer",
     title: "Josafat Jimenez",
-    src: `images/josa-perfil.jpg`,
+    src: `images/josa-perfil.webp`,
     socialLinks: [
       { icon: <IconBrandGithub />, url: "https://github.com/josafatjimenezB" },
       {
@@ -39,7 +39,7 @@ const data = [
   {
     category: "Full Stack Developer",
     title: "Ivan Ramirez",
-    src: `images/ivan-perfil.jpeg`,
+    src: `images/ivan-perfil.webp`,
     socialLinks: [
       { icon: <IconBrandGithub />, url: "https://github.com/Texhnolyze47" },
       {
@@ -51,7 +51,7 @@ const data = [
   {
     category: "Full Stack Developer & Mobile",
     title: "Ian Vega",
-    src: `images/ian-perfil.jpg`,
+    src: `images/ian-perfil.webp`,
     socialLinks: [
       { icon: <IconBrandGithub />, url: "https://github.com/joh" },
       {
@@ -67,7 +67,7 @@ const data = [
   {
     category: "Software Developer",
     title: "Pablo Aguilar",
-    src: `images/pablo-perfil.jpg`,
+    src: `images/pablo-perfil.webp`,
     socialLinks: [
       { icon: <IconBrandGithub />, url: "https://github.com/JuanPablo-Coder" },
       {
@@ -83,7 +83,7 @@ const data = [
   {
     category: "Diseño Gráfico",
     title: "Atenea Aguilar",
-    src: `images/ate-perfil.jpeg`,
+    src: `images/ate-perfil.webp`,
     socialLinks: [
       {
         icon: <IconBrandLinkedin />,
@@ -98,7 +98,7 @@ const data = [
   {
     category: "Marketing",
     title: "Miker Gutierrez",
-    src: `images/mike-perfil.jpeg`,
+    src: `images/mike-perfil.webp`,
     socialLinks: [
       {
         icon: <IconBrandLinkedin />,

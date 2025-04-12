@@ -40,12 +40,8 @@ export default function RootLayout({}: Readonly<{
           <Hero />
           <LogoSection />
           <TeamSection />
-          <section>
-            <Newsletter />
-          </section>
-          <section>
-            <Events />
-          </section>
+          <Newsletter />
+          <Events />
           <Footer />
         </Config>
       </body>

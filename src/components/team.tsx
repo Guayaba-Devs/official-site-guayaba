@@ -11,9 +11,8 @@ export const TeamSection = () => {
       initial="hidden"
       whileInView="show"
       viewport={{ once: true, amount: 0.25 }}
-      className="w-full min-h-screen text-white relative overflow-hidden bg-black"
+      className="w-full min-h-screen text-white relative overflow-hidden"
     >
-      {/* Fondo de partículas interactivo */}
       <div className="absolute inset-0 z-0">
         <Particles
           quantity={80}
@@ -24,11 +23,9 @@ export const TeamSection = () => {
         />
       </div>
 
-      {/* Diseño en capas con gradiente dinámico */}
       <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-black to-secondary/20 z-10" />
 
       <div className="relative z-20 container mx-auto px-4 sm:px-6 lg:px-8 py-24">
-        {/* Encabezado flotante */}
         <motion.div
           variants={slideIn("left", "spring", 0.5, 1)}
           className="relative group mb-24"
