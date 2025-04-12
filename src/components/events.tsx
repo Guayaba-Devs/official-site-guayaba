@@ -125,7 +125,7 @@ const items = [
   {
     title: "CinSoft 4ta edición",
     description:
-      "El pasado 30 de septiembre, tuvimos el honor de representar a Guayaba Devs como comunidad en este increíble evento organizado en la Universidad Autónoma del Estado de Hidalgo (UAEH).",
+      "El pasado 30 de octubre, tuvimos el honor de representar a Guayaba Devs como comunidad en este increíble evento organizado en la Universidad Autónoma del Estado de Hidalgo (UAEH).",
     header: <ImageHeader1 />,
     className: "md:col-span-2",
     link: "https://www.instagram.com/p/DC-CDmFyz3r/?img_index=1",
