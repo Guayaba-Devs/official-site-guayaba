@@ -1,0 +1,26 @@
+---
+import { Image } from "astro:assets";
+import logoGuayaba from "@/assets/images/guayaba-cover.png";
+---
+
+<header class="bg-linear-to-r from-primary to-secondary fixed top-0 w-screen">
+    <nav
+        class="mx-auto flex items-center justify-between px-4 uppercase h-20 lg:px-8"
+    >
+        <div class="flex items-center justify-between w-full">
+            <Image
+                src={logoGuayaba}
+                alt="Guayaba Devs Logo"
+                width={200}
+                height={60}
+            />
+            <ul class="flex space-x-6">
+                <li><a href="#nosotros" class="text-xl">Nosotros</a></li>
+                <li><a href="#servicios" class="text-xl">Miembros</a></li>
+                <li><a href="#contacto" class="text-xl">Newsletter</a></li>
+                <li><a href="#contacto" class="text-xl">Posts</a></li>
+                <li><a href="#contacto" class="text-xl">FAQ</a></li>
+            </ul>
+        </div>
+    </nav>
+</header>
