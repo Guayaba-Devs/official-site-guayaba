@@ -1,0 +1,16 @@
+---
+import { Image } from "astro:assets";
+import petLogo from "@/assets/images/mascota.png";
+---
+
+<section
+    class="bg-gradient-to-b from-background via-transparent to-background flex flex-col items-center justify-center z-10 mt-20"
+>
+    <Image src={petLogo} alt="Mascota de guayaba" height={80} width={90} />
+    <h1 class="text-7xl">Guayabadevs</h1>
+    <h2>Creando desarrolladores</h2>
+    <div>
+        <button>Únete a la comunidad</button>
+        <button>Próximos eventos</button>
+    </div>
+</section>
