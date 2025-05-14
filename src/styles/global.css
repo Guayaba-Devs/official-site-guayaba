@@ -39,3 +39,7 @@
     --chart-5: 27 87% 67%;
     --foreground: 240 10% 3.9%;
 }
+
+body {
+    font-family: var(--font-sans);
+}
