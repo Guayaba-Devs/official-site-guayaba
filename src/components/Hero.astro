@@ -4,13 +4,34 @@ import petLogo from "@/assets/images/mascota.png";
 ---
 
 <section
-    class="bg-gradient-to-b from-background via-transparent to-background flex flex-col items-center justify-center z-10 mt-20"
+    class="min-h-screen relative bg-background font-sans flex flex-col items-center justify-center tracking-tight text-white"
 >
-    <Image src={petLogo} alt="Mascota de guayaba" height={80} width={90} />
-    <h1 class="text-7xl">Guayabadevs</h1>
-    <h2>Creando desarrolladores</h2>
-    <div>
-        <button>Únete a la comunidad</button>
-        <button>Próximos eventos</button>
+    <!-- Glow izquierdo -->
+    <div
+        class="absolute inset-36 size-48 rounded-full bg-radial from-primary from-80% to-primary blur-3xl mix-blend-screen"
+    >
+    </div>
+    <!-- Glow derecho -->
+    <div
+        class="absolute inset-x-[75%] size-48 rounded-full bg-radial from-secondary from-80% to-secondary mix-blend-screen blur-2xl"
+    >
+    </div>
+
+    <div class="relative z-10 flex flex-col items-center space-y-4">
+        <Image src={petLogo} alt="Mascota de guayaba" height={80} width={90} />
+        <h1 class="text-7xl font-bold">Guayabadevs</h1>
+        <h2 class="text-2xl">Creando desarrolladores</h2>
+        <div class="flex gap-4 mt-4">
+            <button
+                class="px-6 py-2 bg-teal-400 rounded-full hover:bg-teal-500 transition"
+            >
+                Únete a la comunidad
+            </button>
+            <button
+                class="px-6 py-2 border border-teal-400 rounded-full hover:bg-teal-400/20 transition"
+            >
+                Próximos eventos
+            </button>
+        </div>
     </div>
 </section>
