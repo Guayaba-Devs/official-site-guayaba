@@ -1,9 +1,11 @@
 ---
+// src/components/PartnersMarquee.astro
 import { Image } from "astro:assets";
 import notion from "../assets/parthers/notion-logo.png";
 import tecmilenio from "../assets/parthers/NAO_Tecmilenio.png";
 import github from "../assets/parthers/backpack.png";
 import campusExpert from "../assets/parthers/github-campus-experts.svg";
+
 const images = [
     { src: notion, alt: "Notion" },
     { src: tecmilenio, alt: "Tecmilenio" },
@@ -27,37 +29,62 @@ const repeated = [...images, ...images];
         tecnológica
     </p>
 
-    <!-- Aquí el wrapper del marquee -->
-    <div
-        class="mt-10
-      relative
-      overflow-hidden
-      /* sólo animar si NO hay prefers-reduced-motion */
-      motion-safe:[mask-image:linear-gradient(90deg,transparent,white_10%,white_90%,transparent)]"
-    >
-        <div
-            class="flex
-        whitespace-nowrap
-        w-max
-        motion-safe:animate-marquee"
+    <!-- Marquee Wrapper -->
+    <div class="w-full flex flex-nowrap overflow-hidden mask-fade group">
+        <ul
+            class="flex items-center justify-center md:justify-start
+                 motion-safe:animate-marquee group-hover:paused"
         >
             {
-                repeated.map((image, idx) => (
-                    <span
-                        key={idx}
-                        class="inline-block px-4 flex-none"
-                        {...(idx >= images.length
-                            ? { "aria-hidden": "true" }
-                            : {})}
-                    >
-                        <Image
-                            src={image.src}
-                            alt={image.alt}
-                            class="h-12 w-auto object-contain hover:grayscale-0 transition duration-300"
+                repeated.map((logo) => (
+                    <li class="mx-8" key={logo.alt}>
+                        <img
+                            src={logo.src.src}
+                            alt={logo.alt}
+                            class="max-w-none h-12"
                         />
-                    </span>
+                    </li>
                 ))
             }
-        </div>
+        </ul>
+        <ul
+            class="flex items-center justify-center md:justify-start
+                 motion-safe:animate-marquee group-hover:paused"
+            aria-hidden="true"
+        >
+            {
+                repeated.map((logo) => (
+                    <li class="mx-8" key={logo.alt + "_dup"}>
+                        <img
+                            src={logo.src.src}
+                            alt={logo.alt}
+                            class="max-w-none h-12"
+                        />
+                    </li>
+                ))
+            }
+        </ul>
     </div>
 </div>
+<style>
+    /*– Fade en los bordes –*/
+    .mask-fade {
+        /* WebKit */
+        -webkit-mask-image: linear-gradient(
+            90deg,
+            transparent 0%,
+            black 10%,
+            black 90%,
+            transparent 100%
+        );
+        /* estándar */
+        mask-image: linear-gradient(
+            90deg,
+            transparent 0%,
+            black 10%,
+            black 90%,
+            transparent 100%
+        );
+        mask-repeat: no-repeat;
+    }
+</style>
