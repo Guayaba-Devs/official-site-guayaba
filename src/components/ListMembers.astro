@@ -1,0 +1,49 @@
+---
+import CardMember from "./CardMember.astro";
+import memberOne from "@/assets/images/ivan-perfil.webp";
+const members = [
+    {
+        role: "Full stack",
+        name: "test name",
+        img: memberOne,
+        links: "https://www.google.com.mx/",
+    },
+    {
+        role: "Full stack",
+        name: "test name",
+        img: memberOne,
+        links: "https://www.google.com.mx/",
+    },
+    {
+        role: "Full stack",
+        name: "test name",
+        img: memberOne,
+        links: "https://www.google.com.mx/",
+    },
+    {
+        role: "Full stack",
+        name: "test name",
+        img: memberOne,
+        links: "https://www.google.com.mx/",
+    },
+    {
+        role: "Full stack",
+        name: "test name",
+        img: memberOne,
+        links: "https://www.google.com.mx/",
+    },
+];
+---
+
+<div class="flex flex-row justify-start gap-4 pl-4 max-w-7xl mx-auto">
+    {
+        members.map((member) => (
+            <CardMember
+                role={member.role}
+                name={member.name}
+                img={member.img}
+                links={member.links}
+            />
+        ))
+    }
+</div>

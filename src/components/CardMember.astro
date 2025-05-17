@@ -1,0 +1,28 @@
+---
+const { role, name, img, links } = Astro.props;
+import { Image } from "astro:assets";
+---
+
+<article class="relative max-w-7xl mx-auto group">
+    <figure class="m-0 relative overflow-hidden rounded-lg">
+        <Image
+            src={img}
+            alt={`Foto de ${name}`}
+            class="w-full h-64 md:h-80 object-cover transition duration-300"
+        />
+        <figcaption
+            class="absolute inset-x-0 top-0 p-4 bg-gradient-to-b from-black/70 to-transparent text-white"
+        >
+            <header>
+                <h4 class="font-bold text-lg">{role}</h4>
+                <p class="text-sm">{name}</p>
+            </header>
+        </figcaption>
+    </figure>
+
+    <footer
+        class="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black/70 to-transparent text-white"
+    >
+        {links}
+    </footer>
+</article>
