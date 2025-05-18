@@ -11,7 +11,7 @@ const { role, name, img, socialLinks } = Astro.props;
             class="w-full h-64 md:h-80 object-cover transition duration-300"
         />
         <figcaption
-            class="absolute inset-x-0 top-0 p-4 bg-gradient-to-b from-black/70 to-transparent text-white"
+            class="absolute inset-x-0 top-0 p-4 bg-gradient-to-b from-black/70 to-transparent"
         >
             <header>
                 <h4 class="font-bold text-lg">{role}</h4>
@@ -24,7 +24,6 @@ const { role, name, img, socialLinks } = Astro.props;
         class="absolute inset-x-0 bottom-0
       p-6
       bg-gradient-to-t from-black/70 to-transparent
-      text-white
       flex justify-end gap-4 text-2xl
       z-10"
     >
