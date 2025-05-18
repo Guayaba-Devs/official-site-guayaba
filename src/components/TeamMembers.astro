@@ -3,12 +3,12 @@ import ListMembers from "./ListMembers.astro";
 ---
 
 <section
-    class="w-full min-h-screen relative overflow-hidden bg-gradient-to-br from-primary via-black to-secondary"
+    class="w-full min-h-screen relative overflow-hidden bg-linear-to-br from-primary via-black to-secondary"
 >
     <!-- Blur effect applied to the background -->
     <div class="absolute inset-0 backdrop-blur-md bg-black/30"></div>
 
-    <div class="relative container mx-auto px-4 sm:px-6 lg:px-8 py-24">
+    <div class="relative container mx-20 px-4 sm:px-6 lg:px-8 py-6">
         <!-- Content remains visible above the blur -->
         <div class="relative p-8">
             <h3
@@ -24,7 +24,7 @@ import ListMembers from "./ListMembers.astro";
     </div>
 
     <div
-        class="relative flex w-full overflow-x-scroll overscroll-x-auto py-10 md:py-20 scroll-smooth [scrollbar-width:none]"
+        class="flex w-full overflow-x-scroll overscroll-x-auto py-10 md:py-15 scroll-smooth [scrollbar-width:none]"
     >
         <ListMembers />
     </div>

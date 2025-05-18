@@ -12,14 +12,14 @@
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 3.9%;
 
-    --color-secondary: oklch(0.15 0.09 264);
+    --color-secondary: oklch(0.21 0.1172 270.56);
     --color-secondary-foreground: oklch(0.08 0.01 264);
 
     --color-primary: oklch(0.75 0.1325 181.73);
     --color-primary-foreground: oklch(0.98 0 0);
 
     --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
+    --color-muted-foreground: oklch(0.55 0.0137 285.94);
 
     --accent: 240 4.8% 95.9%;
     --accent-foreground: 240 5.9% 10%;
@@ -45,6 +45,15 @@ body {
     padding-top: 5rem;
     background-color: var(--color-background);
     color: white;
+}
+
+.glass-bg {
+    background: linear-gradient(
+        180deg,
+        hsla(0, 0%, 100%, 0) 0,
+        hsla(0, 0%, 100%, 0.1)
+    );
+    backdrop-filter: blur(20px);
 }
 
 .hide-scrollbar {

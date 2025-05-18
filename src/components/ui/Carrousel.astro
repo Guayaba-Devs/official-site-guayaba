@@ -14,7 +14,7 @@ const { items } = Astro.props;
                 <section
                     id={`slide-${idx}`}
                     key={idx}
-                    class="flex-shrink-0 snap-center w-72 sm:w-80 md:w-96 p-4 rounded-2xl bg-gradient-to-b from-black/10 to-black/30 relative"
+                    class="flex-shrink-0 snap-center w-72 sm:w-80 md:w-96 p-4 rounded-2xl  relative"
                 >
                     <CardMember
                         role={member.role}
@@ -27,21 +27,15 @@ const { items } = Astro.props;
         }
     </div>
     <!-- Contenedor de flechas: fuera del .map -->
-    <div
-        class="absolute /* Posición absoluta */
-         bottom-4 right-4 /* 1rem desde abajo y la derecha */
-         flex /* Use flexbox */
-         space-x-2 /* 0.5rem entre botones */
-         z-10 /* Siempre sobre el carrusel */"
-    >
+    <div class="relative inset-0 left-[90%] flex space-x-2 pr-2">
         <!-- Flecha anterior -->
         <button
             id="prevBtn"
             aria-label="Anterior"
-            class="p-2 rounded-full
+            class="h-10 w-10 rounded-full
            bg-white/20 backdrop-blur-sm
            hover:bg-white/30
-           transition"
+           transition z-20"
         >
             ◀
         </button>
@@ -50,10 +44,10 @@ const { items } = Astro.props;
         <button
             id="nextBtn"
             aria-label="Siguiente"
-            class="p-2 rounded-full
-           bg-white/20 backdrop-blur-sm
+            class="rounded-full
+           bg-white/20 backdrop-blur-sm h-10 w-10
            hover:bg-white/30
-           transition"
+           transition z-20"
         >
             ▶
         </button>
