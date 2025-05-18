@@ -8,6 +8,8 @@ const { role, name, img, socialLinks } = Astro.props;
         <Image
             src={img}
             alt={`Foto de ${name}`}
+            width={800}
+            height={400}
             class="w-full h-64 md:h-80 object-cover transition duration-300"
         />
         <figcaption
