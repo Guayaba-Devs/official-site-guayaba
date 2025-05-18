@@ -1,7 +1,18 @@
+---
+import { Image } from "astro:assets";
+import CardNewsletter from "./CardNewsletter.astro";
+import petLogo from "@/assets/images/mascota.png";
+---
+
 <section class="mt-24 px-4 my-20 sm:px-6 lg:px-8 relative overflow-hidden">
     <h3
         class="text-4xl py-4 md:text-6xl font-bold mb-12 text-center bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent"
     >
         Mantente Actualizado
     </h3>
+
+    <div class="flex justify-around mt-6 pt-6">
+        <CardNewsletter />
+        <Image src={petLogo} alt="mascota de guayaba" />
+    </div>
 </section>
