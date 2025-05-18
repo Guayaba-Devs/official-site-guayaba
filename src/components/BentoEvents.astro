@@ -1,0 +1,77 @@
+---
+import HeaderImageBento from "./HeaderImageBento.astro";
+import BentoGridItem from "@/components/ui/BentoGridItem.astro";
+import BentoGrid from "./ui/BentoGrid.astro";
+
+import cinsoft1 from "@/assets/events/cinsoft1.webp";
+import cinsoft2 from "@/assets/events/cinsoft2.webp";
+import cinsoft3 from "@/assets/events/cinsoft3.webp";
+import guayabaday from "@/assets/events/guayabaday.webp";
+import githubConnect from "@/assets/events/githubConnect.webp";
+import compuFest1 from "@/assets/events/compu-fest.webp";
+import compuFest2 from "@/assets/events/compu-fest2.webp";
+interface EventItem {
+    title: string;
+    description: string;
+    link: string;
+    className: string;
+    images: { src: ImageMetadata; alt?: string }[];
+}
+
+const items: EventItem[] = [
+    {
+        title: "CinSoft 4ta edición",
+        description:
+            "El pasado 30 de octubre, tuvimos el honor de representar a Guayaba Devs como comunidad en este increíble evento organizado en la Universidad Autónoma del Estado de Hidalgo (UAEH).",
+        link: "https://www.instagram.com/p/DC-CDmFyz3r/?img_index=1",
+        className: "md:col-span-2",
+        images: [{ src: cinsoft1 }, { src: cinsoft2 }, { src: cinsoft3 }],
+    },
+    {
+        title: "Guayaba Day",
+        description:
+            "El pasado 12 de septiembre en la ESCIHU, reunimos a expertos en programación y desarrollo.",
+        link: "https://www.instagram.com/p/DAcMD2eOW3B/?img_index=3",
+        className: "md:col-span-1",
+        images: [{ src: guayabaday }],
+    },
+    {
+        title: "Notion + GitHub Campus Connect",
+        description:
+            "Presentamos cómo las comunidades pueden usar Notion/GitHub y más novedades de Notion.",
+        link: "https://www.instagram.com/p/C4l7mWsLsEP/?img_index=1",
+        className: "md:col-span-1",
+        images: [{ src: githubConnect }],
+    },
+    {
+        title: "Compu-Fest[0]",
+        description:
+            "Para nosotros que las personas conecten con aquellas que tienen pasiones parecidas resulta sumamente valioso...",
+        link: "https://www.instagram.com/p/DBDJYa1OC5I/",
+        className: "md:col-span-2",
+        images: [{ src: compuFest1 }, { src: compuFest2 }],
+    },
+];
+---
+
+<section class="w-full h-auto py-20 relative overflow-hidden">
+    <h2
+        class="text-4xl md:text-6xl font-bold bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent mb-12 text-center"
+    >
+        Nuestros Eventos
+    </h2>
+    <BentoGrid class="w-full mx-auto md:auto-rows-[22rem] gap-6 pb-[2%]">
+        {
+            items.map((item) => (
+                <BentoGridItem
+                    title={item.title}
+                    description={item.description}
+                    link={item.link}
+                    class={item.className}
+                >
+                    <HeaderImageBento images={item.images} />
+                </BentoGridItem>
+            ))
+        }
+    </BentoGrid>
+</section>
