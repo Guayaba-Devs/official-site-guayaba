@@ -1,0 +1,75 @@
+---
+import CardMember from "../CardMember.astro";
+const { items } = Astro.props;
+---
+
+<div class="relative max-w-7xl mx-auto py-8">
+    <!-- Contenedor del carrusel -->
+    <div
+        class="overflow-x-auto flex snap-x snap-mandatory scroll-smooth gap-6 px-6 hide-scrollbar"
+        id="carousel"
+    >
+        {
+            items.map((member, idx) => (
+                <section
+                    id={`slide-${idx}`}
+                    key={idx}
+                    class="flex-shrink-0 snap-center w-72 sm:w-80 md:w-96 p-4 rounded-2xl bg-gradient-to-b from-black/10 to-black/30 relative"
+                >
+                    <CardMember
+                        role={member.role}
+                        name={member.name}
+                        img={member.img}
+                        socialLinks={member.socialLinks}
+                    />
+                </section>
+            ))
+        }
+    </div>
+    <!-- Contenedor de flechas: fuera del .map -->
+    <div
+        class="absolute /* Posición absoluta */
+         bottom-4 right-4 /* 1rem desde abajo y la derecha */
+         flex /* Use flexbox */
+         space-x-2 /* 0.5rem entre botones */
+         z-10 /* Siempre sobre el carrusel */"
+    >
+        <!-- Flecha anterior -->
+        <button
+            id="prevBtn"
+            aria-label="Anterior"
+            class="p-2 rounded-full
+           bg-white/20 backdrop-blur-sm
+           text-white hover:bg-white/30
+           transition"
+        >
+            ◀
+        </button>
+
+        <!-- Flecha siguiente -->
+        <button
+            id="nextBtn"
+            aria-label="Siguiente"
+            class="p-2 rounded-full
+           bg-white/20 backdrop-blur-sm
+           text-white hover:bg-white/30
+           transition"
+        >
+            ▶
+        </button>
+    </div>
+</div>
+
+<script>
+    const carousel = document.getElementById("carousel");
+    document
+        .getElementById("prevBtn")
+        .addEventListener("click", () =>
+            carousel.scrollBy({ left: -300, behavior: "smooth" }),
+        );
+    document
+        .getElementById("nextBtn")
+        .addEventListener("click", () =>
+            carousel.scrollBy({ left: 300, behavior: "smooth" }),
+        );
+</script>

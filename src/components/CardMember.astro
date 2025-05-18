@@ -1,6 +1,6 @@
 ---
-const { role, name, img, links } = Astro.props;
 import { Image } from "astro:assets";
+const { role, name, img, socialLinks } = Astro.props;
 ---
 
 <article class="relative max-w-7xl mx-auto group">
@@ -21,8 +21,25 @@ import { Image } from "astro:assets";
     </figure>
 
     <footer
-        class="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black/70 to-transparent text-white"
+        class="absolute inset-x-0 bottom-0
+      p-6
+      bg-gradient-to-t from-black/70 to-transparent
+      text-white
+      flex justify-end gap-4 text-2xl
+      z-10"
     >
-        {links}
+        {
+            socialLinks.map((link, i) => (
+                <a
+                    key={i}
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="hover:text-blue-400 transition-colors"
+                >
+                    <img src={link.icon} alt="" class="h-6 w-6" />
+                </a>
+            ))
+        }
     </footer>
 </article>

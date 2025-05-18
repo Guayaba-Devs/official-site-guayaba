@@ -1,49 +1,107 @@
 ---
-import CardMember from "./CardMember.astro";
-import memberOne from "@/assets/images/ivan-perfil.webp";
+import josaProfile from "@/assets/images/josa-perfil.webp";
+import ivanProfile from "@/assets/images/ivan-perfil.webp";
+import ianProfile from "@/assets/images/ian-perfil.webp";
+import pabloProfile from "@/assets/images/pablo-perfil.webp";
+import ateneaProfile from "@/assets/images/ate-perfil.webp";
+import mikeProfile from "@/assets/images/mike-perfil.webp";
+import IconGithub from "@/assets/github.svg?url";
+import IconInstagram from "@/assets/instagram.svg?url";
+import Carrousel from "./ui/Carrousel.astro";
 const members = [
     {
-        role: "Full stack",
-        name: "test name",
-        img: memberOne,
-        links: "https://www.google.com.mx/",
+        role: "Full Stack Developer",
+        name: "Josafat Jimenez",
+        img: josaProfile,
+        socialLinks: [
+            {
+                icon: IconGithub,
+                url: "https://github.com/josafatjimenezB",
+            },
+            {
+                icon: IconInstagram,
+                url: "https://linkedin.com/in/josafat-jimenez",
+            },
+        ],
     },
     {
-        role: "Full stack",
-        name: "test name",
-        img: memberOne,
-        links: "https://www.google.com.mx/",
+        role: "Full Stack Developer",
+        name: "Ivan Ramirez",
+        img: ivanProfile,
+        socialLinks: [
+            {
+                icon: IconGithub,
+                url: "https://github.com/Texhnolyze47",
+            },
+            {
+                icon: IconInstagram,
+                url: "https://www.linkedin.com/in/ivan-ramirezu/",
+            },
+        ],
     },
     {
-        role: "Full stack",
-        name: "test name",
-        img: memberOne,
-        links: "https://www.google.com.mx/",
+        role: "Full Stack Developer & Mobile",
+        name: "Ian Vega",
+        img: ianProfile,
+        socialLinks: [
+            {
+                icon: IconGithub,
+                url: "https://github.com/joh",
+            },
+            {
+                icon: IconInstagram,
+                url: "https://www.instagram.com/lannv891/",
+            },
+        ],
     },
     {
-        role: "Full stack",
-        name: "test name",
-        img: memberOne,
-        links: "https://www.google.com.mx/",
+        role: "Software Developer",
+        name: "Pablo Aguilar",
+        img: pabloProfile,
+        socialLinks: [
+            {
+                icon: IconGithub,
+                url: "https://github.com/JuanPablo-Coder",
+            },
+            {
+                icon: IconInstagram,
+                url: "https://www.instagram.com/pablo_roab/",
+            },
+        ],
     },
     {
-        role: "Full stack",
-        name: "test name",
-        img: memberOne,
-        links: "https://www.google.com.mx/",
+        role: "Diseño Gráfico",
+        name: "Atenea Aguilar",
+        img: ateneaProfile,
+        socialLinks: [
+            {
+                icon: IconGithub,
+                url: "https://www.linkedin.com/in/atenea-oishy-rodríguez-aguilar-097905147/",
+            },
+            {
+                icon: IconInstagram,
+                url: "https://www.instagram.com/kimdan.roasb/",
+            },
+        ],
+    },
+    {
+        role: "Marketing",
+        name: "Miker Gutierrez",
+        img: mikeProfile,
+        socialLinks: [
+            {
+                icon: IconGithub,
+                url: "https://www.linkedin.com/in/erick-gutierrez/",
+            },
+            {
+                icon: IconInstagram,
+                url: "https://www.instagram.com/miker_xn/",
+            },
+        ],
     },
 ];
 ---
 
 <div class="flex flex-row justify-start gap-4 pl-4 max-w-7xl mx-auto">
-    {
-        members.map((member) => (
-            <CardMember
-                role={member.role}
-                name={member.name}
-                img={member.img}
-                links={member.links}
-            />
-        ))
-    }
+    <Carrousel items={members} />
 </div>
