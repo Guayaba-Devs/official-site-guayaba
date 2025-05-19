@@ -27,15 +27,22 @@ const { items } = Astro.props;
         }
     </div>
     <!-- Contenedor de flechas: fuera del .map -->
-    <div class="relative inset-0 left-[90%] flex space-x-2 pr-2">
+    <div
+        class="fixed bottom-4 right-4
+        md:bottom-6 md:right-6
+        z-20
+        flex space-x-2
+        bg-white/20 backdrop-blur-sm rounded-full"
+    >
         <!-- Flecha anterior -->
         <button
             id="prevBtn"
             aria-label="Anterior"
-            class="h-10 w-10 rounded-full
-           bg-white/20 backdrop-blur-sm
-           hover:bg-white/30
-           transition z-20"
+            class="h-12 w-12 md:h-10 md:w-10 rounded-full
+                bg-white/20 backdrop-blur-sm
+                hover:bg-white/30
+                flex items-center justify-center
+                transition z-20"
         >
             ◀
         </button>
@@ -44,10 +51,11 @@ const { items } = Astro.props;
         <button
             id="nextBtn"
             aria-label="Siguiente"
-            class="rounded-full
-           bg-white/20 backdrop-blur-sm h-10 w-10
-           hover:bg-white/30
-           transition z-20"
+            class="h-12 w-12 md:h-10 md:w-10 rounded-full
+            bg-white/20 backdrop-blur-sm
+            hover:bg-white/30
+            flex items-center justify-center
+            transition z-20"
         >
             ▶
         </button>
