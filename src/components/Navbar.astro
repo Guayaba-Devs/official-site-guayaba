@@ -4,7 +4,8 @@ import logoGuayaba from "@/assets/images/guayaba-cover.png";
 ---
 
 <header
-    class="bg-linear-to-r from-primary to-secondary fixed top-0 w-screen z-30"
+    id="navbar"
+    class="fixed top-0 w-screen z-30 bg-linear-to-r from-primary to-secondary transform transition-transform duration-300 ease-in-out"
 >
     <nav
         class="mx-auto flex items-center justify-between px-4 h-[4rem] lg:px-8"
@@ -28,3 +29,22 @@ import logoGuayaba from "@/assets/images/guayaba-cover.png";
         </div>
     </nav>
 </header>
+
+<script>
+    let lastScrollY = window.pageYOffset;
+    const navbar = document.getElementById("navbar");
+
+    window.addEventListener("scroll", () => {
+        const currentScrollY = window.pageYOffset;
+
+        if (currentScrollY > lastScrollY) {
+            // Scroll hacia abajo → ocultar
+            navbar.classList.add("-translate-y-full");
+        } else {
+            // Scroll hacia arriba → mostrar
+            navbar.classList.remove("-translate-y-full");
+        }
+
+        lastScrollY = currentScrollY;
+    });
+</script>
