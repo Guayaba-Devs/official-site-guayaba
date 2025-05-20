@@ -20,7 +20,9 @@ import ArrowDown from "@/assets/arrow-down.svg";
     >
     </div>
 
-    <div class="relative z-10 flex flex-col items-center space-y-4">
+    <div
+        class="relative z-10 flex flex-col animate-zoom-in items-center space-y-4"
+    >
         <Image
             src={petLogo}
             alt="Mascota de guayaba"
@@ -28,9 +30,10 @@ import ArrowDown from "@/assets/arrow-down.svg";
             width={90}
             loading="eager"
             fetchpriority="high"
+            class="animate-zoom-in"
         />
         <h1
-            class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 sm:mb-6 bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent"
+            class="delay-100 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 sm:mb-6 bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent"
         >
             Guayabadevs
         </h1>
