@@ -18,7 +18,6 @@ import logoGuayaba from "@/assets/images/guayaba-cover.png";
                 height={60}
                 loading="eager"
                 fetchpriority="high"
-                class="pr-8"
             />
             <ul class="flex space-x-12 font-semibold">
                 <li><a href="#nosotros">Nosotros</a></li>
@@ -30,21 +29,28 @@ import logoGuayaba from "@/assets/images/guayaba-cover.png";
     </nav>
 </header>
 
-<script>
-    let lastScrollY = window.pageYOffset;
-    const navbar = document.getElementById("navbar");
+<script is:inline>
+    (() => {
+        const nav = document.getElementById("navbar");
+        let lastY = scrollY;
+        let ticking = false;
 
-    window.addEventListener("scroll", () => {
-        const currentScrollY = window.pageYOffset;
-
-        if (currentScrollY > lastScrollY) {
-            // Scroll hacia abajo → ocultar
-            navbar.classList.add("-translate-y-full");
-        } else {
-            // Scroll hacia arriba → mostrar
-            navbar.classList.remove("-translate-y-full");
-        }
-
-        lastScrollY = currentScrollY;
-    });
+        addEventListener(
+            "scroll",
+            () => {
+                const y = scrollY;
+                if (!ticking) {
+                    ticking = true;
+                    requestAnimationFrame(() => {
+                        // cambio directo de estilo, sin tocar classList
+                        nav.style.transform =
+                            y > lastY ? "translateY(-100%)" : "translateY(0)";
+                        lastY = y;
+                        ticking = false;
+                    });
+                }
+            },
+            { passive: true },
+        );
+    })();
 </script>
