@@ -5,7 +5,7 @@ import logoGuayaba from "@/assets/images/guayaba-cover.png";
 
 <header
     id="navbar"
-    class="fixed top-0 w-screen z-30 bg-linear-to-r from-primary to-secondary"
+    class="fixed top-0 w-screen z-30 bg-linear-to-r from-primary to-secondary transition-transform duration-300"
 >
     <nav
         class="mx-auto flex items-center justify-between px-4 h-[4rem] lg:px-8"
@@ -32,23 +32,40 @@ import logoGuayaba from "@/assets/images/guayaba-cover.png";
 <script is:inline>
     (() => {
         const nav = document.getElementById("navbar");
-        let lastY = scrollY;
-        let ticking = false;
+        let lastY = window.scrollY;
+        let debounceTimer;
+        const SCROLL_DELAY = 100; // 100ms de debounce
+        const SCROLL_THRESHOLD = 50; // Umbral para actualización inmediata
 
-        addEventListener(
+        const handleScroll = () => {
+            const currentY = window.scrollY;
+            const scrollDirection = currentY > lastY ? "down" : "up";
+
+            // Lógica del navbar
+            if (scrollDirection === "down" && currentY > 100) {
+                nav.style.transform = "translateY(-100%)";
+            } else {
+                nav.style.transform = "translateY(0)";
+            }
+
+            lastY = currentY;
+        };
+
+        window.addEventListener(
             "scroll",
             () => {
-                const y = scrollY;
-                if (!ticking) {
-                    ticking = true;
-                    requestAnimationFrame(() => {
-                        // cambio directo de estilo, sin tocar classList
-                        nav.style.transform =
-                            y > lastY ? "translateY(-100%)" : "translateY(0)";
-                        lastY = y;
-                        ticking = false;
-                    });
+                const currentY = window.scrollY;
+
+                // Actualización inmediata para scrolls grandes
+                if (Math.abs(currentY - lastY) > SCROLL_THRESHOLD) {
+                    clearTimeout(debounceTimer);
+                    handleScroll();
+                    return;
                 }
+
+                // Debounce para scrolls normales
+                clearTimeout(debounceTimer);
+                debounceTimer = setTimeout(handleScroll, SCROLL_DELAY);
             },
             { passive: true },
         );
