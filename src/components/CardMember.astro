@@ -46,10 +46,7 @@ const { role, name, img, socialLinks } = Astro.props;
     <!-- Member image -->
     <Image
         alt={name}
-        loading="lazy"
-        decoding="async"
-        data-nimg="fill"
-        class="transition duration-300 blur-0 object-cover absolute w-full h-full inset-0"
+        class="blur-0 object-cover absolute w-full h-full inset-0"
         src={img}
     />
 </button>

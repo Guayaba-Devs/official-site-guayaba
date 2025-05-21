@@ -6,38 +6,13 @@
 
     --color-background: oklch(0.15 0.03653544359872399 242.8228541063972);
 
-    --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
-
     --color-secondary: oklch(0.21 0.1172 270.56);
     --color-secondary-foreground: oklch(0.08 0.01 264);
 
     --color-primary: oklch(0.75 0.1325 181.73);
     --color-primary-foreground: oklch(0.98 0 0);
 
-    --muted: 240 4.8% 95.9%;
     --color-muted-foreground: oklch(0.55 0.0137 285.94);
-
-    --accent: 240 4.8% 95.9%;
-    --accent-foreground: 240 5.9% 10%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --ring: 240 10% 3.9%;
-
-    --radius: 0.5rem;
-    --chart-1: 12 76% 61%;
-    --chart-2: 173 58% 39%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
-    --foreground: 240 10% 3.9%;
 
     /* Animation keyframes */
     @keyframes fade-in {
@@ -123,6 +98,7 @@ body {
 .animate-zoom-in {
     animation: zoom-in 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
+
 html {
     scroll-behavior: smooth;
 }
