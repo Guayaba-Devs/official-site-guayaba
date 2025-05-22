@@ -33,6 +33,7 @@ const { title, description, link, class: itemClass = "" } = Astro.props;
 </a>
 
 <script>
+    import { gsap } from "gsap";
     // Add hover effect for each card's content
     document.addEventListener("DOMContentLoaded", () => {
         document

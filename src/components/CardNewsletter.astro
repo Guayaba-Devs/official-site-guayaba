@@ -1,26 +1,106 @@
 <div
     class="w-full mx-auto bg-gray-900/70 backdrop-blur-md rounded-2xl p-8 shadow-lg"
+    id="newsletter-card"
 >
     <h3 class="text-2xl md:text-3xl font-bold mb-2">Nuestro Newsletter</h3>
     <p class="text-gray-300 mb-6">
         Recibe actualizaciones exclusivas directamente en tu inbox
     </p>
 
-    <form class="flex flex-col space-y-4">
-        <label for="newsletter-email" class="sr-only">Email</label>
-        <input
-            id="newsletter-email"
-            type="email"
-            placeholder="tucorreo@ejemplo.com"
-            required
-            class="w-full px-4 py-3 bg-gray-800 text-gray-200 placeholder-gray-500 rounded-md border border-gray-700 focus:ring-2 focus:ring-primary focus:outline-none"
-        />
+    <form class="flex flex-col space-y-8">
+        <div class="input-wrapper">
+            <label
+                for="newsletter-email"
+                class="block text-gray-300 text-lg mb-2">Email</label
+            >
+            <input
+                id="newsletter-email"
+                type="email"
+                placeholder="tucorreo@ejemplo.com"
+                required
+                class="w-full px-4 py-3 bg-gray-800 text-gray-200 placeholder-gray-500 rounded-md border border-gray-700 focus:ring-2 focus:ring-primary focus:outline-none transition-all duration-300"
+            />
+        </div>
 
-        <button
-            type="submit"
-            class="w-full py-4 bg-gradient-to-r from-primary to-secondary font-semibold rounded-lg hover:opacity-90 transition-opacity"
-        >
-            Suscribirse Ahora →
-        </button>
+        <div class="button-wrapper">
+            <button
+                type="submit"
+                class="w-full py-4 bg-gradient-to-r from-primary to-secondary font-semibold rounded-lg hover:opacity-90 transition-all duration-300"
+            >
+                Suscribirse Ahora →
+            </button>
+        </div>
     </form>
 </div>
+
+<script>
+    import { gsap } from "gsap";
+
+    // Add hover effects for input and button
+    document.addEventListener("DOMContentLoaded", () => {
+        // Input hover effect
+        const input = document.querySelector("#newsletter-email");
+        const inputWrapper = document.querySelector(".input-wrapper");
+
+        if (inputWrapper && input) {
+            inputWrapper.addEventListener("mouseenter", () => {
+                gsap.to(input, {
+                    scale: 1.03,
+                    duration: 0.3,
+                    ease: "power2.out",
+                });
+            });
+
+            inputWrapper.addEventListener("mouseleave", () => {
+                gsap.to(input, {
+                    scale: 1,
+                    duration: 0.3,
+                    ease: "power2.out",
+                });
+            });
+        }
+
+        // Button hover effect
+        const button = document.querySelector(".button-wrapper button");
+        const buttonWrapper = document.querySelector(".button-wrapper");
+
+        if (buttonWrapper && button) {
+            buttonWrapper.addEventListener("mouseenter", () => {
+                gsap.to(button, {
+                    scale: 1.05,
+                    duration: 0.3,
+                    ease: "back.out(0.5)",
+                });
+            });
+
+            buttonWrapper.addEventListener("mouseleave", () => {
+                gsap.to(button, {
+                    scale: 1,
+                    duration: 0.3,
+                    ease: "power2.out",
+                });
+            });
+
+            buttonWrapper.addEventListener("mousedown", () => {
+                gsap.to(button, {
+                    scale: 0.97,
+                    duration: 0.1,
+                });
+            });
+
+            buttonWrapper.addEventListener("mouseup", () => {
+                gsap.to(button, {
+                    scale: 1.05,
+                    duration: 0.2,
+                });
+            });
+
+            buttonWrapper.addEventListener("click", () => {
+                gsap.to(button, {
+                    scale: 1.05,
+                    duration: 0.2,
+                });
+            });
+        }
+    });
+</script>
