@@ -5,7 +5,7 @@ const { role, name, img, socialLinks } = Astro.props;
 ---
 
 <article
-    class="member-card rounded-3xl bg-gray-100 dark:bg-neutral-900 h-80 w-56 md:h-[40rem] md:w-96 overflow-hidden flex flex-col items-start justify-start relative"
+    class="member-card rounded-3xl bg-gray-100 dark:bg-neutral-900 h-64 w-44 md:h-[28rem] md:w-72 lg:h-[32rem] lg:w-80 overflow-hidden flex flex-col items-start justify-start relative"
 >
     <!-- Gradient overlay -->
     <div
@@ -14,12 +14,14 @@ const { role, name, img, socialLinks } = Astro.props;
     </div>
 
     <!-- Member info -->
-    <div class="relative p-8 z-10">
-        <p class="text-sm md:text-base font-medium font-sans text-left">
+    <div class="relative p-4 md:p-6 z-10">
+        <p
+            class="text-xs md:text-sm font-medium font-sans text-left text-white"
+        >
             {role}
         </p>
         <p
-            class="text-xl md:text-3xl font-semibold max-w-xs text-left [text-wrap:balance] font-sans mt-2"
+            class="text-lg md:text-2xl font-semibold max-w-xs text-left [text-wrap:balance] font-sans mt-1 text-white"
         >
             {name}
         </p>
@@ -27,7 +29,7 @@ const { role, name, img, socialLinks } = Astro.props;
 
     <!-- Social links -->
     <div
-        class="flex justify-center gap-2 mt-auto absolute bottom-0 z-10 w-full p-4 glass-bg rounded-b-3xl"
+        class="flex justify-center gap-2 mt-auto absolute bottom-0 z-10 w-full p-3 glass-bg rounded-b-3xl"
     >
         {
             socialLinks.map((link) => (
