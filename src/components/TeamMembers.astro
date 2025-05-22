@@ -43,43 +43,33 @@ import ListMembers from "@/components/ListMembers.astro";
     gsap.registerPlugin(ScrollTrigger);
 
     document.addEventListener("DOMContentLoaded", () => {
-        // Initialize animations
-        animateTeamSection();
-    });
-
-    function animateTeamSection() {
         const teamSection = document.getElementById("team-section");
         if (!teamSection) return;
 
-        const tl = gsap.timeline({
+        // Create a single timeline with all animations
+        gsap.timeline({
             scrollTrigger: {
                 trigger: "#team-section",
                 start: "top 75%",
                 once: true,
             },
-        });
-
-        // Animate header with slide-in effect
-        tl.fromTo(
-            "#team-header",
-            { opacity: 0, x: -50 },
-            { opacity: 1, x: 0, duration: 0.8, ease: "back.out(1.5)" },
-            0,
-        );
-
-        // Animate carousel
-        tl.fromTo(
-            "#team-carousel",
-            { opacity: 0, y: 50 },
-            { opacity: 1, y: 0, duration: 1, ease: "power3.out" },
-            0.3,
-        );
-
-        // Animate each card with stagger effect
-        const cards = document.querySelectorAll("article");
-        if (cards.length > 0) {
-            tl.fromTo(
-                cards,
+        })
+            // Header animation
+            .fromTo(
+                "#team-header",
+                { opacity: 0, x: -50 },
+                { opacity: 1, x: 0, duration: 0.8, ease: "back.out(1.5)" },
+            )
+            // Carousel animation
+            .fromTo(
+                "#team-carousel",
+                { opacity: 0, y: 50 },
+                { opacity: 1, y: 0, duration: 1, ease: "power3.out" },
+                0.3,
+            )
+            // Cards with stagger effect
+            .fromTo(
+                "article",
                 { opacity: 0, y: 30, scale: 0.95 },
                 {
                     opacity: 1,
@@ -91,6 +81,5 @@ import ListMembers from "@/components/ListMembers.astro";
                 },
                 0.5,
             );
-        }
-    }
+    });
 </script>

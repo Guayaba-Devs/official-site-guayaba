@@ -88,94 +88,52 @@ import ArrowDown from "@/assets/arrow-down.svg";
 
     gsap.registerPlugin(ScrollTrigger);
 
-    // Function to start animations when the section is in view
-    function animateHeroSection() {
-        const heroSection = document.getElementById("hero-section");
-        if (!heroSection) return;
-
-        // Create a timeline for staggered animations
+    document.addEventListener("DOMContentLoaded", () => {
+        // Create animation timeline once
         const tl = gsap.timeline({
             scrollTrigger: {
                 trigger: "#hero-section",
-                start: "top 75%", // Start when the top of the section hits 75% from the top of viewport
-                once: true, // Only trigger once
+                start: "top 75%",
+                once: true,
             },
         });
 
-        // Zoom in grid background (if it exists)
-        const gridBg = document.getElementById("grid-bg");
-        if (gridBg) {
-            tl.to(
-                "#grid-bg",
-                {
-                    opacity: 0.03,
-                    duration: 1,
-                    ease: "power3.out",
-                },
+        // Group animations by timing
+        // Background elements
+        tl.to(
+            "#grid-bg",
+            { opacity: 0.03, duration: 1, ease: "power3.out" },
+            0.5,
+        )
+            .to(
+                "#blob1, #blob2",
+                { opacity: 0.8, duration: 1, ease: "power2.out" },
+                0.5,
+            )
+            .to(
+                "#logo-container",
+                { scale: 1, opacity: 1, duration: 1, ease: "back.out" },
                 0.5,
             );
-        }
 
-        // Zoom in logo
-        tl.to(
-            "#logo-container",
-            {
-                scale: 1,
-                opacity: 1,
-                duration: 1,
-                ease: "back.out",
-            },
-            0.5,
-        );
-
-        // Animate title
+        // Text elements with sequenced timing
         tl.to(
             "#title",
-            {
-                y: 0,
-                opacity: 1,
-                duration: 1.25,
-                ease: "back.out",
-            },
+            { y: 0, opacity: 1, duration: 1.25, ease: "back.out" },
             0.8,
-        );
+        )
+            .to(
+                "#subtitle",
+                { y: 0, opacity: 1, duration: 1, ease: "power3.out" },
+                1,
+            )
+            .to(
+                "#buttons",
+                { y: 0, opacity: 1, duration: 1, ease: "power3.out" },
+                1.2,
+            );
 
-        // Animate subtitle
-        tl.to(
-            "#subtitle",
-            {
-                y: 0,
-                opacity: 1,
-                duration: 1,
-                ease: "power3.out",
-            },
-            1,
-        );
-
-        // Animate buttons
-        tl.to(
-            "#buttons",
-            {
-                y: 0,
-                opacity: 1,
-                duration: 1,
-                ease: "power3.out",
-            },
-            1.2,
-        );
-
-        // Animate decorative blobs
-        tl.to(
-            "#blob1, #blob2",
-            {
-                opacity: 0.8, // Increasing opacity from your original design
-                duration: 1,
-                ease: "power2.out",
-            },
-            0.5,
-        );
-
-        // Add floating animation to blobs
+        // Continuous floating animations separate from the timeline
         gsap.to("#blob1", {
             y: "-20px",
             duration: 3,
@@ -193,7 +151,6 @@ import ArrowDown from "@/assets/arrow-down.svg";
             delay: 0.5,
         });
 
-        // Add bounce animation to arrow
         gsap.to("#arrow-right", {
             x: "5px",
             duration: 0.8,
@@ -201,8 +158,5 @@ import ArrowDown from "@/assets/arrow-down.svg";
             yoyo: true,
             ease: "power1.inOut",
         });
-    }
-
-    // Wait for the page to be fully loaded
-    document.addEventListener("DOMContentLoaded", animateHeroSection);
+    });
 </script>

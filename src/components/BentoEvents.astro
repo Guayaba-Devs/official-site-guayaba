@@ -90,17 +90,12 @@ const items: EventItem[] = [
 <script>
     import { gsap } from "gsap";
     import { ScrollTrigger } from "gsap/ScrollTrigger";
+    import { addHoverAnimation } from "@/utils/animation";
 
     gsap.registerPlugin(ScrollTrigger);
 
     document.addEventListener("DOMContentLoaded", () => {
-        initEventsAnimations();
-    });
-
-    function initEventsAnimations() {
-        const eventsSection = document.getElementById("events-section");
-        if (!eventsSection) return;
-
+        // Create a single timeline for all animations
         const tl = gsap.timeline({
             scrollTrigger: {
                 trigger: "#events-section",
@@ -109,7 +104,7 @@ const items: EventItem[] = [
             },
         });
 
-        // Slide in title from left (like slideIn in framer-motion)
+        // Slide in title
         tl.to(
             "#events-title",
             {
@@ -133,10 +128,9 @@ const items: EventItem[] = [
             0.5,
         );
 
-        // Staggered animation for grid items
-        const gridItems = document.querySelectorAll(".bento-item");
+        // Stagger items with a single animation
         tl.to(
-            gridItems,
+            ".bento-item",
             {
                 opacity: 1,
                 duration: 0.6,
@@ -146,24 +140,10 @@ const items: EventItem[] = [
             0.7,
         );
 
-        // Add hover effect to the grid container
+        // Add hover effect to grid container
         const gridContainer = document.getElementById("events-grid");
         if (gridContainer) {
-            gridContainer.addEventListener("mouseenter", () => {
-                gsap.to(gridContainer, {
-                    scale: 1.02,
-                    duration: 0.3,
-                    ease: "power2.out",
-                });
-            });
-
-            gridContainer.addEventListener("mouseleave", () => {
-                gsap.to(gridContainer, {
-                    scale: 1,
-                    duration: 0.3,
-                    ease: "power2.out",
-                });
-            });
+            addHoverAnimation(gridContainer, 1.02);
         }
-    }
+    });
 </script>

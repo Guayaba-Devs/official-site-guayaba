@@ -89,118 +89,97 @@ const { items } = Astro.props;
     });
 
     function initCarouselNavigation() {
+        // Cache DOM elements
         const carousel = document.getElementById("carousel");
         const prevBtn = document.getElementById("prevBtn");
         const nextBtn = document.getElementById("nextBtn");
 
         if (!carousel || !prevBtn || !nextBtn) return;
 
-        // Initial check
-        checkScrollability();
-        applyFadeEffect();
+        // Constants for animations
+        const SCROLL_AMOUNT = 300;
+        const ANIMATION_DURATION = 0.5;
+        const ANIMATION_EASE = "power2.out";
 
-        // Function to check if we can scroll left or right
-        function checkScrollability() {
+        // Initial states
+        updateButtonStates();
+        updateItemsVisibility();
+
+        // Main functions
+        function updateButtonStates() {
             const { scrollLeft, scrollWidth, clientWidth } = carousel;
-
-            // Calculate maximum possible scroll position
             const maxScroll = scrollWidth - clientWidth;
+            const threshold = 5;
 
-            // Disable prev button if at start (with small threshold for better UX)
-            prevBtn.disabled = scrollLeft < 5;
+            // Update button states
+            prevBtn.disabled = scrollLeft < threshold;
+            nextBtn.disabled = scrollLeft >= maxScroll - threshold;
+
+            // Update visual state
             prevBtn.style.opacity = prevBtn.disabled ? "0.4" : "1";
-
-            // Disable next button if at end or very close to end
-            // Using a stricter threshold to prevent extra clicks
-            nextBtn.disabled = scrollLeft >= maxScroll - 5;
             nextBtn.style.opacity = nextBtn.disabled ? "0.4" : "1";
         }
 
-        // Apply fade effect based on visibility
-        function applyFadeEffect() {
+        function updateItemsVisibility() {
             const items = document.querySelectorAll(".carousel-item");
             const carouselRect = carousel.getBoundingClientRect();
 
             items.forEach((item) => {
                 const rect = item.getBoundingClientRect();
+                let opacity = 0.3;
 
-                // Check if the item is fully visible
-                const isVisible =
+                if (
                     rect.left >= carouselRect.left - 20 &&
-                    rect.right <= carouselRect.right + 20;
-
-                // Check if the item is partially visible on left edge
-                const isPartialLeft =
-                    rect.left < carouselRect.left &&
-                    rect.right > carouselRect.left;
-
-                // Check if the item is partially visible on right edge
-                const isPartialRight =
-                    rect.left < carouselRect.right &&
-                    rect.right > carouselRect.right;
-
-                // Set opacity based on visibility
-                if (isVisible) {
-                    gsap.to(item, {
-                        opacity: 1,
-                        duration: 0.5, // Increased duration for smoother fade
-                        ease: "power2.out", // Smoother easing function
-                    });
-                } else if (isPartialLeft || isPartialRight) {
-                    // Calculate partial visibility percentage
-                    const visibleWidth = isPartialLeft
-                        ? rect.right - carouselRect.left
-                        : carouselRect.right - rect.left;
-
-                    const visibilityRatio = Math.max(
-                        0,
-                        Math.min(visibleWidth / rect.width, 1),
-                    );
-                    gsap.to(item, {
-                        opacity: 0.3 + visibilityRatio * 0.7,
-                        duration: 0.5, // Increased duration
-                        ease: "power2.out",
-                    });
-                } else {
-                    gsap.to(item, {
-                        opacity: 0.3,
-                        duration: 0.5, // Increased duration
-                        ease: "power2.out",
-                    });
+                    rect.right <= carouselRect.right + 20
+                ) {
+                    // Fully visible
+                    opacity = 1;
+                } else if (
+                    (rect.left < carouselRect.left &&
+                        rect.right > carouselRect.left) ||
+                    (rect.left < carouselRect.right &&
+                        rect.right > carouselRect.right)
+                ) {
+                    // Partially visible - calculate ratio
+                    const visibleWidth =
+                        rect.left < carouselRect.left
+                            ? rect.right - carouselRect.left
+                            : carouselRect.right - rect.left;
+                    opacity =
+                        0.3 +
+                        Math.max(0, Math.min(visibleWidth / rect.width, 1)) *
+                            0.7;
                 }
+
+                gsap.to(item, {
+                    opacity,
+                    duration: ANIMATION_DURATION,
+                    ease: ANIMATION_EASE,
+                });
             });
         }
 
-        // Add scroll event listener
+        // Event listeners
         carousel.addEventListener("scroll", () => {
-            checkScrollability();
-            applyFadeEffect();
+            updateButtonStates();
+            updateItemsVisibility();
         });
 
-        // Navigation button click handlers
-        prevBtn.addEventListener("click", () => {
-            // Use GSAP for smooth animation
+        // Button handlers with unified animation config
+        function animateScroll(amount) {
             gsap.to(carousel, {
-                scrollLeft: carousel.scrollLeft - 300,
-                duration: 0.5,
-                ease: "power2.out",
-                onUpdate: checkScrollability,
-                onComplete: applyFadeEffect,
+                scrollLeft: carousel.scrollLeft + amount,
+                duration: ANIMATION_DURATION,
+                ease: ANIMATION_EASE,
+                onUpdate: updateButtonStates,
+                onComplete: updateItemsVisibility,
             });
-        });
+        }
 
-        nextBtn.addEventListener("click", () => {
-            // Use GSAP for smooth animation
-            gsap.to(carousel, {
-                scrollLeft: carousel.scrollLeft + 300,
-                duration: 0.5,
-                ease: "power2.out",
-                onUpdate: checkScrollability,
-                onComplete: applyFadeEffect,
-            });
-        });
+        prevBtn.addEventListener("click", () => animateScroll(-SCROLL_AMOUNT));
+        nextBtn.addEventListener("click", () => animateScroll(SCROLL_AMOUNT));
 
-        // Initial fade effect with a small delay to ensure DOM is ready
-        setTimeout(applyFadeEffect, 300);
+        // Initial visibility update with small delay
+        setTimeout(updateItemsVisibility, 300);
     }
 </script>

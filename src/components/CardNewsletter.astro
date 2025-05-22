@@ -35,6 +35,7 @@
 
 <script>
     import { gsap } from "gsap";
+    import { addHoverAnimation } from "@/utils/animation";
 
     // Add hover effects for input and button
     document.addEventListener("DOMContentLoaded", () => {
@@ -43,21 +44,7 @@
         const inputWrapper = document.querySelector(".input-wrapper");
 
         if (inputWrapper && input) {
-            inputWrapper.addEventListener("mouseenter", () => {
-                gsap.to(input, {
-                    scale: 1.03,
-                    duration: 0.3,
-                    ease: "power2.out",
-                });
-            });
-
-            inputWrapper.addEventListener("mouseleave", () => {
-                gsap.to(input, {
-                    scale: 1,
-                    duration: 0.3,
-                    ease: "power2.out",
-                });
-            });
+            addHoverAnimation(inputWrapper, 1.03);
         }
 
         // Button hover effect
@@ -65,28 +52,7 @@
         const buttonWrapper = document.querySelector(".button-wrapper");
 
         if (buttonWrapper && button) {
-            buttonWrapper.addEventListener("mouseenter", () => {
-                gsap.to(button, {
-                    scale: 1.05,
-                    duration: 0.3,
-                    ease: "back.out(0.5)",
-                });
-            });
-
-            buttonWrapper.addEventListener("mouseleave", () => {
-                gsap.to(button, {
-                    scale: 1,
-                    duration: 0.3,
-                    ease: "power2.out",
-                });
-            });
-
-            buttonWrapper.addEventListener("mousedown", () => {
-                gsap.to(button, {
-                    scale: 0.97,
-                    duration: 0.1,
-                });
-            });
+            addHoverAnimation(buttonWrapper, 1.05);
 
             buttonWrapper.addEventListener("mouseup", () => {
                 gsap.to(button, {
