@@ -6,44 +6,50 @@ import ArrowDown from "@/assets/arrow-down.svg";
 ---
 
 <section
-    id="nosotros"
+    id="hero-section"
     class="min-h-screen relative bg-background font-sans flex flex-col items-center justify-center tracking-tight"
 >
+    <!-- Grid background (adding this for the animation) -->
+    <div id="grid-bg" class="absolute inset-0 bg-center opacity-0"></div>
+
     <!-- Glow izquierdo -->
     <div
-        class="absolute inset-36 size-48 rounded-full bg-radial from-primary from-80% to-primary blur-3xl mix-blend-screen"
+        id="blob1"
+        class="absolute inset-36 size-48 rounded-full bg-radial from-primary from-80% to-primary blur-3xl mix-blend-screen opacity-0"
     >
     </div>
     <!-- Glow derecho -->
     <div
-        class="absolute inset-x-[75%] size-48 rounded-full bg-radial from-secondary from-80% to-secondary mix-blend-screen blur-2xl"
+        id="blob2"
+        class="absolute inset-x-[75%] size-48 rounded-full bg-radial from-secondary from-80% to-secondary mix-blend-screen blur-2xl opacity-0"
     >
     </div>
 
-    <div
-        class="relative z-10 flex flex-col animate-zoom-in items-center space-y-4"
-    >
-        <Image
-            src={petLogo}
-            alt="Mascota de guayaba"
-            height={80}
-            width={90}
-            loading="lazy"
-            fetchpriority="high"
-            class="animate-zoom-in"
-        />
+    <div class="relative z-10 flex flex-col items-center space-y-4">
+        <div id="logo-container" class="opacity-0 scale-0">
+            <Image
+                src={petLogo}
+                alt="Mascota de guayaba"
+                height={80}
+                width={90}
+                loading="lazy"
+                fetchpriority="high"
+            />
+        </div>
         <h1
-            class="delay-100 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 sm:mb-6 bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent"
+            id="title"
+            class="opacity-0 translate-y-10 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 sm:mb-6 bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent"
         >
             Guayabadevs
         </h1>
         <p
-            class="text-lg sm:text-xl md:text-2xl lg:text-3xl text-muted-foreground mb-8 sm:mb-12 font-medium max-w-2xl mx-auto px-2"
+            id="subtitle"
+            class="opacity-0 translate-y-10 text-lg sm:text-xl md:text-2xl lg:text-3xl text-muted-foreground mb-8 sm:mb-12 font-medium max-w-2xl mx-auto px-2"
         >
             Creando desarrolladores
             <span class="text-primary font-bold">fructíferos</span>
         </p>
-        <div class="flex gap-4 mt-4">
+        <div id="buttons" class="flex gap-4 mt-4 opacity-0 translate-y-10">
             <a
                 href="https://www.instagram.com/guayaba_devs_official/"
                 target="_blank"
@@ -54,7 +60,8 @@ import ArrowDown from "@/assets/arrow-down.svg";
                 >
                     Únete a la comunidad
                     <ArrowRight
-                        class="w-4 h-4 sm:w-5 sm:h-5 bg-white animate-bounce-horizontal"
+                        id="arrow-right"
+                        class="w-4 h-4 sm:w-5 sm:h-5 bg-white"
                     />
                 </button>
             </a>
@@ -68,11 +75,134 @@ import ArrowDown from "@/assets/arrow-down.svg";
                     class="flex items-center gap-2 px-6 py-2 text-primary border border-teal-400 rounded-full hover:bg-teal-400/20 transition-all transform hover:scale-105"
                 >
                     Próximos eventos
-                    <ArrowDown
-                        class="w-4 h-4 sm:w-5 sm:h-5 bg-white animate-bounce-horizontal"
-                    />
+                    <ArrowDown class="w-4 h-4 sm:w-5 sm:h-5 bg-white" />
                 </button>
             </a>
         </div>
     </div>
 </section>
+
+<script>
+    import { gsap } from "gsap";
+    import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Function to start animations when the section is in view
+    function animateHeroSection() {
+        const heroSection = document.getElementById("hero-section");
+        if (!heroSection) return;
+
+        // Create a timeline for staggered animations
+        const tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: "#hero-section",
+                start: "top 75%", // Start when the top of the section hits 75% from the top of viewport
+                once: true, // Only trigger once
+            },
+        });
+
+        // Zoom in grid background (if it exists)
+        const gridBg = document.getElementById("grid-bg");
+        if (gridBg) {
+            tl.to(
+                "#grid-bg",
+                {
+                    opacity: 0.03,
+                    duration: 1,
+                    ease: "power3.out",
+                },
+                0.5,
+            );
+        }
+
+        // Zoom in logo
+        tl.to(
+            "#logo-container",
+            {
+                scale: 1,
+                opacity: 1,
+                duration: 1,
+                ease: "back.out",
+            },
+            0.5,
+        );
+
+        // Animate title
+        tl.to(
+            "#title",
+            {
+                y: 0,
+                opacity: 1,
+                duration: 1.25,
+                ease: "back.out",
+            },
+            0.8,
+        );
+
+        // Animate subtitle
+        tl.to(
+            "#subtitle",
+            {
+                y: 0,
+                opacity: 1,
+                duration: 1,
+                ease: "power3.out",
+            },
+            1,
+        );
+
+        // Animate buttons
+        tl.to(
+            "#buttons",
+            {
+                y: 0,
+                opacity: 1,
+                duration: 1,
+                ease: "power3.out",
+            },
+            1.2,
+        );
+
+        // Animate decorative blobs
+        tl.to(
+            "#blob1, #blob2",
+            {
+                opacity: 0.8, // Increasing opacity from your original design
+                duration: 1,
+                ease: "power2.out",
+            },
+            0.5,
+        );
+
+        // Add floating animation to blobs
+        gsap.to("#blob1", {
+            y: "-20px",
+            duration: 3,
+            repeat: -1,
+            yoyo: true,
+            ease: "sine.inOut",
+        });
+
+        gsap.to("#blob2", {
+            y: "-25px",
+            duration: 4,
+            repeat: -1,
+            yoyo: true,
+            ease: "sine.inOut",
+            delay: 0.5,
+        });
+
+        // Add bounce animation to arrow
+        gsap.to("#arrow-right", {
+            x: "5px",
+            duration: 0.8,
+            repeat: -1,
+            yoyo: true,
+            ease: "power1.inOut",
+        });
+    }
+
+    // Wait for the page to be fully loaded
+    document.addEventListener("DOMContentLoaded", animateHeroSection);
+</script>
