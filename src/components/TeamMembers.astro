@@ -3,7 +3,7 @@ import ListMembers from "./ListMembers.astro";
 ---
 
 <section
-    id="miembros"
+    id="team-section"
     class="w-full min-h-screen relative overflow-hidden bg-linear-to-br from-primary via-black to-secondary"
 >
     <!-- Blur effect applied to the background -->
@@ -11,7 +11,11 @@ import ListMembers from "./ListMembers.astro";
 
     <div class="relative container mx-20 px-4 sm:px-6 lg:px-8 py-6">
         <!-- Content remains visible above the blur -->
-        <div class="relative p-8">
+        <div id="team-header" class="relative p-8 opacity-0">
+            <div
+                class="absolute -inset-2 bg-gradient-to-r from-primary to-secondary blur-2xl opacity-30 group-hover:opacity-50 transition-all duration-500"
+            >
+            </div>
             <h3
                 class="text-5xl md:text-7xl lg:text-8xl font-bold bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent"
             >
@@ -25,8 +29,68 @@ import ListMembers from "./ListMembers.astro";
     </div>
 
     <div
-        class="flex w-full overflow-x-scroll overscroll-x-auto py-10 md:py-15 scroll-smooth [scrollbar-width:none]"
+        id="team-carousel"
+        class="flex w-full overflow-x-scroll overscroll-x-auto py-10 md:py-15 scroll-smooth [scrollbar-width:none] opacity-0"
     >
         <ListMembers />
     </div>
 </section>
+
+<script>
+    import { gsap } from "gsap";
+    import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    document.addEventListener("DOMContentLoaded", () => {
+        // Initialize animations
+        animateTeamSection();
+    });
+
+    function animateTeamSection() {
+        const teamSection = document.getElementById("team-section");
+        if (!teamSection) return;
+
+        const tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: "#team-section",
+                start: "top 75%",
+                once: true,
+            },
+        });
+
+        // Animate header with slide-in effect
+        tl.fromTo(
+            "#team-header",
+            { opacity: 0, x: -50 },
+            { opacity: 1, x: 0, duration: 0.8, ease: "back.out(1.5)" },
+            0,
+        );
+
+        // Animate carousel
+        tl.fromTo(
+            "#team-carousel",
+            { opacity: 0, y: 50 },
+            { opacity: 1, y: 0, duration: 1, ease: "power3.out" },
+            0.3,
+        );
+
+        // Animate each card with stagger effect
+        const cards = document.querySelectorAll("article");
+        if (cards.length > 0) {
+            tl.fromTo(
+                cards,
+                { opacity: 0, y: 30, scale: 0.95 },
+                {
+                    opacity: 1,
+                    y: 0,
+                    scale: 1,
+                    duration: 0.8,
+                    stagger: 0.15,
+                    ease: "back.out(1)",
+                },
+                0.5,
+            );
+        }
+    }
+</script>

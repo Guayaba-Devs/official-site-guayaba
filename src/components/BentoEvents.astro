@@ -54,24 +54,116 @@ const items: EventItem[] = [
 ];
 ---
 
-<section id="post" class="w-full h-auto py-20 relative overflow-hidden">
+<section
+    id="events-section"
+    class="w-full h-auto py-20 relative overflow-hidden"
+>
     <h2
-        class="text-4xl md:text-6xl font-bold bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent mb-12 text-center"
+        id="events-title"
+        class="text-4xl md:text-6xl font-bold bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent mb-12 text-center opacity-0 translate-x-[-50px]"
     >
         Nuestros Eventos
     </h2>
-    <BentoGrid class="w-full mx-auto md:auto-rows-[22rem] gap-6 pb-[2%]">
-        {
-            items.map((item) => (
-                <BentoGridItem
-                    title={item.title}
-                    description={item.description}
-                    link={item.link}
-                    class={item.className}
-                >
-                    <HeaderImageBento images={item.images} />
-                </BentoGridItem>
-            ))
-        }
-    </BentoGrid>
+
+    <!-- Simply wrap the existing BentoGrid with a container for animation -->
+    <div id="bento-container" class="opacity-0 translate-y-10">
+        <BentoGrid
+            class="w-full mx-auto md:auto-rows-[22rem] gap-6 pb-[2%]"
+            id="events-grid"
+        >
+            {
+                items.map((item, index) => (
+                    <BentoGridItem
+                        title={item.title}
+                        description={item.description}
+                        link={item.link}
+                        class={`${item.className} bento-item opacity-0`}
+                    >
+                        <HeaderImageBento images={item.images} />
+                    </BentoGridItem>
+                ))
+            }
+        </BentoGrid>
+    </div>
 </section>
+
+<script>
+    import { gsap } from "gsap";
+    import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    document.addEventListener("DOMContentLoaded", () => {
+        initEventsAnimations();
+    });
+
+    function initEventsAnimations() {
+        const eventsSection = document.getElementById("events-section");
+        if (!eventsSection) return;
+
+        const tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: "#events-section",
+                start: "top 75%",
+                once: true,
+            },
+        });
+
+        // Slide in title from left (like slideIn in framer-motion)
+        tl.to(
+            "#events-title",
+            {
+                x: 0,
+                opacity: 1,
+                duration: 0.8,
+                ease: "back.out(1.5)",
+            },
+            0.3,
+        );
+
+        // Fade in grid container
+        tl.to(
+            "#bento-container",
+            {
+                y: 0,
+                opacity: 1,
+                duration: 0.8,
+                ease: "power3.out",
+            },
+            0.5,
+        );
+
+        // Staggered animation for grid items
+        const gridItems = document.querySelectorAll(".bento-item");
+        tl.to(
+            gridItems,
+            {
+                opacity: 1,
+                duration: 0.6,
+                stagger: 0.15,
+                ease: "power2.out",
+            },
+            0.7,
+        );
+
+        // Add hover effect to the grid container
+        const gridContainer = document.getElementById("events-grid");
+        if (gridContainer) {
+            gridContainer.addEventListener("mouseenter", () => {
+                gsap.to(gridContainer, {
+                    scale: 1.02,
+                    duration: 0.3,
+                    ease: "power2.out",
+                });
+            });
+
+            gridContainer.addEventListener("mouseleave", () => {
+                gsap.to(gridContainer, {
+                    scale: 1,
+                    duration: 0.3,
+                    ease: "power2.out",
+                });
+            });
+        }
+    }
+</script>

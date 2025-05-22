@@ -15,27 +15,28 @@ const logos = [
 ---
 
 <section
+    id="partners-section"
     class="w-full bg-linear-to-r from-primary to-secondary py-8 md:py-12 overflow-x-hidden"
 >
     <div
         class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center mb-8 md:mb-12"
     >
         <h2
-            class="text-3xl font-bold md:text-4xl lg:text-5xl mb-4 text-white animate-on-scroll animate-slide-up"
+            id="partners-title"
+            class="text-3xl font-bold md:text-4xl lg:text-5xl mb-4 text-white opacity-0 transform translate-y-4"
         >
             Con el respaldo de líderes en la industria
         </h2>
         <p
-            class="text-lg md:text-xl text-gray-200 mt-4 max-w-2xl mx-auto animate-on-scroll animate-fade-in-delayed"
+            id="partners-subtitle"
+            class="text-lg md:text-xl text-gray-200 mt-4 max-w-2xl mx-auto opacity-0"
         >
             Juntos fortalecemos la innovación y el crecimiento de la comunidad
             tecnológica
         </p>
     </div>
 
-    <div
-        class="relative w-full py-6 animate-on-scroll animate-fade-in-most-delayed"
-    >
+    <div id="partners-marquee" class="relative w-full py-6 opacity-0">
         <Marquee speed={45} className="py-4">
             {
                 logos.map((logo) => (
@@ -53,27 +54,6 @@ const logos = [
 </section>
 
 <style>
-    /* Animation keyframes */
-    @keyframes fade-in {
-        from {
-            opacity: 0;
-        }
-        to {
-            opacity: 1;
-        }
-    }
-
-    @keyframes slide-up {
-        from {
-            transform: translateY(20px);
-            opacity: 0;
-        }
-        to {
-            transform: translateY(0);
-            opacity: 1;
-        }
-    }
-
     /* Logo hover effect */
     .logo-item {
         transition: transform 0.3s;
@@ -82,43 +62,63 @@ const logos = [
     .logo-item:hover {
         transform: scale(1.05);
     }
-
-    .animate-on-scroll {
-        opacity: 0;
-        will-change: transform, opacity;
-        animation-play-state: paused;
-    }
-    .animate-on-scroll.visible {
-        opacity: 1;
-        animation-play-state: running;
-    }
-
-    .animate-slide-up.visible {
-        animation: slide-up 0.8s ease-out forwards;
-    }
-    .animate-fade-in-delayed.visible {
-        animation: fade-in 0.8s ease-out 0.2s forwards;
-    }
-    .animate-fade-in-most-delayed.visible {
-        animation: fade-in 0.8s ease-out 0.6s forwards;
-    }
 </style>
 
 <script>
-    // Optional: Add intersection observer for more controlled animations
-    const observer = new IntersectionObserver(
-        (entries, obs) => {
-            for (const entry of entries) {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add("visible");
-                    obs.unobserve(entry.target);
-                }
-            }
-        },
-        { threshold: 0.2 },
-    );
+    import { gsap } from "gsap";
+    import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-    document
-        .querySelectorAll(".animate-on-scroll")
-        .forEach((el) => observer.observe(el));
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Function to animate the Partners section
+    function animatePartnersSection() {
+        const partnersSection = document.getElementById("partners-section");
+        if (!partnersSection) return;
+
+        // Create a timeline for staggered animations
+        const tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: "#partners-section",
+                start: "top 75%", // Start when the top of the section hits 75% from the top of viewport
+                once: true, // Only trigger once
+            },
+        });
+
+        // Animate title
+        tl.to(
+            "#partners-title",
+            {
+                y: 0,
+                opacity: 1,
+                duration: 0.8,
+                ease: "back.out",
+            },
+            0,
+        );
+
+        // Animate subtitle
+        tl.to(
+            "#partners-subtitle",
+            {
+                opacity: 1,
+                duration: 0.8,
+                ease: "power3.out",
+            },
+            0.2,
+        );
+
+        // Animate marquee container
+        tl.to(
+            "#partners-marquee",
+            {
+                opacity: 1,
+                duration: 0.8,
+                ease: "power3.out",
+            },
+            0.6,
+        );
+    }
+
+    // Wait for the page to be fully loaded
+    document.addEventListener("DOMContentLoaded", animatePartnersSection);
 </script>

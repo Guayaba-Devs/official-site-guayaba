@@ -14,7 +14,7 @@ const { items } = Astro.props;
                 <section
                     id={`slide-${idx}`}
                     key={idx}
-                    class="flex-shrink-0 snap-center w-72 sm:w-80 md:w-96 p-4 rounded-2xl  relative"
+                    class="flex-shrink-0 snap-center w-72 sm:w-80 md:w-96 p-4 rounded-2xl relative carousel-item"
                 >
                     <CardMember
                         role={member.role}
@@ -26,6 +26,7 @@ const { items } = Astro.props;
             ))
         }
     </div>
+
     <!-- Contenedor de flechas: fuera del .map -->
     <div
         class="fixed bottom-4 right-4
@@ -42,7 +43,8 @@ const { items } = Astro.props;
                 bg-white/20 backdrop-blur-sm
                 hover:bg-white/30
                 flex items-center justify-center
-                transition z-20"
+                transition z-20 disabled:opacity-40 disabled:cursor-not-allowed"
+            disabled
         >
             ◀
         </button>
@@ -55,23 +57,150 @@ const { items } = Astro.props;
             bg-white/20 backdrop-blur-sm
             hover:bg-white/30
             flex items-center justify-center
-            transition z-20"
+            transition z-20 disabled:opacity-40 disabled:cursor-not-allowed"
         >
             ▶
         </button>
     </div>
 </div>
 
+<style>
+    /* Hide scrollbar */
+    .hide-scrollbar {
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    .hide-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* Fade transition for cards */
+    .carousel-item {
+        transition: opacity 0.5s ease-in-out;
+    }
+</style>
+
 <script>
-    const carousel = document.getElementById("carousel");
-    document
-        .getElementById("prevBtn")
-        .addEventListener("click", () =>
-            carousel.scrollBy({ left: -300, behavior: "smooth" }),
-        );
-    document
-        .getElementById("nextBtn")
-        .addEventListener("click", () =>
-            carousel.scrollBy({ left: 300, behavior: "smooth" }),
-        );
+    import { gsap } from "gsap";
+
+    document.addEventListener("DOMContentLoaded", () => {
+        initCarouselNavigation();
+    });
+
+    function initCarouselNavigation() {
+        const carousel = document.getElementById("carousel");
+        const prevBtn = document.getElementById("prevBtn");
+        const nextBtn = document.getElementById("nextBtn");
+
+        if (!carousel || !prevBtn || !nextBtn) return;
+
+        // Initial check
+        checkScrollability();
+        applyFadeEffect();
+
+        // Function to check if we can scroll left or right
+        function checkScrollability() {
+            const { scrollLeft, scrollWidth, clientWidth } = carousel;
+
+            // Calculate maximum possible scroll position
+            const maxScroll = scrollWidth - clientWidth;
+
+            // Disable prev button if at start (with small threshold for better UX)
+            prevBtn.disabled = scrollLeft < 5;
+            prevBtn.style.opacity = prevBtn.disabled ? "0.4" : "1";
+
+            // Disable next button if at end or very close to end
+            // Using a stricter threshold to prevent extra clicks
+            nextBtn.disabled = scrollLeft >= maxScroll - 5;
+            nextBtn.style.opacity = nextBtn.disabled ? "0.4" : "1";
+        }
+
+        // Apply fade effect based on visibility
+        function applyFadeEffect() {
+            const items = document.querySelectorAll(".carousel-item");
+            const carouselRect = carousel.getBoundingClientRect();
+
+            items.forEach((item) => {
+                const rect = item.getBoundingClientRect();
+
+                // Check if the item is fully visible
+                const isVisible =
+                    rect.left >= carouselRect.left - 20 &&
+                    rect.right <= carouselRect.right + 20;
+
+                // Check if the item is partially visible on left edge
+                const isPartialLeft =
+                    rect.left < carouselRect.left &&
+                    rect.right > carouselRect.left;
+
+                // Check if the item is partially visible on right edge
+                const isPartialRight =
+                    rect.left < carouselRect.right &&
+                    rect.right > carouselRect.right;
+
+                // Set opacity based on visibility
+                if (isVisible) {
+                    gsap.to(item, {
+                        opacity: 1,
+                        duration: 0.5, // Increased duration for smoother fade
+                        ease: "power2.out", // Smoother easing function
+                    });
+                } else if (isPartialLeft || isPartialRight) {
+                    // Calculate partial visibility percentage
+                    const visibleWidth = isPartialLeft
+                        ? rect.right - carouselRect.left
+                        : carouselRect.right - rect.left;
+
+                    const visibilityRatio = Math.max(
+                        0,
+                        Math.min(visibleWidth / rect.width, 1),
+                    );
+                    gsap.to(item, {
+                        opacity: 0.3 + visibilityRatio * 0.7,
+                        duration: 0.5, // Increased duration
+                        ease: "power2.out",
+                    });
+                } else {
+                    gsap.to(item, {
+                        opacity: 0.3,
+                        duration: 0.5, // Increased duration
+                        ease: "power2.out",
+                    });
+                }
+            });
+        }
+
+        // Add scroll event listener
+        carousel.addEventListener("scroll", () => {
+            checkScrollability();
+            applyFadeEffect();
+        });
+
+        // Navigation button click handlers
+        prevBtn.addEventListener("click", () => {
+            // Use GSAP for smooth animation
+            gsap.to(carousel, {
+                scrollLeft: carousel.scrollLeft - 300,
+                duration: 0.5,
+                ease: "power2.out",
+                onUpdate: checkScrollability,
+                onComplete: applyFadeEffect,
+            });
+        });
+
+        nextBtn.addEventListener("click", () => {
+            // Use GSAP for smooth animation
+            gsap.to(carousel, {
+                scrollLeft: carousel.scrollLeft + 300,
+                duration: 0.5,
+                ease: "power2.out",
+                onUpdate: checkScrollability,
+                onComplete: applyFadeEffect,
+            });
+        });
+
+        // Initial fade effect with a small delay to ensure DOM is ready
+        setTimeout(applyFadeEffect, 300);
+    }
 </script>

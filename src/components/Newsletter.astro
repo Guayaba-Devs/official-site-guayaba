@@ -4,20 +4,34 @@ import CardNewsletter from "./CardNewsletter.astro";
 import petLogo from "@/assets/images/mascota.png";
 ---
 
-<section id="newsletter" class="mt-16 mb-16 px-4 sm:px-6 lg:px-8">
+<section
+    id="newsletter-section"
+    class="mt-16 mb-16 px-4 sm:px-6 lg:px-8 relative overflow-hidden"
+>
+    <!-- Background decoration -->
+    <div
+        id="blob-bg"
+        class="absolute -top-32 -right-20 w-auto h-96 bg-primary/10 rounded-full blur-3xl opacity-0"
+    >
+    </div>
+
     <h3
+        id="newsletter-title"
         class="text-4xl md:text-6xl font-bold mb-8 text-center
            bg-linear-to-r from-primary to-secondary
-           bg-clip-text text-transparent"
+           bg-clip-text text-transparent opacity-0 translate-x-[-50px]"
     >
         Mantente Actualizado
     </h3>
 
-    <div class="flex flex-wrap justify-around items-center gap-10 mt-20">
-        <div class="basis-full md:basis-1/3 lg:basis-1/2">
+    <div
+        id="newsletter-container"
+        class="flex flex-wrap justify-around items-center gap-10 mt-20 opacity-0"
+    >
+        <div class="basis-full md:basis-1/3 lg:basis-1/2" id="newsletter-form">
             <CardNewsletter />
         </div>
-        <div class="basis-auto">
+        <div id="mascot-container" class="basis-auto translate-x-20">
             <Image
                 src={petLogo}
                 alt="mascota de guayaba"
@@ -25,4 +39,162 @@ import petLogo from "@/assets/images/mascota.png";
             />
         </div>
     </div>
+
+    <!-- Toast container -->
+    <div
+        id="toast"
+        class="fixed top-4 right-4 z-50 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg transform translate-y-[-100px] opacity-0 transition-all duration-300 flex items-center"
+    >
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5 mr-2"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+        >
+            <path
+                fill-rule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                clip-rule="evenodd"></path>
+        </svg>
+        <span>Proximamente disponible ;)</span>
+    </div>
 </section>
+
+<style>
+    @keyframes bounceHorizontal {
+        0%,
+        100% {
+            transform: translateX(0);
+        }
+        50% {
+            transform: translateX(5px);
+        }
+    }
+
+    .animate-bounce-horizontal {
+        animation: bounceHorizontal 1s infinite;
+    }
+</style>
+
+<script>
+    import { gsap } from "gsap";
+    import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    document.addEventListener("DOMContentLoaded", () => {
+        initNewsletterAnimations();
+        setupFormInteractions();
+    });
+
+    function initNewsletterAnimations() {
+        const newsletterSection = document.getElementById("newsletter-section");
+        if (!newsletterSection) return;
+
+        const tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: "#newsletter-section",
+                start: "top 75%",
+                once: true,
+            },
+        });
+
+        // Zoom in background blob
+        tl.to(
+            "#blob-bg",
+            {
+                opacity: 1,
+                scale: 1.1,
+                duration: 1,
+                ease: "power2.out",
+            },
+            0.3,
+        );
+
+        // Slide in title from left
+        tl.to(
+            "#newsletter-title",
+            {
+                x: 0,
+                opacity: 1,
+                duration: 0.8,
+                ease: "back.out(1.5)",
+            },
+            0.5,
+        );
+
+        // Fade in newsletter container
+        tl.to(
+            "#newsletter-container",
+            {
+                opacity: 1,
+                duration: 0.8,
+                ease: "power3.out",
+            },
+            0.7,
+        );
+
+        // Slide in mascot from right
+        tl.to(
+            "#mascot-container",
+            {
+                x: 0,
+                duration: 0.8,
+                ease: "back.out(1.2)",
+            },
+            0.8,
+        );
+
+        // Add submit button click handler
+        const submitButton = document.querySelector(
+            "#newsletter-form button[type='submit']",
+        );
+        if (submitButton) {
+            submitButton.addEventListener("click", function (e) {
+                e.preventDefault();
+
+                // Show toast notification
+                const toast = document.getElementById("toast");
+                if (toast) {
+                    gsap.to(toast, {
+                        y: 0,
+                        opacity: 1,
+                        duration: 0.5,
+                        ease: "back.out",
+                    });
+
+                    // Hide toast after 3 seconds
+                    setTimeout(() => {
+                        gsap.to(toast, {
+                            y: -100,
+                            opacity: 0,
+                            duration: 0.5,
+                        });
+                    }, 3000);
+                }
+            });
+        }
+    }
+
+    function setupFormInteractions() {
+        // Add any additional form interactions here if needed
+        const newsletterForm = document.querySelector("#newsletter-form > div");
+
+        if (newsletterForm) {
+            // Add hover effect to the form card
+            newsletterForm.addEventListener("mouseenter", () => {
+                gsap.to(newsletterForm, {
+                    boxShadow: "0 0 25px rgba(0, 200, 150, 0.15)",
+                    duration: 0.3,
+                });
+            });
+
+            newsletterForm.addEventListener("mouseleave", () => {
+                gsap.to(newsletterForm, {
+                    boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
+                    duration: 0.3,
+                });
+            });
+        }
+    }
+</script>
