@@ -32,6 +32,9 @@ import logoGuayaba from "@/assets/images/guayaba-cover.png";
 <script>
     // Importar y ejecutar la función de inicialización del navbar
     import { initNavbarScroll } from "@/scripts/navbar";
-
-    document.addEventListener("DOMContentLoaded", initNavbarScroll);
+    import { setupAnimations } from "@/scripts/animations";
+    document.addEventListener("DOMContentLoaded", () => {
+        initNavbarScroll();
+        setupAnimations();
+    });
 </script>
