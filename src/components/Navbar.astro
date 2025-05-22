@@ -29,45 +29,9 @@ import logoGuayaba from "@/assets/images/guayaba-cover.png";
     </nav>
 </header>
 
-<script is:inline>
-    (() => {
-        const nav = document.getElementById("navbar");
-        let lastY = window.scrollY;
-        let debounceTimer;
-        const SCROLL_DELAY = 100; // 100ms de debounce
-        const SCROLL_THRESHOLD = 50; // Umbral para actualización inmediata
+<script>
+    // Importar y ejecutar la función de inicialización del navbar
+    import { initNavbarScroll } from "@/scripts/navbar";
 
-        const handleScroll = () => {
-            const currentY = window.scrollY;
-            const scrollDirection = currentY > lastY ? "down" : "up";
-
-            // Lógica del navbar
-            if (scrollDirection === "down" && currentY > 100) {
-                nav.style.transform = "translateY(-100%)";
-            } else {
-                nav.style.transform = "translateY(0)";
-            }
-
-            lastY = currentY;
-        };
-
-        window.addEventListener(
-            "scroll",
-            () => {
-                const currentY = window.scrollY;
-
-                // Actualización inmediata para scrolls grandes
-                if (Math.abs(currentY - lastY) > SCROLL_THRESHOLD) {
-                    clearTimeout(debounceTimer);
-                    handleScroll();
-                    return;
-                }
-
-                // Debounce para scrolls normales
-                clearTimeout(debounceTimer);
-                debounceTimer = setTimeout(handleScroll, SCROLL_DELAY);
-            },
-            { passive: true },
-        );
-    })();
+    document.addEventListener("DOMContentLoaded", initNavbarScroll);
 </script>
