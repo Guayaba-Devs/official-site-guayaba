@@ -80,52 +80,52 @@ import petLogo from "@/assets/images/mascota.png";
     import { createIntersectionAnimation } from "@/utils/animation";
 
     document.addEventListener("DOMContentLoaded", () => {
-        createIntersectionAnimation("#blob-bg", {
-            opacity: 1,
-            scale: 1.1,
-            duration: 0.8,
+        // Solo animar lo visible
+        const observer = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting) {
+                // Solo anima cuando es visible
+                createIntersectionAnimation("#blob-bg", {
+                    opacity: 1,
+                    scale: 1.1,
+                    duration: 0.8,
+                });
+
+                createIntersectionAnimation("#newsletter-title", {
+                    opacity: 1,
+                    x: 0,
+                    duration: 0.8,
+                    ease: "back.out",
+                });
+
+                createIntersectionAnimation("#newsletter-container", {
+                    opacity: 1,
+                    duration: 0.8,
+                });
+
+                createIntersectionAnimation("#mascot-container", {
+                    opacity: 1,
+                    x: 0,
+                    duration: 0.8,
+                });
+
+                observer.disconnect(); // Solo una vez
+            }
         });
 
-        createIntersectionAnimation("#newsletter-title", {
-            opacity: 1,
-            x: 0,
-            duration: 0.8,
-            ease: "back.out",
-        });
+        observer.observe(document.getElementById("newsletter-section"));
 
-        createIntersectionAnimation("#newsletter-container", {
-            opacity: 1,
-            duration: 0.8,
-        });
+        // Toast simplificado
+        document.addEventListener("showNewsletterToast", () => {
+            const toast = document.getElementById("toast");
+            if (!toast) return;
 
-        createIntersectionAnimation("#mascot-container", {
-            opacity: 1,
-            x: 0,
-            duration: 0.8,
+            toast.style.transform = "translateY(100px)";
+            toast.style.opacity = "1";
+
+            setTimeout(() => {
+                toast.style.transform = "translateY(-100px)";
+                toast.style.opacity = "0";
+            }, 3000);
         });
     });
-
-    const toast = document.getElementById("toast");
-    if (toast) {
-        document.addEventListener("showNewsletterToast", () => {
-            // Show toast
-            gsap.to(toast, {
-                y: 100,
-                opacity: 1,
-                duration: 0.5,
-                ease: "power3.out",
-                onComplete: () => {
-                    // Hide toast after 3 seconds
-                    setTimeout(() => {
-                        gsap.to(toast, {
-                            y: -100,
-                            opacity: 0,
-                            duration: 0.5,
-                            ease: "power3.in",
-                        });
-                    }, 3000);
-                },
-            });
-        });
-    }
 </script>
