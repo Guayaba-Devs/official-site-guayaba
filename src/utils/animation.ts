@@ -1,88 +1,89 @@
-/**
- * Animation utilities using GSAP
- */
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { gsap } from "./gsap-core";
 
-// Register GSAP plugins
-gsap.registerPlugin(ScrollTrigger);
+// Límita cuántas animaciones corren a la vez
+class AnimationBatchManager {
+  static queue = [];
+  static running = false;
+  static batchSize = 5;
 
-/**
- * Creates a fade-in animation when element enters viewport
- */
-export function fadeInOnScroll(selector: string, options = {}) {
-  const defaults = {
-    y: 20,
-    duration: 0.8,
-    opacity: 0,
-    stagger: 0.1,
-    ease: "power2.out",
-    scrollTrigger: {
-      trigger: selector,
-      start: "top 75%",
-      once: true,
-    },
-  };
+  static add(fn) {
+    this.queue.push(fn);
+    if (!this.running) this.process();
+  }
 
-  return gsap.from(selector, { ...defaults, ...options });
-}
-
-//TODO
-
-/**
-buttonWrapper.addEventListener("mousedown", () => {
-    gsap.to(button, {
-        scale: 0.97,
-        duration: 0.1,
-    });
-});
-
-buttonWrapper.addEventListener("mouseup", () => {
-    gsap.to(button, {
-        scale: 1.05,
-        duration: 0.2,
-    });
-});
-
-buttonWrapper.addEventListener("click", () => {
-    gsap.to(button, {
-        scale: 1.05,
-        duration: 0.2,
-    });
-});
-*/
-
-/**
- * Adds hover animation to an element or elements matching a selector
- * @param elementOrSelector - DOM element or CSS selector
- * @param scale - Scale factor for the hover effect (default: 1.05)
- */
-export function addHoverAnimation(
-  elementOrSelector: Element | string,
-  scale = 1.05,
-) {
-  // If a string is provided, treat it as a selector
-  if (typeof elementOrSelector === "string") {
-    // Get all elements matching the selector
-    const elements = document.querySelectorAll(elementOrSelector);
-
-    // Apply hover effect to each element
-    elements.forEach((element) => {
-      applyHoverEffect(element, scale);
-    });
-  } else if (elementOrSelector instanceof Element) {
-    // Direct element reference
-    applyHoverEffect(elementOrSelector, scale);
+  static process() {
+    if (this.queue.length === 0) {
+      this.running = false;
+      return;
+    }
+    this.running = true;
+    const batch = this.queue.splice(0, this.batchSize);
+    batch.forEach((f) => f());
+    requestAnimationFrame(() => this.process());
   }
 }
 
-// Helper function to apply hover effect to a single element
-function applyHoverEffect(element: Element, scale: number) {
-  element.addEventListener("mouseenter", () => {
-    gsap.to(element, { scale, duration: 0.3, ease: "power2.out" });
-  });
+// Fade/slide con IntersectionObserver y batching
+export function createIntersectionAnimation(selector, props, threshold = 0.2) {
+  const els = document.querySelectorAll(selector);
+  if (!els.length) return;
+  const obs = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          AnimationBatchManager.add(() => {
+            gsap.to(entry.target, props);
+          });
+          obs.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold },
+  );
+  els.forEach((el) => obs.observe(el));
+}
 
-  element.addEventListener("mouseleave", () => {
-    gsap.to(element, { scale: 1, duration: 0.3, ease: "power2.out" });
+// Hover sencillo: si es escala ≤1.1 usa CSS, si no, GSAP
+export function addHoverAnimation(elOrSel, scale = 1.05, options = {}) {
+  const els =
+    typeof elOrSel === "string"
+      ? document.querySelectorAll(elOrSel)
+      : [elOrSel];
+  els.forEach((el) => {
+    if (scale <= 1.1 && !options.customEffect) {
+      el.classList.add("hover-scale");
+      // Asegúrate de tener este CSS global:
+      // .hover-scale { transition: transform 0.3s ease; }
+      // .hover-scale:hover { transform: scale(1.05); }
+    } else {
+      el.addEventListener("mouseenter", () => {
+        gsap.to(el, {
+          scale,
+          duration: options.duration || 0.3,
+          ease: options.ease || "power2.out",
+        });
+      });
+      el.addEventListener("mouseleave", () => {
+        gsap.to(el, {
+          scale: 1,
+          duration: options.duration || 0.3,
+          ease: options.ease || "power2.out",
+        });
+      });
+    }
   });
+}
+
+// Línea de tiempo ScrollTrigger optimizada
+export function createScrollTimeline({ trigger, animations, scrollConfig }) {
+  const trigEl = document.querySelector(trigger);
+  if (!trigEl) return null;
+  const tl = gsap.timeline({
+    scrollTrigger: { trigger, start: "top 75%", once: true, ...scrollConfig },
+  });
+  animations.forEach(({ target, props, position }) => {
+    const items = document.querySelectorAll(target);
+    if (items.length) tl.to(items, props, position);
+  });
+  return tl;
 }

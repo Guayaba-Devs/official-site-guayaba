@@ -15,13 +15,13 @@ import ArrowDown from "@/assets/arrow-down.svg";
     <!-- Glow izquierdo -->
     <div
         id="blob1"
-        class="absolute inset-36 size-48 rounded-full bg-radial from-primary from-80% to-primary blur-3xl mix-blend-screen opacity-0"
+        class="absolute inset-36 size-48 rounded-full bg-radial from-primary from-80% to-primary blur-3xl mix-blend-screen opacity-0 translate-y-[-20px]"
     >
     </div>
     <!-- Glow derecho -->
     <div
         id="blob2"
-        class="absolute inset-x-[75%] size-48 rounded-full bg-radial from-secondary from-80% to-secondary mix-blend-screen blur-2xl opacity-0"
+        class="absolute inset-x-[75%] size-48 rounded-full bg-radial from-secondary from-80% to-secondary mix-blend-screen blur-2xl opacity-0 translate-y-[-25px]"
     >
     </div>
 
@@ -83,10 +83,7 @@ import ArrowDown from "@/assets/arrow-down.svg";
 </section>
 
 <script>
-    import { gsap } from "gsap";
-    import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-    gsap.registerPlugin(ScrollTrigger);
+    import { gsap } from "@/utils/gsap-core";
 
     document.addEventListener("DOMContentLoaded", () => {
         // Create animation timeline once

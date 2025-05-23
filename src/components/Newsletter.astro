@@ -75,126 +75,32 @@ import petLogo from "@/assets/images/mascota.png";
         animation: bounceHorizontal 1s infinite;
     }
 </style>
-
 <script>
-    import { gsap } from "gsap";
-    import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-    gsap.registerPlugin(ScrollTrigger);
+    import { createIntersectionAnimation } from "@/utils/animation";
 
     document.addEventListener("DOMContentLoaded", () => {
-        initNewsletterAnimations();
-        setupFormInteractions();
-    });
-
-    function initNewsletterAnimations() {
-        const newsletterSection = document.getElementById("newsletter-section");
-        if (!newsletterSection) return;
-
-        const tl = gsap.timeline({
-            scrollTrigger: {
-                trigger: "#newsletter-section",
-                start: "top 75%",
-                once: true,
-            },
+        createIntersectionAnimation("#blob-bg", {
+            opacity: 1,
+            scale: 1.1,
+            duration: 0.8,
         });
 
-        // Zoom in background blob
-        tl.to(
-            "#blob-bg",
-            {
-                opacity: 1,
-                scale: 1.1,
-                duration: 1,
-                ease: "power2.out",
-            },
-            0.3,
-        );
+        createIntersectionAnimation("#newsletter-title", {
+            opacity: 1,
+            x: 0,
+            duration: 0.8,
+            ease: "back.out",
+        });
 
-        // Slide in title from left
-        tl.to(
-            "#newsletter-title",
-            {
-                x: 0,
-                opacity: 1,
-                duration: 0.8,
-                ease: "back.out(1.5)",
-            },
-            0.5,
-        );
+        createIntersectionAnimation("#newsletter-container", {
+            opacity: 1,
+            duration: 0.8,
+        });
 
-        // Fade in newsletter container
-        tl.to(
-            "#newsletter-container",
-            {
-                opacity: 1,
-                duration: 0.8,
-                ease: "power3.out",
-            },
-            0.7,
-        );
-
-        // Slide in mascot from right
-        tl.to(
-            "#mascot-container",
-            {
-                x: 0,
-                duration: 0.8,
-                ease: "back.out(1.2)",
-            },
-            0.8,
-        );
-
-        // Add submit button click handler
-        const submitButton = document.querySelector(
-            "#newsletter-form button[type='submit']",
-        );
-        if (submitButton) {
-            submitButton.addEventListener("click", function (e) {
-                e.preventDefault();
-
-                // Show toast notification
-                const toast = document.getElementById("toast");
-                if (toast) {
-                    gsap.to(toast, {
-                        y: 0,
-                        opacity: 1,
-                        duration: 0.5,
-                        ease: "back.out",
-                    });
-
-                    // Hide toast after 3 seconds
-                    setTimeout(() => {
-                        gsap.to(toast, {
-                            y: -100,
-                            opacity: 0,
-                            duration: 0.5,
-                        });
-                    }, 3000);
-                }
-            });
-        }
-    }
-
-    function setupFormInteractions() {
-        // Add any additional form interactions here if needed
-        const newsletterForm = document.querySelector("#newsletter-form > div");
-
-        if (newsletterForm) {
-            // Add hover effect to the form card
-            newsletterForm.addEventListener("mouseenter", () => {
-                gsap.to(newsletterForm, {
-                    boxShadow: "0 0 25px rgba(0, 200, 150, 0.15)",
-                    duration: 0.3,
-                });
-            });
-
-            newsletterForm.addEventListener("mouseleave", () => {
-                gsap.to(newsletterForm, {
-                    boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
-                    duration: 0.3,
-                });
-            });
-        }
-    }
+        createIntersectionAnimation("#mascot-container", {
+            opacity: 1,
+            x: 0,
+            duration: 0.8,
+        });
+    });
 </script>

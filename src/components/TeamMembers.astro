@@ -37,49 +37,22 @@ import ListMembers from "@/components/ListMembers.astro";
 </section>
 
 <script>
-    import { gsap } from "gsap";
-    import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-    gsap.registerPlugin(ScrollTrigger);
+    import { createIntersectionAnimation } from "@/utils/animation";
 
     document.addEventListener("DOMContentLoaded", () => {
-        const teamSection = document.getElementById("team-section");
-        if (!teamSection) return;
+        createIntersectionAnimation("#team-header", {
+            opacity: 1,
+            x: 0,
+            duration: 0.8,
+            ease: "back.out(1.5)",
+            transformOrigin: "left center",
+        });
 
-        // Create a single timeline with all animations
-        gsap.timeline({
-            scrollTrigger: {
-                trigger: "#team-section",
-                start: "top 75%",
-                once: true,
-            },
-        })
-            // Header animation
-            .fromTo(
-                "#team-header",
-                { opacity: 0, x: -50 },
-                { opacity: 1, x: 0, duration: 0.8, ease: "back.out(1.5)" },
-            )
-            // Carousel animation
-            .fromTo(
-                "#team-carousel",
-                { opacity: 0, y: 50 },
-                { opacity: 1, y: 0, duration: 1, ease: "power3.out" },
-                0.3,
-            )
-            // Cards with stagger effect
-            .fromTo(
-                "article",
-                { opacity: 0, y: 30, scale: 0.95 },
-                {
-                    opacity: 1,
-                    y: 0,
-                    scale: 1,
-                    duration: 0.8,
-                    stagger: 0.15,
-                    ease: "back.out(1)",
-                },
-                0.5,
-            );
+        createIntersectionAnimation("#team-carousel", {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            ease: "power3.out",
+        });
     });
 </script>

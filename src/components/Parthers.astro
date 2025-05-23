@@ -65,60 +65,26 @@ const logos = [
 </style>
 
 <script>
-    import { gsap } from "gsap";
-    import { ScrollTrigger } from "gsap/ScrollTrigger";
+    import { createIntersectionAnimation } from "@/utils/animation";
 
-    gsap.registerPlugin(ScrollTrigger);
-
-    // Function to animate the Partners section
-    function animatePartnersSection() {
-        const partnersSection = document.getElementById("partners-section");
-        if (!partnersSection) return;
-
-        // Create a timeline for staggered animations
-        const tl = gsap.timeline({
-            scrollTrigger: {
-                trigger: "#partners-section",
-                start: "top 75%", // Start when the top of the section hits 75% from the top of viewport
-                once: true, // Only trigger once
-            },
+    document.addEventListener("DOMContentLoaded", () => {
+        createIntersectionAnimation("#partners-title", {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "back.out",
         });
 
-        // Animate title
-        tl.to(
-            "#partners-title",
-            {
-                y: 0,
-                opacity: 1,
-                duration: 0.8,
-                ease: "back.out",
-            },
-            0,
-        );
+        createIntersectionAnimation("#partners-subtitle", {
+            opacity: 1,
+            duration: 0.8,
+            ease: "power3.out",
+        });
 
-        // Animate subtitle
-        tl.to(
-            "#partners-subtitle",
-            {
-                opacity: 1,
-                duration: 0.8,
-                ease: "power3.out",
-            },
-            0.2,
-        );
-
-        // Animate marquee container
-        tl.to(
-            "#partners-marquee",
-            {
-                opacity: 1,
-                duration: 0.8,
-                ease: "power3.out",
-            },
-            0.6,
-        );
-    }
-
-    // Wait for the page to be fully loaded
-    document.addEventListener("DOMContentLoaded", animatePartnersSection);
+        createIntersectionAnimation("#partners-marquee", {
+            opacity: 1,
+            duration: 0.8,
+            ease: "power3.out",
+        });
+    });
 </script>
