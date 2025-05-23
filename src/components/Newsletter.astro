@@ -76,6 +76,7 @@ import petLogo from "@/assets/images/mascota.png";
     }
 </style>
 <script>
+    import { gsap } from "@/utils/gsap-core";
     import { createIntersectionAnimation } from "@/utils/animation";
 
     document.addEventListener("DOMContentLoaded", () => {
@@ -103,4 +104,28 @@ import petLogo from "@/assets/images/mascota.png";
             duration: 0.8,
         });
     });
+
+    const toast = document.getElementById("toast");
+    if (toast) {
+        document.addEventListener("showNewsletterToast", () => {
+            // Show toast
+            gsap.to(toast, {
+                y: 100,
+                opacity: 1,
+                duration: 0.5,
+                ease: "power3.out",
+                onComplete: () => {
+                    // Hide toast after 3 seconds
+                    setTimeout(() => {
+                        gsap.to(toast, {
+                            y: -100,
+                            opacity: 0,
+                            duration: 0.5,
+                            ease: "power3.in",
+                        });
+                    }, 3000);
+                },
+            });
+        });
+    }
 </script>
