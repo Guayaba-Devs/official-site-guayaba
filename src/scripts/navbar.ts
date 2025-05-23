@@ -1,37 +1,34 @@
-/**
- * Optimized navbar visibility control based on scroll
- * Uses CSS transitions and throttled scroll handling
- */
 export function initNavbarScroll() {
   const nav = document.getElementById("navbar");
   if (!nav) return;
 
-  let lastY = window.scrollY;
+  let lastY = window.scrollY; // posición de scroll en el último frame
+  let pendingY = lastY; // dónde guardamos la próxima lectura
   let ticking = false;
-  let lastToggle = 0;
-  const THRESHOLD = 30;
+  const THRESHOLD = 30; // umbral de cambio para toggle
 
   function checkNavbar() {
-    const currentY = window.scrollY;
-    if (Math.abs(currentY - lastY) > THRESHOLD) {
-      const hide = currentY > lastY && currentY > 100;
-      nav.classList.toggle("navbar-hidden", hide);
+    const currentY = pendingY; // usamos la lectura ya hecha
+    const deltaY = currentY - lastY;
+
+    if (Math.abs(deltaY) > THRESHOLD) {
+      const hide = deltaY > 0 && currentY > 100;
+      nav.classList.toggle("-translate-y-full", hide);
       lastY = currentY;
     }
+
     ticking = false;
   }
 
   function onScroll() {
-    const now = performance.now();
-    // Limita toggles a ~60 FPS
-    if (now - lastToggle < 16) return;
-    lastToggle = now;
+    // UNA sola lectura forzada de scrollY por frame
+    pendingY = window.scrollY;
+
     if (!ticking) {
-      requestAnimationFrame(checkNavbar);
       ticking = true;
+      requestAnimationFrame(checkNavbar);
     }
   }
 
-  // Pasivo para no bloquear el scroll principal
   window.addEventListener("scroll", onScroll, { passive: true });
 }
