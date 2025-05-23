@@ -2,33 +2,60 @@ export function initNavbarScroll() {
   const nav = document.getElementById("navbar");
   if (!nav) return;
 
-  let lastY = window.scrollY; // posición de scroll en el último frame
-  let pendingY = lastY; // dónde guardamos la próxima lectura
-  let ticking = false;
-  const THRESHOLD = 30; // umbral de cambio para toggle
+  // Evitar inicializaciones múltiples
+  if (nav.dataset.initialized === "true") return;
+  nav.dataset.initialized = "true";
 
-  function checkNavbar() {
-    const currentY = pendingY; // usamos la lectura ya hecha
-    const deltaY = currentY - lastY;
-
-    if (Math.abs(deltaY) > THRESHOLD) {
-      const hide = deltaY > 0 && currentY > 100;
-      nav.classList.toggle("-translate-y-full", hide);
-      lastY = currentY;
-    }
-
-    ticking = false;
-  }
+  // No usamos lastScrollY global (mejora rendimiento)
+  let prevScrollY = window.scrollY;
+  let scrollTimeout = null;
 
   function onScroll() {
-    // UNA sola lectura forzada de scrollY por frame
-    pendingY = window.scrollY;
+    // Evitar procesamiento excesivo con throttling
+    if (!scrollTimeout) {
+      scrollTimeout = setTimeout(() => {
+        const currentScrollY = window.scrollY;
+        const isScrollingDown = currentScrollY > prevScrollY;
 
-    if (!ticking) {
-      ticking = true;
-      requestAnimationFrame(checkNavbar);
+        if (isScrollingDown && currentScrollY > 50) {
+          nav.classList.add("navbar-hidden");
+        } else {
+          nav.classList.remove("navbar-hidden");
+        }
+
+        prevScrollY = currentScrollY;
+        scrollTimeout = null;
+      }, 100); // Throttling a 100ms
     }
   }
 
+  // Usar evento scroll con passive para mejor rendimiento
   window.addEventListener("scroll", onScroll, { passive: true });
+
+  // Crear un elemento al inicio para detectar cuando estamos en la parte superior
+  const topElement = document.createElement("div");
+  topElement.style.position = "absolute";
+  topElement.style.top = "0";
+  topElement.style.height = "1px";
+  topElement.style.width = "100%";
+  topElement.style.pointerEvents = "none";
+  document.body.prepend(topElement);
+
+  // Usar un IntersectionObserver para cuando estemos en la parte superior
+  const topObserver = new IntersectionObserver(
+    (entries) => {
+      if (entries[0].isIntersecting) {
+        nav.classList.remove("navbar-hidden");
+      }
+    },
+    { threshold: 0.1 },
+  );
+
+  topObserver.observe(topElement);
+
+  return () => {
+    window.removeEventListener("scroll", onScroll);
+    clearTimeout(scrollTimeout);
+    topObserver.disconnect();
+  };
 }

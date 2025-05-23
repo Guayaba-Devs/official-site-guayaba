@@ -10,9 +10,16 @@ gsap.defaults({
   ease: "power2.out", // ease por defecto que suele ir bien
 });
 
+gsap.ticker.fps(30); // 30fps en lugar de 60fps
+gsap.ticker.lagSmoothing(0); // Deshabilitar corrección de lag
+
 ScrollTrigger.config({
-  autoRefreshEvents: "visibilitychange,DOMContentLoaded,load", // menos refrescos innecesarios
+  autoRefreshEvents: "visibilitychange,DOMContentLoaded,load",
   ignoreMobileResize: true,
+  // Limitar callbacks por cada frame (nuevo)
+  limitCallbacks: true,
+  // Menos sincronización de scroll (nuevo)
+  syncInterval: 60,
 });
 
 export { gsap, ScrollTrigger };

@@ -24,6 +24,7 @@ body {
 
 html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
 }
 
 .glass-bg {
@@ -35,10 +36,15 @@ html {
     backdrop-filter: blur(20px);
 }
 
-.navbar-hidden {
-  @apply -translate-y-full;        /* desplaza fuera de pantalla */
+.navbar-transition {
+    transition: transform 0.15s cubic-bezier(0.33, 1, 0.68, 1);
+    will-change: transform;
+    contain: layout; /* Mejora el rendimiento aislando este elemento */
 }
 
+.navbar-hidden {
+    transform: translateY(-100%);
+}
 .hide-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
