@@ -1,45 +1,17 @@
 /**
- * Maneja el comportamiento de ocultar/mostrar la barra de navegación basado en el scroll
+ * Optimized navbar visibility control based on scroll
+ * Uses CSS transitions and throttled scroll handling
  */
-export function initNavbarScroll(): void {
+export function initNavbarScroll() {
   const nav = document.getElementById("navbar");
-  if (!nav) return;
+  const sentinel = document.getElementById("sentinel");
+  if (!nav || !sentinel) return;
 
-  let lastY = window.scrollY;
-  let debounceTimer: number | undefined;
-  const SCROLL_DELAY = 100; // 100ms de debounce
-  const SCROLL_THRESHOLD = 50; // Umbral para actualización inmediata
-
-  const handleScroll = (): void => {
-    const currentY = window.scrollY;
-    const scrollDirection = currentY > lastY ? "down" : "up";
-
-    // Lógica del navbar
-    if (scrollDirection === "down" && currentY > 100) {
-      nav.style.transform = "translateY(-100%)";
-    } else {
-      nav.style.transform = "translateY(0)";
-    }
-
-    lastY = currentY;
-  };
-
-  window.addEventListener(
-    "scroll",
-    () => {
-      const currentY = window.scrollY;
-
-      // Actualización inmediata para scrolls grandes
-      if (Math.abs(currentY - lastY) > SCROLL_THRESHOLD) {
-        clearTimeout(debounceTimer);
-        handleScroll();
-        return;
-      }
-
-      // Debounce para scrolls normales
-      clearTimeout(debounceTimer);
-      debounceTimer = window.setTimeout(handleScroll, SCROLL_DELAY);
+  const obs = new IntersectionObserver(
+    ([entry]) => {
+      nav.classList.toggle("navbar-hidden", !entry.isIntersecting);
     },
-    { passive: true },
+    { rootMargin: "-100px 0px 0px 0px" },
   );
+  obs.observe(sentinel);
 }

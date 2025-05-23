@@ -35,10 +35,21 @@ html {
     backdrop-filter: blur(20px);
 }
 
+.navbar-hidden {
+  @apply -translate-y-full;        /* desplaza fuera de pantalla */
+}
+
 .hide-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
 .hide-scrollbar::-webkit-scrollbar {
     display: none;
+}
+
+.hover-scale {
+    transition: transform 0.3s ease;
+}
+.hover-scale:hover {
+    transform: scale(1.05);
 }
