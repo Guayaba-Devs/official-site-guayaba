@@ -89,44 +89,50 @@ const items: EventItem[] = [
 
 <script>
     import { gsap } from "@/utils/gsap-core";
-    import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+    // Events Section
     document.addEventListener("DOMContentLoaded", () => {
         const section = document.getElementById("events-section");
         if (!section) return;
 
-        // Solo inicializar cuando esté cerca del viewport
-        const observer = new IntersectionObserver(
-            (entries) => {
-                if (entries[0].isIntersecting) {
-                    // Crear timeline una sola vez
-                    const tl = gsap.timeline({
-                        scrollTrigger: {
-                            trigger: "#events-section",
-                            start: "top 90%",
-                            once: true,
-                        },
-                    });
+        const ctx = gsap.context(() => {
+            // Configuración inicial
+            gsap.set("#events-title, #bento-container, .bento-item", {
+                opacity: 0,
+                y: 20,
+            });
 
-                    // Animaciones simples
-                    tl.to("#events-title", { x: 0, opacity: 1, duration: 0.6 })
-                        .to(
-                            "#bento-container",
-                            { y: 0, opacity: 1, duration: 0.6 },
-                            0.3,
-                        )
-                        .to(
-                            ".bento-item",
-                            { opacity: 1, duration: 0.4, stagger: 0.1 },
-                            0.5,
-                        );
+            // Timeline simplificada
+            const tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: section,
+                    start: "top 90%",
+                    once: true,
+                },
+            });
 
-                    observer.disconnect(); // Limpiar
-                }
-            },
-            { threshold: 0.1 },
-        );
+            tl.add("start")
+                .to(
+                    "#events-title",
+                    { x: 0, opacity: 1, duration: 0.6 },
+                    "start",
+                )
+                .to(
+                    "#bento-container",
+                    { y: 0, opacity: 1, duration: 0.6 },
+                    "start+=0.3",
+                )
+                .to(
+                    ".bento-item",
+                    {
+                        opacity: 1,
+                        duration: 0.4,
+                        stagger: 0.1,
+                    },
+                    "start+=0.5",
+                );
+        }, section);
 
-        observer.observe(section);
+        return () => ctx.revert();
     });
 </script>
