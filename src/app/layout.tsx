@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import { Config } from "@/lib/config";
 import { NavbarTop } from "@/components/navbar";
 import { Hero } from "@/components/hero";
-import { LogoSection } from "@/components/marquee/logoSection";
+import { Sponsors } from "@/components/sponsors";
 import { TeamSection } from "@/components/team";
 import { Newsletter } from "@/components/newsletter";
 import { Events } from "@/components/events";
@@ -38,7 +38,7 @@ export default function RootLayout({}: Readonly<{
         <Config>
           <NavbarTop />
           <Hero />
-          <LogoSection />
+          <Sponsors />
           <TeamSection />
           <Newsletter />
           <Events />
