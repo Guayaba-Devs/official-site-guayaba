@@ -1,75 +1,361 @@
 "use client";
 
-import { Image } from "@nextui-org/react";
-import { motion } from "framer-motion";
-import { staggerContainer, fadeIn, zoomIn, textVariant } from "@/utils/motion";
-import { Particles } from "@/components/particles";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { gsap } from "gsap";
+
+const heroImages = [
+  "https://res.cloudinary.com/dq84mzx7b/image/upload/v1761092964/_DSC0115_v80ngi.jpg",
+  "https://res.cloudinary.com/dq84mzx7b/image/upload/v1746660670/_DSC0203_6_xn4jgg.jpg",
+  "https://res.cloudinary.com/dq84mzx7b/image/upload/v1746660556/_DSC0017_3_akrp30.jpg",
+  "https://res.cloudinary.com/dq84mzx7b/image/upload/v1761092958/_DSC9891_vcewmx.jpg",
+];
+
+const transitionTypes = ["slide-right", "fade", "zoom-in", "slide-left"];
 
 export const Hero = () => {
-  const [isClient, setIsClient] = useState(false);
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const slidesRef = useRef<HTMLDivElement[]>([]);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const subtitleRef = useRef<HTMLParagraphElement>(null);
+  const descriptionRef = useRef<HTMLParagraphElement>(null);
+  const buttonsRef = useRef<HTMLDivElement>(null);
+  const progressBarRef = useRef<HTMLDivElement>(null);
+  const currentIndexRef = useRef(0);
+  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
 
   useEffect(() => {
-    setIsClient(true);
+    if (carouselRef.current && slidesRef.current.length > 0) {
+      const slides = slidesRef.current;
+      const totalSlides = heroImages.length;
+      const viewportWidth = window.innerWidth;
+
+      const getNextIndex = () => {
+        currentIndexRef.current = (currentIndexRef.current + 1) % totalSlides;
+        return currentIndexRef.current;
+      };
+
+      const applyTransition = (fromIndex: number, toIndex: number) => {
+        const fromSlide = slides[fromIndex];
+        const toSlide = slides[toIndex];
+        const transitionType =
+          transitionTypes[fromIndex % transitionTypes.length];
+
+        gsap.set(toSlide, { clearProps: "all" });
+
+        setCurrentSlideIndex(toIndex);
+
+        if (progressBarRef.current) {
+          gsap.fromTo(
+            progressBarRef.current,
+            { width: "0%" },
+            { width: "100%", duration: 3, ease: "none" }
+          );
+        }
+
+        switch (transitionType) {
+          case "slide-right":
+            gsap.set(toSlide, { x: viewportWidth, opacity: 1 });
+            gsap.to(fromSlide, {
+              x: -viewportWidth,
+              opacity: 0,
+              duration: 1.2,
+              ease: "power2.inOut",
+            });
+            gsap.to(toSlide, {
+              x: 0,
+              opacity: 1,
+              duration: 1.2,
+              ease: "power2.inOut",
+            });
+            break;
+
+          case "fade":
+            gsap.set(toSlide, { opacity: 0 });
+            gsap.to(fromSlide, {
+              opacity: 0,
+              duration: 1.2,
+              ease: "power1.inOut",
+            });
+            gsap.to(toSlide, {
+              opacity: 1,
+              duration: 1.2,
+              ease: "power1.inOut",
+            });
+            break;
+
+          case "zoom-in":
+            gsap.set(toSlide, { scale: 1.2, opacity: 0 });
+            gsap.to(fromSlide, {
+              scale: 0.9,
+              opacity: 0,
+              duration: 1.2,
+              ease: "power2.inOut",
+            });
+            gsap.to(toSlide, {
+              scale: 1,
+              opacity: 1,
+              duration: 1.2,
+              ease: "power2.inOut",
+            });
+            break;
+
+          case "slide-left":
+            gsap.set(toSlide, { x: -viewportWidth, opacity: 1 });
+            gsap.to(fromSlide, {
+              x: viewportWidth,
+              opacity: 0,
+              duration: 1.2,
+              ease: "power2.inOut",
+            });
+            gsap.to(toSlide, {
+              x: 0,
+              opacity: 1,
+              duration: 1.2,
+              ease: "power2.inOut",
+            });
+            break;
+        }
+      };
+
+      slides.forEach((slide, index) => {
+        if (index === 0) {
+          gsap.set(slide, { x: 0, opacity: 1, scale: 1 });
+        } else {
+          gsap.set(slide, { x: 0, opacity: 0, scale: 1 });
+        }
+      });
+
+      const animateCarousel = () => {
+        const currentIndex = currentIndexRef.current;
+        const nextIndex = getNextIndex();
+
+        if (progressBarRef.current) {
+          gsap.set(progressBarRef.current, { width: "0%" });
+        }
+
+        applyTransition(currentIndex, nextIndex);
+
+        setTimeout(() => {
+          gsap.set(slides[currentIndex], {
+            x: 0,
+            opacity: 0,
+            scale: 1,
+            clearProps: "transform",
+          });
+          animateCarousel();
+        }, 3000);
+      };
+
+      if (progressBarRef.current) {
+        gsap.fromTo(
+          progressBarRef.current,
+          { width: "0%" },
+          { width: "100%", duration: 3, ease: "none" }
+        );
+      }
+
+      const startTimeout = setTimeout(() => {
+        animateCarousel();
+      }, 100);
+
+      return () => {
+        clearTimeout(startTimeout);
+      };
+    }
+
+    if (titleRef.current) {
+      gsap.fromTo(
+        titleRef.current,
+        {
+          x: -100,
+          opacity: 0,
+        },
+        {
+          x: 0,
+          opacity: 1,
+          duration: 1.2,
+          ease: "power3.out",
+          delay: 0.3,
+        }
+      );
+    }
+
+    if (subtitleRef.current) {
+      gsap.fromTo(
+        subtitleRef.current,
+        {
+          x: -50,
+          opacity: 0,
+        },
+        {
+          x: 0,
+          opacity: 1,
+          duration: 1,
+          ease: "power2.out",
+          delay: 0.6,
+        }
+      );
+    }
+
+    if (descriptionRef.current) {
+      gsap.fromTo(
+        descriptionRef.current,
+        {
+          x: -30,
+          opacity: 0,
+        },
+        {
+          x: 0,
+          opacity: 1,
+          duration: 1,
+          ease: "power2.out",
+          delay: 0.8,
+        }
+      );
+    }
+
+    if (buttonsRef.current && buttonsRef.current.children.length > 0) {
+      gsap.fromTo(
+        Array.from(buttonsRef.current.children),
+        {
+          x: -30,
+          opacity: 0,
+        },
+        {
+          x: 0,
+          opacity: 1,
+          duration: 0.8,
+          ease: "power2.out",
+          delay: 1,
+          stagger: 0.1,
+        }
+      );
+    }
   }, []);
+
   return (
-    <motion.div
-      variants={staggerContainer()}
-      initial="hidden"
-      whileInView="show"
-      viewport={{ once: true, amount: 0.25 }}
-      className="min-h-screen bg-background relative overflow-hidden font-sans"
+    <section
+      className="relative min-h-screen w-full overflow-hidden"
+      style={{ backgroundColor: "transparent", background: "none" }}
     >
-      <motion.div
-        variants={zoomIn(0.5, 1)}
-        className="absolute inset-0 bg-[url('/images/grid.svg')] bg-center opacity-[3%]"
-      />
-
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background z-10" />
-
-      <div className="container mx-auto px-4 h-screen flex items-center justify-center">
-        <div className="max-w-6xl w-full text-center relative z-20 px-4 sm:px-6 lg:px-8">
-          <motion.div
-            variants={zoomIn(0.5, 1)}
-            className="mx-auto mb-6 sm:mb-8 w-24 h-24 sm:w-32 sm:h-32 bg-primary-foreground rounded-full flex items-center justify-center shadow-2xl shadow-primary/30"
+      <div
+        ref={carouselRef}
+        className="absolute inset-0"
+        style={{
+          zIndex: 1,
+        }}
+      >
+        {heroImages.map((image, index) => (
+          <div
+            key={index}
+            ref={(el) => {
+              if (el) slidesRef.current[index] = el;
+            }}
+            className="absolute inset-0 overflow-hidden"
+            style={{
+              width: "100vw",
+              height: "100vh",
+            }}
           >
-            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full flex items-center justify-center">
-              <Image
-                className="w-full h-full object-cover"
-                src="images/mascota.png"
-                alt="mascota guayabadevs"
-              />
-            </div>
-          </motion.div>
+            <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/25 to-black/30 md:from-black/50 md:via-black/40 md:to-black/50 z-10" />
 
-          <motion.h1
-            variants={textVariant(0.8)}
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 sm:mb-6 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent"
+            <img
+              src={image}
+              alt={`Hero image ${index + 1}`}
+              className="w-full h-full object-cover"
+              style={{
+                objectFit: "cover",
+                objectPosition: "center",
+                width: "100%",
+                height: "100%",
+                willChange: "transform, opacity",
+              }}
+              loading={index === 0 ? "eager" : "lazy"}
+              decoding="async"
+              fetchPriority={index === 0 ? "high" : "low"}
+            />
+          </div>
+        ))}
+      </div>
+
+      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-40 md:bottom-8 md:left-auto md:transform-none md:right-8">
+        <div className="flex gap-2 mb-2">
+          {heroImages.map((_, index) => (
+            <div
+              key={index}
+              className={`h-1 rounded-full transition-all duration-300 ${
+                index === currentSlideIndex
+                  ? "bg-primary w-8"
+                  : "bg-white/30 w-1.5"
+              }`}
+            />
+          ))}
+        </div>
+        <div className="w-32 h-1 bg-white/20 rounded-full overflow-hidden md:w-48">
+          <div
+            ref={progressBarRef}
+            className="h-full bg-primary rounded-full"
+            style={{ width: "0%" }}
+          />
+        </div>
+      </div>
+
+      <div className="relative z-30 min-h-screen flex items-center px-4 sm:px-6 lg:px-8 xl:px-16 pt-20">
+        <div className="max-w-4xl w-full text-center md:text-left">
+          <div className="mb-6 sm:mb-8 flex justify-center md:justify-start">
+            <div className="w-20 h-20 sm:w-28 sm:h-28 bg-primary-foreground rounded-full flex items-center justify-center shadow-2xl shadow-primary/30 animate-pulse-slow">
+              <div className="w-14 h-14 sm:w-20 sm:h-20 rounded-full overflow-hidden">
+                <img
+                  src="/images/mascota.png"
+                  alt="mascota guayabadevs"
+                  className="w-full h-full object-cover"
+                  loading="eager"
+                  decoding="async"
+                />
+              </div>
+            </div>
+          </div>
+
+          <h1
+            ref={titleRef}
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-4 sm:mb-6 bg-gradient-to-r from-primary via-primary to-secondary bg-clip-text text-transparent leading-tight drop-shadow-2xl"
+            style={{ opacity: 1 }}
           >
             Guayabadevs
-          </motion.h1>
+          </h1>
 
-          <motion.p
-            variants={fadeIn("up", "spring", 1, 1)}
-            className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-muted-foreground mb-8 sm:mb-12 font-medium max-w-2xl mx-auto px-2"
+          <p
+            ref={subtitleRef}
+            className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-white mb-4 sm:mb-6 font-medium max-w-2xl mx-auto md:mx-0 drop-shadow-lg leading-relaxed"
+            style={{ opacity: 1 }}
           >
             Creando desarrolladores{" "}
             <span className="text-primary font-bold">fructíferos</span>
-          </motion.p>
+          </p>
 
-          <motion.div
-            variants={fadeIn("up", "spring", 1.2, 1)}
-            className="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4"
+          <p
+            ref={descriptionRef}
+            className="text-sm sm:text-base md:text-lg text-white/90 mb-8 sm:mb-12 font-normal max-w-xl mx-auto md:mx-0 drop-shadow-md leading-relaxed"
+            style={{ opacity: 1 }}
+          >
+            Una comunidad de desarrolladores apasionados por la tecnología,
+            compartiendo conocimiento y construyendo el futuro juntos.
+          </p>
+
+          <div
+            ref={buttonsRef}
+            className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-center md:items-start justify-center md:justify-start"
           >
             <a
               href="https://github.com/Guayaba-Devs"
               target="_blank"
               rel="noopener noreferrer"
+              className="group"
             >
-              <button className="bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-3 sm:px-8 sm:py-4 rounded-full text-base sm:text-lg font-bold transition-all transform hover:scale-105 flex items-center justify-center gap-2 shadow-lg shadow-primary/20">
+              <button className="bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-3 sm:px-8 sm:py-4 rounded-full text-base sm:text-lg font-bold transition-all duration-300 transform hover:scale-105 active:scale-95 flex items-center justify-center gap-3 shadow-xl shadow-primary/30 hover:shadow-2xl hover:shadow-primary/40">
                 <span>Únete a la comunidad</span>
                 <svg
-                  className="w-4 h-4 sm:w-5 sm:h-5 animate-bounce-horizontal"
+                  className="w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-300 group-hover:translate-x-1"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -88,11 +374,12 @@ export const Hero = () => {
               href="https://www.instagram.com/guayaba_devs_official/"
               target="_blank"
               rel="noopener noreferrer"
+              className="group"
             >
-              <button className="border border-primary text-primary hover:bg-primary/5 px-6 py-3 sm:px-8 sm:py-4 rounded-full text-base sm:text-lg font-medium transition-all transform hover:scale-105 flex items-center justify-center gap-2">
+              <button className="border-2 border-white text-white hover:bg-white/10 px-6 py-3 sm:px-8 sm:py-4 rounded-full text-base sm:text-lg font-semibold transition-all duration-300 transform hover:scale-105 active:scale-95 flex items-center justify-center gap-3 backdrop-blur-sm bg-black/30">
                 <span>Próximos eventos</span>
                 <svg
-                  className="w-4 h-4 sm:w-5 sm:h-5"
+                  className="w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-300 group-hover:translate-y-1"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -106,28 +393,9 @@ export const Hero = () => {
                 </svg>
               </button>
             </a>
-          </motion.div>
+          </div>
         </div>
       </div>
-
-      {isClient && (
-        <Particles
-          quantity={window.innerWidth < 640 ? 15 : 30}
-          maxSize={window.innerWidth < 640 ? 3 : 4}
-          speed={80}
-          className="hidden sm:block"
-        />
-      )}
-
-      <motion.div
-        variants={zoomIn(0.5, 1)}
-        className="hidden sm:block absolute top-1/4 left-20 w-48 h-48 bg-primary rounded-full mix-blend-screen opacity-10 blur-3xl animate-float"
-      />
-
-      <motion.div
-        variants={zoomIn(0.5, 1)}
-        className="hidden sm:block absolute bottom-20 right-32 w-64 h-64 bg-secondary rounded-full mix-blend-screen opacity-10 blur-3xl animate-float-delayed"
-      />
-    </motion.div>
+    </section>
   );
 };

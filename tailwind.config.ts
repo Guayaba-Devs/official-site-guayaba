@@ -116,6 +116,14 @@ const config: Config = {
             transform: "translateY(-10px)",
           },
         },
+        "pulse-slow": {
+          "0%, 100%": {
+            opacity: "0.4",
+          },
+          "50%": {
+            opacity: "0.8",
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -123,6 +131,7 @@ const config: Config = {
         marquee: "marquee var(--duration) infinite linear",
         "marquee-vertical": "marquee-vertical var(--duration) linear infinite",
         shine: "shine var(--duration) infinite linear",
+        "pulse-slow": "pulse-slow 4s ease-in-out infinite",
       },
     },
   },
