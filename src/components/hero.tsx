@@ -162,75 +162,66 @@ export const Hero = () => {
         clearTimeout(startTimeout);
       };
     }
+  }, []);
 
-    if (titleRef.current) {
-      gsap.fromTo(
-        titleRef.current,
-        {
-          x: -100,
-          opacity: 0,
-        },
-        {
-          x: 0,
-          opacity: 1,
-          duration: 1.2,
-          ease: "power3.out",
-          delay: 0.3,
+  useEffect(() => {
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        if (titleRef.current) {
+          gsap.set(titleRef.current, { x: -100, opacity: 0, scale: 0.9 });
+          gsap.to(titleRef.current, {
+            x: 0,
+            opacity: 1,
+            scale: 1,
+            duration: 1.2,
+            ease: "power3.out",
+            delay: 0.5,
+          });
         }
-      );
-    }
 
-    if (subtitleRef.current) {
-      gsap.fromTo(
-        subtitleRef.current,
-        {
-          x: -50,
-          opacity: 0,
-        },
-        {
-          x: 0,
-          opacity: 1,
-          duration: 1,
-          ease: "power2.out",
-          delay: 0.6,
+        if (subtitleRef.current) {
+          gsap.set(subtitleRef.current, { x: -80, opacity: 0, y: 20 });
+          gsap.to(subtitleRef.current, {
+            x: 0,
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            ease: "power2.out",
+            delay: 0.8,
+          });
         }
-      );
-    }
 
-    if (descriptionRef.current) {
-      gsap.fromTo(
-        descriptionRef.current,
-        {
-          x: -30,
-          opacity: 0,
-        },
-        {
-          x: 0,
-          opacity: 1,
-          duration: 1,
-          ease: "power2.out",
-          delay: 0.8,
+        if (descriptionRef.current) {
+          gsap.set(descriptionRef.current, { x: -50, opacity: 0, y: 15 });
+          gsap.to(descriptionRef.current, {
+            x: 0,
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            ease: "power2.out",
+            delay: 1.1,
+          });
         }
-      );
-    }
 
-    if (buttonsRef.current && buttonsRef.current.children.length > 0) {
-      gsap.fromTo(
-        Array.from(buttonsRef.current.children),
-        {
-          x: -30,
-          opacity: 0,
-        },
-        {
-          x: 0,
-          opacity: 1,
-          duration: 0.8,
-          ease: "power2.out",
-          delay: 1,
-          stagger: 0.1,
+        if (buttonsRef.current && buttonsRef.current.children.length > 0) {
+          const buttons = Array.from(
+            buttonsRef.current.children
+          ) as HTMLElement[];
+          buttons.forEach((button, index) => {
+            gsap.set(button, { x: -50, opacity: 0, scale: 0.8, y: 20 });
+            gsap.to(button, {
+              x: 0,
+              opacity: 1,
+              scale: 1,
+              y: 0,
+              duration: 0.8,
+              ease: "back.out(1.7)",
+              delay: 1.3 + index * 0.15,
+            });
+          });
         }
-      );
-    }
+      });
+    });
   }, []);
 
   return (
@@ -318,16 +309,14 @@ export const Hero = () => {
 
           <h1
             ref={titleRef}
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-4 sm:mb-6 bg-gradient-to-r from-primary via-primary to-secondary bg-clip-text text-transparent leading-tight drop-shadow-2xl"
-            style={{ opacity: 1 }}
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-4 sm:mb-6 bg-gradient-to-r from-primary via-primary to-secondary bg-clip-text text-transparent leading-tight drop-shadow-2xl will-change-transform"
           >
             Guayabadevs
           </h1>
 
           <p
             ref={subtitleRef}
-            className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-white mb-4 sm:mb-6 font-medium max-w-2xl mx-auto md:mx-0 drop-shadow-lg leading-relaxed"
-            style={{ opacity: 1 }}
+            className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-white mb-4 sm:mb-6 font-medium max-w-2xl mx-auto md:mx-0 drop-shadow-lg leading-relaxed will-change-transform"
           >
             Creando desarrolladores{" "}
             <span className="text-primary font-bold">fructíferos</span>
@@ -335,8 +324,7 @@ export const Hero = () => {
 
           <p
             ref={descriptionRef}
-            className="text-sm sm:text-base md:text-lg text-white/90 mb-8 sm:mb-12 font-normal max-w-xl mx-auto md:mx-0 drop-shadow-md leading-relaxed"
-            style={{ opacity: 1 }}
+            className="text-sm sm:text-base md:text-lg text-white/90 mb-8 sm:mb-12 font-normal max-w-xl mx-auto md:mx-0 drop-shadow-md leading-relaxed will-change-transform"
           >
             Una comunidad de desarrolladores apasionados por la tecnología,
             compartiendo conocimiento y construyendo el futuro juntos.
@@ -350,7 +338,7 @@ export const Hero = () => {
               href="https://github.com/Guayaba-Devs"
               target="_blank"
               rel="noopener noreferrer"
-              className="group"
+              className="group will-change-transform"
             >
               <button className="bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-3 sm:px-8 sm:py-4 rounded-full text-base sm:text-lg font-bold transition-all duration-300 transform hover:scale-105 active:scale-95 flex items-center justify-center gap-3 shadow-xl shadow-primary/30 hover:shadow-2xl hover:shadow-primary/40">
                 <span>Únete a la comunidad</span>
@@ -374,7 +362,7 @@ export const Hero = () => {
               href="https://www.instagram.com/guayaba_devs_official/"
               target="_blank"
               rel="noopener noreferrer"
-              className="group"
+              className="group will-change-transform"
             >
               <button className="border-2 border-white text-white hover:bg-white/10 px-6 py-3 sm:px-8 sm:py-4 rounded-full text-base sm:text-lg font-semibold transition-all duration-300 transform hover:scale-105 active:scale-95 flex items-center justify-center gap-3 backdrop-blur-sm bg-black/30">
                 <span>Próximos eventos</span>
