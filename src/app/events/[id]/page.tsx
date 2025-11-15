@@ -11,7 +11,7 @@ type EventPageParams = {
 };
 
 type EventPageProps = {
-  params: Promise<EventPageParams> | EventPageParams;
+  params: Promise<EventPageParams>;
 };
 
 export function generateStaticParams() {
@@ -19,7 +19,7 @@ export function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: EventPageProps): Promise<Metadata> {
-  const resolvedParams = params instanceof Promise ? await params : params;
+  const resolvedParams = await params;
   const id = resolvedParams?.id;
   if (!id) {
     return {
@@ -50,7 +50,7 @@ export async function generateMetadata({ params }: EventPageProps): Promise<Meta
 }
 
 export default async function EventPage({ params }: EventPageProps) {
-  const resolvedParams = params instanceof Promise ? await params : params;
+  const resolvedParams = await params;
   const id = resolvedParams?.id;
   if (!id) {
     notFound();

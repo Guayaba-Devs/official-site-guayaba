@@ -53,6 +53,57 @@ type HeadquartersStyle = {
   icon: (className?: string) => JSX.Element;
 };
 
+const SOCIAL_PLATFORMS: readonly SocialPlatform[] = [
+  "github",
+  "linkedin",
+  "instagram",
+  "behance",
+  "twitter",
+  "website",
+] as const;
+
+const isSocialPlatform = (platform: string): platform is SocialPlatform => {
+  return SOCIAL_PLATFORMS.includes(platform as SocialPlatform);
+};
+
+const normalizeSocials = (
+  socials?: { platform: string; url: string }[]
+): SocialLink[] => {
+  if (!socials) return [];
+  return socials
+    .map((social) => {
+      if (!isSocialPlatform(social.platform)) return null;
+      return {
+        platform: social.platform,
+        url: social.url,
+      };
+    })
+    .filter((social): social is SocialLink => Boolean(social));
+};
+
+const normalizeHeadquarters = (
+  headquarters?: TeamJSON["headquarters"]
+): Headquarters[] => {
+  if (!headquarters) return [];
+  return headquarters
+    .filter((hq) => (hq.members?.length ?? 0) > 0)
+    .map((hq): Headquarters => ({
+      id: hq.id,
+      label: hq.label,
+      location: hq.location,
+      lead: hq.lead,
+      members:
+        hq.members?.map(
+          (member): TeamMember => ({
+            name: member.name,
+            role: member.role,
+            image: member.image,
+            socials: normalizeSocials(member.socials),
+          })
+        ) ?? [],
+    }));
+};
+
 const HEADQUARTERS_STYLES: Record<string, HeadquartersStyle> = {
   principal: {
     gradient: "from-primary via-primary to-secondary",
@@ -342,10 +393,10 @@ const HeadquartersCarousel = ({
 export const TeamSection = () => {
   const data = teamData as TeamJSON;
 
-  const headquartersList = useMemo<Headquarters[]>(() => {
-    if (!data?.headquarters) return [];
-    return data.headquarters.filter((hq) => hq.members?.length > 0);
-  }, [data]);
+  const headquartersList = useMemo<Headquarters[]>(
+    () => normalizeHeadquarters(data?.headquarters),
+    [data]
+  );
 
   if (headquartersList.length === 0) {
     return null;

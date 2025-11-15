@@ -191,7 +191,13 @@ export const Newsletter = () => {
       toast.error("Por favor ingresa tu email");
       if (inputRef.current) {
         gsap.to(inputRef.current, {
-          x: [-10, 10, -10, 10, 0],
+          keyframes: [
+            { x: -10 },
+            { x: 10 },
+            { x: -10 },
+            { x: 10 },
+            { x: 0 },
+          ],
           duration: 0.5,
           ease: "power2.inOut",
         });
