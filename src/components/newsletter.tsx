@@ -8,7 +8,7 @@ import toast, { Toaster } from "react-hot-toast";
 export const Newsletter = () => {
   const [email, setEmail] = useState("");
   const [isFocused, setIsFocused] = useState(false);
-  
+
   const sectionRef = useRef<HTMLElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
@@ -93,7 +93,13 @@ export const Newsletter = () => {
         gsap.set(subtitleRef.current, { opacity: 0, y: 20 });
       }
       if (cardRef.current) {
-        gsap.set(cardRef.current, { opacity: 0, x: -100, y: 50, rotationY: -20, scale: 0.9 });
+        gsap.set(cardRef.current, {
+          opacity: 0,
+          x: -100,
+          y: 50,
+          rotationY: -20,
+          scale: 0.9,
+        });
       }
       if (imageRef.current) {
         gsap.set(imageRef.current, { opacity: 0, scale: 0.5, rotation: -15 });
@@ -186,18 +192,12 @@ export const Newsletter = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!email) {
       toast.error("Por favor ingresa tu email");
       if (inputRef.current) {
         gsap.to(inputRef.current, {
-          keyframes: [
-            { x: -10 },
-            { x: 10 },
-            { x: -10 },
-            { x: 10 },
-            { x: 0 },
-          ],
+          keyframes: [{ x: -10 }, { x: 10 }, { x: -10 }, { x: 10 }, { x: 0 }],
           duration: 0.5,
           ease: "power2.inOut",
         });
@@ -230,13 +230,16 @@ export const Newsletter = () => {
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {/* Glow principal animado */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-primary/20 via-secondary/20 to-primary/20 rounded-full blur-3xl animate-pulse" />
-        
+
         {/* Glows secundarios */}
         <div className="absolute top-20 right-20 w-72 h-72 bg-primary/10 rounded-full blur-3xl" />
         <div className="absolute bottom-20 left-20 w-96 h-96 bg-secondary/10 rounded-full blur-3xl" />
-        
+
         {/* Líneas decorativas animadas */}
-        <svg className="absolute inset-0 w-full h-full opacity-10" viewBox="0 0 1200 400">
+        <svg
+          className="absolute inset-0 w-full h-full opacity-10"
+          viewBox="0 0 1200 400"
+        >
           <path
             d="M0,200 Q300,100 600,200 T1200,200"
             stroke="url(#lineGradient)"
@@ -283,7 +286,7 @@ export const Newsletter = () => {
           >
             {/* Glow alrededor de la imagen */}
             <div className="absolute -inset-10 bg-gradient-to-r from-primary/30 via-secondary/30 to-primary/30 rounded-full blur-3xl opacity-50" />
-            
+
             <div className="relative w-full h-full group">
               <Image
                 src="/images/mascota.png"
@@ -309,7 +312,7 @@ export const Newsletter = () => {
                   });
                 }}
               />
-              
+
               {/* Partículas decorativas */}
               <div className="absolute inset-0 pointer-events-none">
                 {[...Array(5)].map((_, i) => (
@@ -341,10 +344,13 @@ export const Newsletter = () => {
             <div className="relative bg-gradient-to-br from-cardbg/95 via-cardbg/85 to-cardbg/75 backdrop-blur-2xl border border-white/10 rounded-[2rem] p-10 md:p-12 shadow-2xl overflow-hidden">
               {/* Patrón de fondo animado */}
               <div className="absolute inset-0 opacity-[0.03]">
-                <div className="absolute inset-0" style={{
-                  backgroundImage: `radial-gradient(circle at 2px 2px, rgba(0,200,179,0.3) 1px, transparent 0)`,
-                  backgroundSize: '40px 40px',
-                }} />
+                <div
+                  className="absolute inset-0"
+                  style={{
+                    backgroundImage: `radial-gradient(circle at 2px 2px, rgba(0,200,179,0.3) 1px, transparent 0)`,
+                    backgroundSize: "40px 40px",
+                  }}
+                />
               </div>
 
               {/* Gradiente animado de fondo */}
@@ -364,8 +370,8 @@ export const Newsletter = () => {
                   Suscríbete al Newsletter
                 </h4>
                 <p className="text-gray-400 text-lg mb-8 leading-relaxed">
-                  Sé el primero en conocer nuestros eventos, workshops y contenido
-                  exclusivo para desarrolladores
+                  Sé el primero en conocer nuestros eventos, workshops y
+                  contenido exclusivo para desarrolladores
                 </p>
 
                 {/* Formulario */}
@@ -391,7 +397,7 @@ export const Newsletter = () => {
                           />
                         </svg>
                       </div>
-                      
+
                       <input
                         ref={inputRef}
                         type="email"
@@ -402,7 +408,7 @@ export const Newsletter = () => {
                         placeholder="tucorreo@ejemplo.com"
                         className="w-full text-white pl-12 pr-5 py-4 text-lg bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-300 will-change-transform backdrop-blur-sm"
                       />
-                      
+
                       {/* Indicador de focus animado */}
                       {isFocused && (
                         <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-secondary to-primary rounded-b-xl" />
@@ -420,10 +426,10 @@ export const Newsletter = () => {
                   >
                     {/* Efecto shine en hover */}
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-                    
+
                     {/* Glow interno */}
                     <div className="absolute inset-0 bg-gradient-to-r from-primary to-secondary opacity-0 group-hover:opacity-50 blur-xl transition-opacity duration-300" />
-                    
+
                     <span className="relative z-10 flex items-center gap-3">
                       Suscribirse
                       <svg
@@ -465,7 +471,7 @@ export const Newsletter = () => {
               {/* Decoraciones de esquina mejoradas */}
               <div className="absolute top-0 left-0 w-32 h-32 bg-gradient-to-br from-primary/20 via-primary/10 to-transparent rounded-br-[2rem] pointer-events-none" />
               <div className="absolute bottom-0 right-0 w-32 h-32 bg-gradient-to-tl from-secondary/20 via-secondary/10 to-transparent rounded-tl-[2rem] pointer-events-none" />
-              
+
               {/* Borde animado */}
               <div className="absolute inset-0 rounded-[2rem] border border-transparent bg-gradient-to-r from-primary/20 via-secondary/20 to-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10 blur-sm" />
             </div>
@@ -475,8 +481,8 @@ export const Newsletter = () => {
         {/* Estadísticas o información adicional */}
         <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
           {[
-            { number: "500+", label: "Miembros Activos" },
-            { number: "50+", label: "Eventos Realizados" },
+            { number: "500+", label: "Miembros Activos en la Comunidad" },
+            { number: "10+", label: "Eventos Realizados" },
             { number: "100%", label: "Gratis Siempre" },
           ].map((stat, index) => (
             <div
