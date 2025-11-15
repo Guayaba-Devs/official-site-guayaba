@@ -1,16 +1,17 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import Link from "next/link";
 import Image from "next/image";
 
-const navLinks = [
-  { href: "#nosotros", label: "Nosotros" },
-  { href: "#servicios", label: "Miembros" },
-  { href: "#contacto", label: "Newsletter" },
-  { href: "#posts", label: "Posts" },
-  { href: "#faq", label: "FAQ" },
+export const navLinks = [
+  { href: "#hero", label: "Inicio" },
+  { href: "#about", label: "Sobre" },
+  { href: "#sponsors", label: "Sponsors" },
+  { href: "#team", label: "Equipo" },
+  { href: "#events", label: "Eventos" },
+  { href: "#newsletter", label: "Newsletter" },
 ];
 
 export const NavbarTop = () => {
@@ -171,6 +172,13 @@ export const NavbarTop = () => {
     }
   }, [isMenuOpen]);
 
+  const scrollToSection = useCallback((hash: string) => {
+    const element = document.querySelector(hash);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, []);
+
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -195,7 +203,7 @@ export const NavbarTop = () => {
             <div ref={logoRef} className="flex items-center">
               <Link href="/" className="flex items-center">
                 <Image
-                  src="images/guayaba-cover.png"
+                  src="/images/guayaba-cover.png"
                   alt="Guayabadevs Logo"
                   width={180}
                   height={54}
@@ -207,10 +215,14 @@ export const NavbarTop = () => {
 
             <nav className="hidden lg:flex items-center gap-8">
               {navLinks.map((link) => (
-                <Link
+                <a
                   key={link.href}
                   href={link.href}
                   className="relative text-white font-medium text-base hover:text-primary transition-colors duration-300 group"
+                  onClick={(event) => {
+                    event.preventDefault();
+                    scrollToSection(link.href);
+                  }}
                   onMouseEnter={(e) => {
                     gsap.to(e.currentTarget, {
                       scale: 1.05,
@@ -228,7 +240,7 @@ export const NavbarTop = () => {
                 >
                   {link.label}
                   <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full" />
-                </Link>
+                </a>
               ))}
             </nav>
 
@@ -261,9 +273,13 @@ export const NavbarTop = () => {
                 }}
                 className="opacity-0"
               >
-                <Link
+                <a
                   href={link.href}
-                  onClick={() => setIsMenuOpen(false)}
+                  onClick={(event) => {
+                    event.preventDefault();
+                    scrollToSection(link.href);
+                    setIsMenuOpen(false);
+                  }}
                   className="block py-4 px-4 text-xl font-semibold text-white hover:text-primary transition-colors duration-300 rounded-lg hover:bg-white/5 relative overflow-hidden group"
                   onMouseEnter={(e) => {
                     gsap.to(e.currentTarget, {
@@ -282,7 +298,7 @@ export const NavbarTop = () => {
                 >
                   <span className="relative z-10">{link.label}</span>
                   <span className="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                </Link>
+                </a>
               </li>
             ))}
           </ul>

@@ -1,11 +1,8 @@
 import type { Config } from "tailwindcss";
-import { nextui } from "@nextui-org/react";
 import { fontFamily } from "tailwindcss/defaultTheme";
-import tailwindcssAnimate from "tailwindcss-animate";
 
 const config: Config = {
   content: [
-    "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
@@ -135,7 +132,7 @@ const config: Config = {
       },
     },
   },
-  plugins: [tailwindcssAnimate, nextui()],
+  plugins: [],
   darkMode: ["class"],
 };
 

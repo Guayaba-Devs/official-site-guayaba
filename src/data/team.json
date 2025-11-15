@@ -1,0 +1,183 @@
+{
+  "headquarters": [
+    {
+      "id": "principal",
+      "label": "Equipo Principal",
+      "location": "Puebla",
+      "lead": "El núcleo que impulsa la visión de Guayaba Devs.",
+      "members": [
+        {
+          "name": "Josafat Jimenez",
+          "role": "Full Stack Developer",
+          "image": "/images/josa-perfil.webp",
+          "socials": [
+            { "platform": "github", "url": "https://github.com/josafatjimenezB" },
+            { "platform": "linkedin", "url": "https://www.linkedin.com/in/josafat-jimenez/" },
+            { "platform": "instagram", "url": "https://www.instagram.com/h4rt0ch/" }
+          ]
+        },
+        {
+          "name": "Ivan Ramirez",
+          "role": "Full Stack Developer",
+          "image": "/images/ivan-perfil.webp",
+          "socials": [
+            { "platform": "github", "url": "https://github.com/Texhnolyze47" },
+            { "platform": "linkedin", "url": "https://www.linkedin.com/in/ivan-ramirezu/" }
+          ]
+        },
+        {
+          "name": "Ian Vega",
+          "role": "Full Stack & Mobile Developer",
+          "image": "/images/ian-perfil.webp",
+          "socials": [
+            { "platform": "github", "url": "https://github.com/joh" },
+            { "platform": "linkedin", "url": "https://www.linkedin.com/in/lann892/" },
+            { "platform": "instagram", "url": "https://www.instagram.com/lannv891/" }
+          ]
+        },
+        {
+          "name": "Pablo Aguilar",
+          "role": "Software Developer",
+          "image": "/images/pablo-perfil.webp",
+          "socials": [
+            { "platform": "github", "url": "https://github.com/JuanPablo-Coder" },
+            {
+              "platform": "linkedin",
+              "url": "https://www.linkedin.com/in/juan-bablo-rodriguez-aguilar-1b7633295/"
+            },
+            { "platform": "instagram", "url": "https://www.instagram.com/pablo_roab/" }
+          ]
+        },
+        {
+          "name": "Atenea Aguilar",
+          "role": "Diseño Gráfico",
+          "image": "/images/ate-perfil.webp",
+          "socials": [
+            {
+              "platform": "linkedin",
+              "url": "https://www.linkedin.com/in/atenea-oishy-rodríguez-aguilar-097905147/"
+            },
+            { "platform": "instagram", "url": "https://www.instagram.com/kimdan.roasb/" }
+          ]
+        },
+        {
+          "name": "Miker Gutierrez",
+          "role": "Marketing",
+          "image": "/images/mike-perfil.webp",
+          "socials": [
+            { "platform": "linkedin", "url": "https://www.linkedin.com/in/erick-gutierrez/" },
+            { "platform": "instagram", "url": "https://www.instagram.com/miker_xn/" }
+          ]
+        },
+        {
+          "name": "Johan Gonzales",
+          "role": "Full Stack Developer",
+          "image": "/images/johan.webp",
+          "socials": [
+            { "platform": "github", "url": "https://github.com/JohanDev112" },
+            { "platform": "linkedin", "url": "https://linkedin.com/in/johangon112/" },
+            { "platform": "instagram", "url": "https://www.instagram.com/tamalitos.de.elote/" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cdmx",
+      "label": "Ciudad de México",
+      "location": "CDMX",
+      "lead": "Innovación y comunidad desde la capital.",
+      "members": [
+        {
+          "name": "Gerardo Bautista",
+          "role": "Full Stack Developer",
+          "image": "/images/gerardo.webp",
+          "socials": [
+            { "platform": "github", "url": "https://github.com/BGSushi" },
+            { "platform": "linkedin", "url": "https://www.linkedin.com/in/gerardo-bautista-ab8b3324a/" },
+            { "platform": "instagram", "url": "Ig: https://www.instagram.com/not_sushy" }
+          ]
+        },
+        {
+          "name": "Illse Jiménez",
+          "role": "Data analyst",
+          "image": "/images/Ilse-Jimenez.webp",
+          "socials": [
+            { "platform": "github", "url": "https://github.com" },
+            { "platform": "linkedin", "url": "https://www.linkedin.com/in/ilse-jim%C3%A9nez-363ab61ab/" },
+            { "platform": "instagram", "url": "https://instagram.com/ChaitadoraEnStem" }
+          ]
+        },
+        {
+          "name": "Alan alejandro",
+          "role": "Estudiante",
+          "image": "/images/mascota.png",
+          "socials": [
+            { "platform": "linkedin", "url": "https://linkedin.com" },
+            { "platform": "instagram", "url": "https://instagram.com" }
+          ]
+        },
+        {
+          "name": "Karen Jocelyn",
+          "role": "Backend Developer",
+          "image": "/images/Jocelyn_Hernandez.webp",
+          "socials": [
+            { "platform": "github", "url": "https://github.com" },
+            { "platform": "linkedin", "url": "https://linkedin.com/in/karenhernandez09" },
+            { "platform": "instagram", "url": "https://instagram.com/joss_poffs" }
+          ]
+        },
+        {
+          "name": "David huerta",
+          "role": "Estudiante",
+          "image": "images/mascota.png",
+          "socials": [
+            { "platform": "github", "url": "https://github.com" },
+            { "platform": "linkedin", "url": "https://linkedin.com" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "chiapas",
+      "label": "Chiapas",
+      "location": "Chiapas",
+      "lead": "Talento que florece desde el sur.",
+      "members": [
+        {
+          "name": "Jesús Ortega",
+          "role": "Mobile Developer IOS",
+          "image": "/images/jesus.webp",
+          "socials": [
+            { "platform": "github", "url": "https://github.com/JesusOrtega07" },
+            { "platform": "linkedin", "url": "https://linkedin.com/in/jesusortegadev" },
+            { "platform": "instagram", "url": "https://instagram.com/nososoyyisus_" }
+          ]
+        },
+        {
+          "name": "Meliza Gonzalez",
+          "role": "UX/UI Designer",
+          "image": "/images/meliza.webp",
+          "socials": [
+            { "platform": "github", "url": "https://github.com/Meliza09" },
+            { "platform": "linkedin", "url": "https://linkedin.com/in/meliza-aguilar-815933366/" },
+            { "platform": "instagram", "url": "https://instagram.com/jh_glz14" }
+          ]
+        },
+        {
+          "name": "Daniel Figueroa",
+          "role": "Mobile Developer IOS",
+          "image": "/images/dan.webp",
+          "socials": [
+            { "platform": "github", "url": "https://github.com/Dan-Figueroa" },
+            { "platform": "linkedin", "url": "https://www.linkedin.com/in/daniel-figueroa-ba1aa9366/" },
+            { "platform": "instagram", "url": "https://instagram.com/dan.mf" }
+          ]
+        }
+      ]
+    }
+  ]
+}
+
+
+
+

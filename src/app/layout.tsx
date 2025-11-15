@@ -4,11 +4,6 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Config } from "@/lib/config";
 import { NavbarTop } from "@/components/navbar";
-import { Hero } from "@/components/hero";
-import { Sponsors } from "@/components/sponsors";
-import { TeamSection } from "@/components/team";
-import { Newsletter } from "@/components/newsletter";
-import { Events } from "@/components/events";
 import { Footer } from "@/components/footer";
 
 const fontSans = FontSans({
@@ -24,7 +19,9 @@ export const metadata: Metadata = {
   description: "Sitio Oficial de Guayaba Devs",
 };
 
-export default function RootLayout({}: Readonly<{
+export default function RootLayout({
+  children,
+}: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
@@ -37,11 +34,7 @@ export default function RootLayout({}: Readonly<{
       >
         <Config>
           <NavbarTop />
-          <Hero />
-          <Sponsors />
-          <TeamSection />
-          <Newsletter />
-          <Events />
+          {children}
           <Footer />
         </Config>
       </body>

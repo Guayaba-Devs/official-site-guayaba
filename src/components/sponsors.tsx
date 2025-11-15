@@ -10,19 +10,19 @@ interface Sponsor {
 
 const sponsors: Sponsor[] = [
   {
-    src: "images/NAO_Tecmilenio.png",
+    src: "/images/NAO_Tecmilenio.png",
     alt: "Digital Nao Logo",
   },
   {
-    src: "images/github-campus-experts.svg",
+    src: "/images/github-campus-experts.svg",
     alt: "Github Campus Experts Logo",
   },
   {
-    src: "images/backpack.png",
+    src: "/images/backpack.png",
     alt: "Student Developer Pack",
   },
   {
-    src: "images/notion-logo.png",
+    src: "/images/notion-logo.png",
     alt: "Notion",
   },
 ];
@@ -189,14 +189,15 @@ export const Sponsors = () => {
   return (
     <section
       ref={containerRef}
-      className="relative w-full py-16 md:py-24 overflow-hidden bg-gradient-to-r from-primary to-secondary"
+      className="relative w-full py-16 md:py-24 overflow-hidden bg-gradient-to-r from-primary to-secondary scroll-mt-24"
+      id="sponsors"
     >
       {/* Header - Contenido centrado */}
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10 mb-12 md:mb-16">
         <div className="text-center">
           <h2
             ref={titleRef}
-            className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-white"
+            className="text-4xl font-bold text-white sm:text-5xl lg:text-6xl mb-4"
             style={{ opacity: 0 }}
           >
             Con el respaldo de líderes en la industria

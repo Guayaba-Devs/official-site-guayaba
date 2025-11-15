@@ -226,7 +226,8 @@ export const Hero = () => {
 
   return (
     <section
-      className="relative min-h-screen w-full overflow-hidden"
+      id="hero"
+      className="relative min-h-screen w-full overflow-hidden scroll-mt-24"
       style={{ backgroundColor: "transparent", background: "none" }}
     >
       <div
