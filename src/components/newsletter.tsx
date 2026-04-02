@@ -78,7 +78,7 @@ export const Newsletter = () => {
   return (
     <section
       id="newsletter"
-      className="relative py-20 md:py-28 px-4 sm:px-6 lg:px-8 overflow-hidden scroll-mt-24"
+      className="relative py-20 md:py-28 px-4 sm:px-6 lg:px-8 overflow-hidden scroll-mt-24 bg-background"
     >
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-primary/10 rounded-full blur-3xl" />
@@ -89,13 +89,13 @@ export const Newsletter = () => {
         <div className="text-center mb-14">
           <h2
             ref={titleRef}
-            className="text-4xl font-bold sm:text-5xl lg:text-6xl mb-4 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent"
+            className="text-4xl font-bold sm:text-5xl lg:text-6xl mb-4 text-white"
           >
             Únete a la comunidad
           </h2>
           <p
             ref={subtitleRef}
-            className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto"
+            className="text-base text-gray-400 sm:text-lg max-w-2xl mx-auto"
           >
             Conéctate con otros devs, entérate de eventos y comparte
             conocimiento en nuestro canal de WhatsApp
@@ -194,7 +194,7 @@ export const Newsletter = () => {
             <div
               key={stat.label}
               className="py-4 px-3 border border-white/[0.06] bg-white/[0.02]"
-              style={{ borderRadius: "18px" }}
+              style={{ borderRadius: "22px" }}
             >
               <div className="text-2xl md:text-3xl font-bold text-primary mb-1">
                 {stat.number}

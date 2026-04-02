@@ -114,9 +114,9 @@ export const Events = () => {
 
       <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <header className="mx-auto mb-16 max-w-3xl text-center">
-          <p className="text-sm uppercase tracking-[0.3em] text-primary/80 mb-4">
+          <span className="inline-flex rounded-full bg-primary/10 border border-primary/20 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-primary mb-4">
             Historias
-          </p>
+          </span>
           <h2
             ref={titleRef}
             className="text-4xl font-bold text-white sm:text-5xl lg:text-6xl"
@@ -166,7 +166,8 @@ const EventCard = ({
   return (
     <article
       ref={cardRef}
-      className="group/card relative flex h-full flex-col overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.03] backdrop-blur-sm transition-all duration-300 hover:border-white/15 hover:bg-white/[0.06]"
+      className="group/card relative flex h-full flex-col overflow-hidden border border-white/[0.08] bg-white/[0.03] backdrop-blur-sm transition-all duration-300 hover:border-white/15 hover:bg-white/[0.06]"
+      style={{ borderRadius: "24px" }}
     >
       <div className="relative z-10 flex h-full flex-col">
         {/* Image */}
@@ -211,7 +212,7 @@ const EventCard = ({
             >
               {event.title}
             </h3>
-            <p className="text-sm text-gray-300 leading-relaxed">
+            <p className="text-sm text-gray-400 leading-relaxed">
               {event.summary}
             </p>
           </div>

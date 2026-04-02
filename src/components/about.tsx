@@ -56,7 +56,7 @@ export const AboutSection = () => {
             </p>
           </div>
           <div
-            className="relative overflow-hidden border border-white/10 bg-white/5"
+            className="relative overflow-hidden border border-white/[0.08] bg-white/[0.03]"
             style={{ borderRadius: "24px" }}
           >
             <Image

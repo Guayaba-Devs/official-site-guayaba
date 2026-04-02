@@ -100,7 +100,7 @@ export const Sponsors = () => {
           </h2>
           <p
             ref={subtitleRef}
-            className="text-lg md:text-xl text-white/80 max-w-2xl mx-auto"
+            className="text-base text-white/80 sm:text-lg max-w-2xl mx-auto"
             style={{ opacity: 0 }}
           >
             Juntos fortalecemos la innovación y el crecimiento de la comunidad

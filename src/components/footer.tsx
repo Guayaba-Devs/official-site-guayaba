@@ -36,7 +36,7 @@ export const Footer = () => {
   }, []);
 
   return (
-    <footer className="relative overflow-hidden bg-background py-16">
+    <footer className="relative overflow-hidden bg-background py-16 md:py-20">
       {/* Subtle top glow */}
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
       <div className="absolute left-1/2 -translate-x-1/2 top-0 h-40 w-96 bg-primary/5 blur-[100px] pointer-events-none" />

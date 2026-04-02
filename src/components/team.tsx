@@ -449,7 +449,7 @@ export const TeamSection = () => {
   return (
     <section
       id="team"
-      className="relative w-full overflow-hidden bg-gradient-to-b from-background via-background/95 to-background py-16 sm:py-24 scroll-mt-24"
+      className="relative w-full overflow-hidden bg-gradient-to-b from-background via-background/95 to-background py-20 md:py-28 scroll-mt-24"
     >
       {/* Background visual elements */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -551,9 +551,9 @@ export const TeamSection = () => {
 
       <div className="container relative z-10 mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
         <header className="mx-auto mb-14 max-w-2xl text-center sm:mb-16">
-          <p className="text-sm uppercase tracking-[0.3em] text-gray-400">
+          <span className="inline-flex rounded-full bg-primary/10 border border-primary/20 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-primary">
             Personas Guayaba
-          </p>
+          </span>
           <h2 className="mt-4 text-4xl font-bold text-white sm:text-5xl lg:text-6xl">
             Nuestro Equipo
           </h2>
