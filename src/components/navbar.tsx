@@ -11,11 +11,14 @@ export const navLinks = [
   { href: "#sponsors", label: "Sponsors" },
   { href: "#team", label: "Equipo" },
   { href: "#events", label: "Eventos" },
-  { href: "#newsletter", label: "Newsletter" },
+  { href: "#newsletter", label: "Comunidad" },
 ];
+
+const SECTION_IDS = navLinks.map((l) => l.href.replace("#", ""));
 
 export const NavbarTop = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState("hero");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navbarRef = useRef<HTMLElement>(null);
   const gradientOverlayRef = useRef<HTMLDivElement>(null);
@@ -23,7 +26,59 @@ export const NavbarTop = () => {
   const hamburgerRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const menuItemsRef = useRef<HTMLLIElement[]>([]);
+  const indicatorRef = useRef<HTMLDivElement>(null);
+  const navContainerRef = useRef<HTMLElement>(null);
 
+  // Active section detection
+  useEffect(() => {
+    const observers: IntersectionObserver[] = [];
+
+    SECTION_IDS.forEach((id) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            setActiveSection(id);
+          }
+        },
+        { rootMargin: "-40% 0px -55% 0px" }
+      );
+
+      observer.observe(el);
+      observers.push(observer);
+    });
+
+    return () => observers.forEach((o) => o.disconnect());
+  }, []);
+
+  // Animate pill indicator to active link
+  useEffect(() => {
+    if (!indicatorRef.current || !navContainerRef.current) return;
+
+    const activeLink = navContainerRef.current.querySelector(
+      `[data-section="${activeSection}"]`
+    ) as HTMLElement | null;
+
+    if (!activeLink) {
+      gsap.to(indicatorRef.current, { opacity: 0, duration: 0.2 });
+      return;
+    }
+
+    const containerRect = navContainerRef.current.getBoundingClientRect();
+    const linkRect = activeLink.getBoundingClientRect();
+
+    gsap.to(indicatorRef.current, {
+      x: linkRect.left - containerRect.left,
+      width: linkRect.width,
+      opacity: 1,
+      duration: 0.35,
+      ease: "power2.out",
+    });
+  }, [activeSection]);
+
+  // Scroll detection for navbar background
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY;
@@ -53,11 +108,10 @@ export const NavbarTop = () => {
     window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
 
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
+    return () => window.removeEventListener("scroll", handleScroll);
   }, [isScrolled]);
 
+  // Initial entrance animation
   useEffect(() => {
     if (logoRef.current) {
       gsap.fromTo(
@@ -67,7 +121,7 @@ export const NavbarTop = () => {
       );
     }
 
-    const navLinksElements = navbarRef.current?.querySelectorAll("nav a");
+    const navLinksElements = navContainerRef.current?.querySelectorAll("a");
     if (navLinksElements) {
       gsap.fromTo(
         Array.from(navLinksElements),
@@ -84,17 +138,14 @@ export const NavbarTop = () => {
     }
   }, []);
 
+  // Mobile menu animation
   useEffect(() => {
     if (menuRef.current) {
       if (isMenuOpen) {
         gsap.fromTo(
           menuRef.current,
           { x: "100%" },
-          {
-            x: 0,
-            duration: 0.4,
-            ease: "power3.out",
-          }
+          { x: 0, duration: 0.4, ease: "power3.out" }
         );
 
         if (menuItemsRef.current.length > 0) {
@@ -128,46 +179,19 @@ export const NavbarTop = () => {
     }
   }, [isMenuOpen]);
 
+  // Hamburger animation
   useEffect(() => {
     if (hamburgerRef.current) {
       const lines = hamburgerRef.current.querySelectorAll("span");
 
       if (isMenuOpen) {
-        gsap.to(lines[0], {
-          rotate: 45,
-          y: 8,
-          duration: 0.3,
-          ease: "power2.out",
-        });
-        gsap.to(lines[1], {
-          opacity: 0,
-          duration: 0.2,
-          ease: "power2.out",
-        });
-        gsap.to(lines[2], {
-          rotate: -45,
-          y: -8,
-          duration: 0.3,
-          ease: "power2.out",
-        });
+        gsap.to(lines[0], { rotate: 45, y: 8, duration: 0.3, ease: "power2.out" });
+        gsap.to(lines[1], { opacity: 0, duration: 0.2, ease: "power2.out" });
+        gsap.to(lines[2], { rotate: -45, y: -8, duration: 0.3, ease: "power2.out" });
       } else {
-        gsap.to(lines[0], {
-          rotate: 0,
-          y: 0,
-          duration: 0.3,
-          ease: "power2.out",
-        });
-        gsap.to(lines[1], {
-          opacity: 1,
-          duration: 0.2,
-          ease: "power2.out",
-        });
-        gsap.to(lines[2], {
-          rotate: 0,
-          y: 0,
-          duration: 0.3,
-          ease: "power2.out",
-        });
+        gsap.to(lines[0], { rotate: 0, y: 0, duration: 0.3, ease: "power2.out" });
+        gsap.to(lines[1], { opacity: 1, duration: 0.2, ease: "power2.out" });
+        gsap.to(lines[2], { rotate: 0, y: 0, duration: 0.3, ease: "power2.out" });
       }
     }
   }, [isMenuOpen]);
@@ -179,18 +203,14 @@ export const NavbarTop = () => {
     }
   }, []);
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   return (
     <>
       <nav
         ref={navbarRef}
         className="fixed top-0 left-0 right-0 z-50 h-20"
-        style={{
-          backgroundColor: "rgba(0, 0, 0, 0)",
-        }}
+        style={{ backgroundColor: "rgba(0, 0, 0, 0)" }}
       >
         <div
           ref={gradientOverlayRef}
@@ -200,6 +220,7 @@ export const NavbarTop = () => {
 
         <div className="container mx-auto h-full px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="flex items-center justify-between h-full">
+            {/* Logo */}
             <div ref={logoRef} className="flex items-center">
               <Link href="/" className="flex items-center">
                 <Image
@@ -213,41 +234,49 @@ export const NavbarTop = () => {
               </Link>
             </div>
 
-            <nav className="hidden lg:flex items-center gap-8">
-              {navLinks.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  className="relative text-white font-medium text-base hover:text-primary transition-colors duration-300 group"
-                  onClick={(event) => {
-                    event.preventDefault();
-                    scrollToSection(link.href);
-                  }}
-                  onMouseEnter={(e) => {
-                    gsap.to(e.currentTarget, {
-                      scale: 1.05,
-                      duration: 0.2,
-                      ease: "power2.out",
-                    });
-                  }}
-                  onMouseLeave={(e) => {
-                    gsap.to(e.currentTarget, {
-                      scale: 1,
-                      duration: 0.2,
-                      ease: "power2.out",
-                    });
-                  }}
-                >
-                  {link.label}
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full" />
-                </a>
-              ))}
+            {/* Desktop nav with sliding pill indicator */}
+            <nav
+              ref={navContainerRef}
+              className="hidden lg:flex items-center gap-1 relative"
+            >
+              {/* Sliding pill background */}
+              <div
+                ref={indicatorRef}
+                className="absolute top-0 h-full rounded-full pointer-events-none"
+                style={{
+                  background: "rgba(255,255,255,0.1)",
+                  opacity: 0,
+                }}
+              />
+
+              {navLinks.map((link) => {
+                const sectionId = link.href.replace("#", "");
+                const isActive = activeSection === sectionId;
+
+                return (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    data-section={sectionId}
+                    className={`relative px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200 ${
+                      isActive ? "text-white" : "text-white/70 hover:text-white"
+                    }`}
+                    onClick={(event) => {
+                      event.preventDefault();
+                      scrollToSection(link.href);
+                    }}
+                  >
+                    {link.label}
+                  </a>
+                );
+              })}
             </nav>
 
+            {/* Hamburger */}
             <button
               ref={hamburgerRef}
               onClick={toggleMenu}
-              className="lg:hidden relative w-10 h-10 flex flex-col justify-center items-center gap-1.5 z-50 group"
+              className="lg:hidden relative w-10 h-10 flex flex-col justify-center items-center gap-1.5 z-50"
               aria-label="Toggle menu"
             >
               <span className="w-6 h-0.5 bg-white transition-all duration-300 origin-center" />
@@ -258,6 +287,7 @@ export const NavbarTop = () => {
         </div>
       </nav>
 
+      {/* Mobile menu */}
       <div
         ref={menuRef}
         className="fixed top-0 right-0 h-screen w-80 max-w-[85vw] bg-gradient-to-br from-background via-background/95 to-background/90 backdrop-blur-xl z-40 lg:hidden shadow-2xl"
@@ -265,42 +295,39 @@ export const NavbarTop = () => {
       >
         <div className="flex flex-col h-full pt-24 px-6">
           <ul className="flex flex-col gap-2 mt-8">
-            {navLinks.map((link, index) => (
-              <li
-                key={link.href}
-                ref={(el) => {
-                  if (el) menuItemsRef.current[index] = el;
-                }}
-                className="opacity-0"
-              >
-                <a
-                  href={link.href}
-                  onClick={(event) => {
-                    event.preventDefault();
-                    scrollToSection(link.href);
-                    setIsMenuOpen(false);
+            {navLinks.map((link, index) => {
+              const sectionId = link.href.replace("#", "");
+              const isActive = activeSection === sectionId;
+
+              return (
+                <li
+                  key={link.href}
+                  ref={(el) => {
+                    if (el) menuItemsRef.current[index] = el;
                   }}
-                  className="block py-4 px-4 text-xl font-semibold text-white hover:text-primary transition-colors duration-300 rounded-lg hover:bg-white/5 relative overflow-hidden group"
-                  onMouseEnter={(e) => {
-                    gsap.to(e.currentTarget, {
-                      x: 10,
-                      duration: 0.2,
-                      ease: "power2.out",
-                    });
-                  }}
-                  onMouseLeave={(e) => {
-                    gsap.to(e.currentTarget, {
-                      x: 0,
-                      duration: 0.2,
-                      ease: "power2.out",
-                    });
-                  }}
+                  className="opacity-0"
                 >
-                  <span className="relative z-10">{link.label}</span>
-                  <span className="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                </a>
-              </li>
-            ))}
+                  <a
+                    href={link.href}
+                    onClick={(event) => {
+                      event.preventDefault();
+                      scrollToSection(link.href);
+                      setIsMenuOpen(false);
+                    }}
+                    className={`flex items-center gap-3 py-4 px-4 text-lg font-semibold rounded-2xl transition-all duration-200 ${
+                      isActive
+                        ? "text-white bg-white/10"
+                        : "text-white/60 hover:text-white hover:bg-white/5"
+                    }`}
+                  >
+                    {isActive && (
+                      <span className="h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
+                    )}
+                    {link.label}
+                  </a>
+                </li>
+              );
+            })}
           </ul>
 
           <div className="mt-auto mb-8">

@@ -12,8 +12,8 @@ const Landing = () => {
       <AboutSection />
       <Sponsors />
       <TeamSection />
-      <Newsletter />
       <Events />
+      <Newsletter />
     </main>
   );
 };
