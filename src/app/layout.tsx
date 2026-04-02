@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter as FontSans } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
-import { Config } from "@/lib/config";
+import { ThemeProvider } from "@/lib/theme";
 import { NavbarTop } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 
@@ -75,15 +75,30 @@ export const metadata: Metadata = {
     canonical: siteUrl,
   },
   icons: {
-    icon: "/favicon.svg",
-    shortcut: "/favicon.svg",
+    icon: "/icon.png",
   },
 };
 
 export const viewport: Viewport = {
   themeColor: "#0f172a",
-  colorScheme: "dark",
+  colorScheme: "dark light",
 };
+
+// Inline script to set theme before paint — prevents flash
+const themeScript = `
+(function(){
+  try {
+    var t = localStorage.getItem('theme');
+    if (t === 'light') {
+      document.documentElement.classList.remove('dark');
+    } else {
+      document.documentElement.classList.add('dark');
+    }
+  } catch(e) {
+    document.documentElement.classList.add('dark');
+  }
+})();
+`;
 
 export default function RootLayout({
   children,
@@ -91,22 +106,23 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
       <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <link rel="preconnect" href="https://res.cloudinary.com" />
         <link rel="dns-prefetch" href="https://res.cloudinary.com" />
       </head>
       <body
         className={cn(
-          "min-h-screen bg antialiased mx-auto overflow-auto",
+          "min-h-screen bg-background antialiased mx-auto overflow-auto",
           fontSans.variable
         )}
       >
-        <Config>
+        <ThemeProvider>
           <NavbarTop />
           {children}
           <Footer />
-        </Config>
+        </ThemeProvider>
       </body>
     </html>
   );

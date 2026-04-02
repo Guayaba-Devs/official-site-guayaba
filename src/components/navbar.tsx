@@ -4,6 +4,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import Link from "next/link";
 import Image from "next/image";
+import { IconMoon, IconSun } from "@tabler/icons-react";
+import { useTheme } from "@/lib/theme";
 
 export const navLinks = [
   { href: "#hero", label: "Inicio" },
@@ -17,6 +19,7 @@ export const navLinks = [
 const SECTION_IDS = navLinks.map((l) => l.href.replace("#", ""));
 
 export const NavbarTop = () => {
+  const { theme, toggleTheme } = useTheme();
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("hero");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -272,7 +275,19 @@ export const NavbarTop = () => {
               })}
             </nav>
 
-            {/* Hamburger */}
+            {/* Theme toggle + Hamburger */}
+            <div className="flex items-center gap-2">
+              <button
+                onClick={toggleTheme}
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition-all duration-200 hover:bg-white/10"
+                aria-label="Cambiar tema"
+              >
+                {theme === "dark" ? (
+                  <IconSun className="h-[18px] w-[18px]" />
+                ) : (
+                  <IconMoon className="h-[18px] w-[18px]" />
+                )}
+              </button>
             <button
               ref={hamburgerRef}
               onClick={toggleMenu}
@@ -283,6 +298,7 @@ export const NavbarTop = () => {
               <span className="w-6 h-0.5 bg-white transition-all duration-300" />
               <span className="w-6 h-0.5 bg-white transition-all duration-300 origin-center" />
             </button>
+            </div>
           </div>
         </div>
       </nav>
