@@ -271,31 +271,36 @@ export const Hero = () => {
       </div>
 
       <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-40 md:bottom-8 md:left-auto md:transform-none md:right-8">
-        <div className="flex gap-2 mb-2">
-          {heroImages.map((_, index) => (
+        <div
+          className="flex items-center gap-3 rounded-full px-4 py-2.5 backdrop-blur-md"
+          style={{ background: "rgba(0,0,0,0.35)", border: "1px solid rgba(255,255,255,0.1)" }}
+        >
+          <div className="flex gap-1.5">
+            {heroImages.map((_, index) => (
+              <div
+                key={index}
+                className={`h-1.5 rounded-full transition-all duration-300 ${
+                  index === currentSlideIndex
+                    ? "bg-primary w-6"
+                    : "bg-white/25 w-1.5"
+                }`}
+              />
+            ))}
+          </div>
+          <div className="w-20 h-1.5 bg-white/10 rounded-full overflow-hidden md:w-28">
             <div
-              key={index}
-              className={`h-1 rounded-full transition-all duration-300 ${
-                index === currentSlideIndex
-                  ? "bg-primary w-8"
-                  : "bg-white/30 w-1.5"
-              }`}
+              ref={progressBarRef}
+              className="h-full bg-primary rounded-full"
+              style={{ width: "0%" }}
             />
-          ))}
-        </div>
-        <div className="w-32 h-1 bg-white/20 rounded-full overflow-hidden md:w-48">
-          <div
-            ref={progressBarRef}
-            className="h-full bg-primary rounded-full"
-            style={{ width: "0%" }}
-          />
+          </div>
         </div>
       </div>
 
       <div className="relative z-30 min-h-screen flex items-center px-4 sm:px-6 lg:px-8 xl:px-16 pt-20">
         <div className="max-w-4xl w-full text-center md:text-left">
           <div className="mb-6 sm:mb-8 flex justify-center md:justify-start">
-            <div className="w-20 h-20 sm:w-28 sm:h-28 bg-primary-foreground rounded-full flex items-center justify-center shadow-2xl shadow-primary/30 animate-pulse-slow">
+            <div className="w-20 h-20 sm:w-28 sm:h-28 rounded-full flex items-center justify-center shadow-2xl shadow-primary/20 border border-white/15 bg-black/30 backdrop-blur-md">
               <div className="w-14 h-14 sm:w-20 sm:h-20 rounded-full overflow-hidden">
                 <img
                   src="/images/mascota.png"
@@ -336,7 +341,7 @@ export const Hero = () => {
             className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-center md:items-start justify-center md:justify-start"
           >
             <a
-              href="https://github.com/Guayaba-Devs"
+              href="https://chat.whatsapp.com/JS7LnHo93jg0Rj6mDesFpI?mode=gi_t"
               target="_blank"
               rel="noopener noreferrer"
               className="group will-change-transform"
@@ -360,12 +365,14 @@ export const Hero = () => {
             </a>
 
             <a
-              href="https://www.instagram.com/guayaba_devs_official/"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="#events"
+              onClick={(e) => {
+                e.preventDefault();
+                document.querySelector("#events")?.scrollIntoView({ behavior: "smooth", block: "start" });
+              }}
               className="group will-change-transform"
             >
-              <button className="border-2 border-white text-white hover:bg-white/10 px-6 py-3 sm:px-8 sm:py-4 rounded-full text-base sm:text-lg font-semibold transition-all duration-300 transform hover:scale-105 active:scale-95 flex items-center justify-center gap-3 backdrop-blur-sm bg-black/30">
+              <button className="border border-white/20 text-white hover:bg-white/10 hover:border-white/30 px-6 py-3 sm:px-8 sm:py-4 rounded-full text-base sm:text-lg font-semibold transition-all duration-300 transform hover:scale-105 active:scale-95 flex items-center justify-center gap-3 backdrop-blur-md bg-white/5">
                 <span>Próximos eventos</span>
                 <svg
                   className="w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-300 group-hover:translate-y-1"
