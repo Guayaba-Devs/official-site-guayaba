@@ -1,0 +1,49 @@
+# Add directories or file patterns to ignore during indexing (e.g. foo/ or *.csv)
+# Dependencias
+node_modules/
+vendor/
+venv/
+.venv/
+env/
+
+# Secretos y Entorno
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Build, Caché y Compilados
+.next/
+dist/
+build/
+out/
+.nuxt/
+.svelte-kit/
+.angular/
+target/
+__pycache__/
+*.pyc
+storage/
+var/
+
+# Bases de datos locales
+*.sqlite
+*.sqlite3
+db.sqlite3
+
+# Logs y Reportes
+*.log
+npm-debug.log
+yarn-error.log
+coverage/
+.pytest_cache/
+output.xml
+report.html
+log.html
+
+# Configuración de OS e IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

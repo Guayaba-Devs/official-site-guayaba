@@ -4,10 +4,10 @@ import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 
 const heroImages = [
-  "https://res.cloudinary.com/dq84mzx7b/image/upload/v1761092964/_DSC0115_v80ngi.jpg",
-  "https://res.cloudinary.com/dq84mzx7b/image/upload/v1746660670/_DSC0203_6_xn4jgg.jpg",
-  "https://res.cloudinary.com/dq84mzx7b/image/upload/v1746660556/_DSC0017_3_akrp30.jpg",
-  "https://res.cloudinary.com/dq84mzx7b/image/upload/v1761092958/_DSC9891_vcewmx.jpg",
+  "https://res.cloudinary.com/dq84mzx7b/image/upload/f_auto,q_auto,w_1920/v1761092964/_DSC0115_v80ngi.jpg",
+  "https://res.cloudinary.com/dq84mzx7b/image/upload/f_auto,q_auto,w_1920/v1746660670/_DSC0203_6_xn4jgg.jpg",
+  "https://res.cloudinary.com/dq84mzx7b/image/upload/f_auto,q_auto,w_1920/v1746660556/_DSC0017_3_akrp30.jpg",
+  "https://res.cloudinary.com/dq84mzx7b/image/upload/f_auto,q_auto,w_1920/v1761092958/_DSC9891_vcewmx.jpg",
 ];
 
 const transitionTypes = ["slide-right", "fade", "zoom-in", "slide-left"];

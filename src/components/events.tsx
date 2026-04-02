@@ -48,11 +48,11 @@ export const Events = () => {
       if (titleRef.current) {
         gsap.fromTo(
           titleRef.current,
-          { y: 40, opacity: 0 },
+          { y: 30, opacity: 0 },
           {
             y: 0,
             opacity: 1,
-            duration: 0.9,
+            duration: 0.8,
             ease: "power3.out",
             scrollTrigger: {
               trigger: sectionRef.current,
@@ -69,7 +69,7 @@ export const Events = () => {
           {
             y: 0,
             opacity: 1,
-            duration: 0.8,
+            duration: 0.7,
             delay: 0.1,
             ease: "power3.out",
             scrollTrigger: {
@@ -85,18 +85,16 @@ export const Events = () => {
 
         gsap.fromTo(
           card,
-          { opacity: 0, y: 60, scale: 0.95 },
+          { opacity: 0, y: 40 },
           {
             opacity: 1,
             y: 0,
-            scale: 1,
-            duration: 0.8,
-            ease: "power3.out",
-            delay: index * 0.08,
+            duration: 0.6,
+            ease: "power2.out",
+            delay: index * 0.1,
             scrollTrigger: {
               trigger: card,
-              start: "top 85%",
-              toggleActions: "play none none reverse",
+              start: "top 88%",
             },
           }
         );
@@ -112,11 +110,13 @@ export const Events = () => {
       ref={sectionRef}
       className="relative w-full overflow-hidden bg-gradient-to-b from-background via-background to-background/95 py-20 md:py-28 scroll-mt-24"
     >
-      <div className="absolute inset-x-0 top-10 h-40 bg-primary/10 blur-3xl" />
-      <div className="absolute inset-x-20 bottom-0 h-32 bg-secondary/10 blur-3xl" />
+      <div className="absolute inset-x-0 top-10 h-40 bg-primary/5 blur-3xl" />
 
       <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <header className="mx-auto mb-16 max-w-3xl text-center">
+          <p className="text-sm uppercase tracking-[0.3em] text-primary/80 mb-4">
+            Historias
+          </p>
           <h2
             ref={titleRef}
             className="text-4xl font-bold text-white sm:text-5xl lg:text-6xl"
@@ -133,7 +133,7 @@ export const Events = () => {
           </p>
         </header>
 
-        <div className="grid gap-6 sm:gap-7 md:grid-cols-2 xl:grid-cols-3">
+        <div className="grid gap-6 sm:gap-7 md:grid-cols-2 xl:grid-cols-2">
           {eventsData.map((event, index) => (
             <EventCard
               key={event.id}
@@ -163,142 +163,118 @@ const EventCard = ({
     return () => register(null);
   }, [register]);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const card = e.currentTarget;
-    const glow = card.querySelector<HTMLDivElement>("[data-glow]");
-    if (!glow) return;
-
-    const rect = card.getBoundingClientRect();
-    const relX = e.clientX - rect.left;
-    const relY = e.clientY - rect.top;
-    const moveX = ((relX - rect.width / 2) / rect.width) * 24;
-    const moveY = ((relY - rect.height / 2) / rect.height) * 24;
-    glow.style.opacity = "1";
-    glow.style.transform = `translate(${moveX}px, ${moveY}px) scale(1.05)`;
-  };
-
-  const handleMouseLeave = (e: React.MouseEvent<HTMLDivElement>) => {
-    const glow = e.currentTarget.querySelector<HTMLDivElement>("[data-glow]");
-    if (!glow) return;
-    glow.style.opacity = "0";
-    glow.style.transform = "translate(0px, 0px) scale(1)";
-  };
-
   return (
     <article
       ref={cardRef}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      className="group/card relative flex h-full flex-col overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-white/10 via-white/5 to-white/5 p-5 backdrop-blur-2xl transition-transform duration-300 hover:-translate-y-2"
+      className="group/card relative flex h-full flex-col overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.03] backdrop-blur-sm transition-all duration-300 hover:border-white/15 hover:bg-white/[0.06]"
     >
-      <div
-        data-glow
-        className={`pointer-events-none absolute inset-0 rounded-3xl bg-gradient-to-br ${accent.glow} opacity-0 transition duration-500`}
-      />
-
-      <div className="absolute inset-0 rounded-3xl border border-white/5 opacity-30" />
-
-      <div className="relative z-10 flex h-full flex-col gap-5">
-        <div className="flex flex-wrap items-center gap-2">
-          <span
-            className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] ${accent.badge}`}
-          >
-            <IconCalendarEvent className="h-4 w-4" />
-            {event.date}
-          </span>
-          <span className="flex items-center gap-1 text-sm text-gray-300">
-            <IconMapPin className="h-4 w-4" />
-            {event.location}
-          </span>
-        </div>
-
+      <div className="relative z-10 flex h-full flex-col">
+        {/* Image */}
         <div
-          className={`relative overflow-hidden rounded-2xl border border-white/10 bg-black/40 ring-1 ${accent.ring}`}
+          className="relative overflow-hidden"
           style={{ viewTransitionName: `event-hero-${event.id}` }}
         >
-          <div className="relative aspect-[4/3] w-full">
+          <div className="relative aspect-[16/9] w-full">
             <Image
               src={event.hero}
               alt={event.title}
               fill
               className="object-cover transition-transform duration-500 group-hover/card:scale-105"
+              sizes="(max-width: 768px) 100vw, 50vw"
               priority={false}
             />
           </div>
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
-        </div>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
 
-        <div className="flex flex-wrap gap-2">
-          {event.tags.map((tag) => (
+          {/* Date badge on image */}
+          <div className="absolute top-3 left-3">
             <span
-              key={tag}
-              className={`rounded-full px-3 py-1 text-xs font-semibold text-white ${accent.tag}`}
+              className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium backdrop-blur-md ${accent.badge}`}
             >
-              {tag}
+              <IconCalendarEvent className="h-3.5 w-3.5" />
+              {event.date}
             </span>
-          ))}
-        </div>
-
-        <div className="space-y-2">
-          <h3
-            className="text-2xl font-semibold text-white md:text-3xl"
-            style={{ viewTransitionName: `event-title-${event.id}` }}
-          >
-            {event.title}
-          </h3>
-          <p className={`mt-2 text-sm font-semibold ${accent.highlight}`}>
-            {event.highlight}
-          </p>
-          <p className="mt-3 text-sm text-gray-300 md:text-base">
-            {event.summary}
-          </p>
-        </div>
-
-        {event.gallery.length > 0 ? (
-          <div className="mt-3 flex items-center gap-3">
-            <span className="flex items-center gap-1 text-xs uppercase tracking-[0.2em] text-gray-500">
-              <IconPhoto className="h-4 w-4" />
-              Recuerdos
-            </span>
-            <div className="flex -space-x-3">
-              {event.gallery.slice(0, 3).map((image, idx) => (
-                <div
-                  key={image}
-                  className="relative h-9 w-9 overflow-hidden rounded-full border border-background/80 shadow-lg"
-                >
-                  <Image
-                    src={image}
-                    alt={`${event.title} ${idx + 1}`}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-              ))}
-            </div>
           </div>
-        ) : null}
+        </div>
 
-        <div className="mt-auto flex items-center justify-between gap-3 pt-4">
-          <div className="flex items-center gap-2">
+        {/* Content */}
+        <div className="flex flex-1 flex-col gap-3 p-5 md:p-6">
+          <div className="flex items-center gap-2 text-sm text-gray-400">
+            <IconMapPin className="h-3.5 w-3.5" />
+            {event.location}
+          </div>
+
+          <div className="space-y-2">
+            <h3
+              className="text-xl font-semibold text-white md:text-2xl"
+              style={{ viewTransitionName: `event-title-${event.id}` }}
+            >
+              {event.title}
+            </h3>
+            <p className="text-sm text-gray-300 leading-relaxed">
+              {event.summary}
+            </p>
+          </div>
+
+          <div className="flex flex-wrap gap-1.5 mt-1">
+            {event.tags.map((tag) => (
+              <span
+                key={tag}
+                className="rounded-full border border-white/10 bg-white/5 px-2.5 py-0.5 text-xs text-white/70"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+
+          {event.gallery.length > 0 && (
+            <div className="flex items-center gap-2 mt-1">
+              <IconPhoto className="h-3.5 w-3.5 text-gray-500" />
+              <div className="flex -space-x-2">
+                {event.gallery.slice(0, 3).map((image, idx) => (
+                  <div
+                    key={image}
+                    className="relative h-7 w-7 overflow-hidden rounded-full border-2 border-background"
+                  >
+                    <Image
+                      src={image}
+                      alt={`${event.title} ${idx + 1}`}
+                      fill
+                      className="object-cover"
+                      sizes="28px"
+                    />
+                  </div>
+                ))}
+              </div>
+              <span className="text-xs text-gray-500">
+                +{event.gallery.length}
+              </span>
+            </div>
+          )}
+
+          <div className="mt-auto flex items-center justify-between gap-3 pt-3 border-t border-white/[0.06]">
             <Link
               href={`/events/${event.id}`}
-              className={`relative inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-5 py-2.5 text-sm font-semibold text-white shadow-lg transition duration-300 hover:border-white/30 hover:bg-white/20 ${accent.focus}`}
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-white/90 transition-colors hover:text-primary"
             >
               Ver más
-              <IconArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover/card:translate-x-1 group-hover/card:-translate-y-1" />
+              <IconArrowUpRight className="h-4 w-4 transition-transform duration-200 group-hover/card:translate-x-0.5 group-hover/card:-translate-y-0.5" />
             </Link>
-            {event.link ? (
-              <a
-                href={event.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-full border border-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-white transition duration-300 hover:border-white/30 hover:text-white/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
-              >
-                <IconBrandInstagram className="h-4 w-4" />
-              </a>
-            ) : null}
+            <div className="flex items-center gap-2">
+              {event.link && (
+                <a
+                  href={event.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center h-8 w-8 rounded-full border border-white/10 text-white/60 transition-all hover:border-white/20 hover:text-white/90"
+                  aria-label={`Instagram de ${event.title}`}
+                >
+                  <IconBrandInstagram className="h-4 w-4" />
+                </a>
+              )}
+              <span className="text-xs text-gray-500">{event.year}</span>
+            </div>
           </div>
-          <div className="text-sm text-gray-400">{event.year}</div>
         </div>
       </div>
     </article>

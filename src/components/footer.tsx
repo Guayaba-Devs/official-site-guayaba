@@ -35,7 +35,7 @@ export const Footer = () => {
           <div className="space-y-4">
             <div className="relative h-16 w-40 overflow-hidden rounded-3xl bg-white ">
               <Image
-                src="/images/guayaba-cover.png"
+                src="/images/guayaba-cover.webp"
                 alt="Guayaba Devs Logo"
                 fill
                 className="object-contain p-1"

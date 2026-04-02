@@ -12,8 +12,7 @@ const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
   display: "swap",
-  adjustFontFallback: false,
-  preload: false,
+  preload: true,
 });
 
 export const metadata: Metadata = {
@@ -93,6 +92,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="preconnect" href="https://res.cloudinary.com" />
+        <link rel="dns-prefetch" href="https://res.cloudinary.com" />
+      </head>
       <body
         className={cn(
           "min-h-screen bg antialiased mx-auto overflow-auto",

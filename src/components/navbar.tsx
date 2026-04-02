@@ -203,7 +203,7 @@ export const NavbarTop = () => {
             <div ref={logoRef} className="flex items-center">
               <Link href="/" className="flex items-center">
                 <Image
-                  src="/images/guayaba-cover.png"
+                  src="/images/guayaba-cover.webp"
                   alt="Guayabadevs Logo"
                   width={180}
                   height={54}

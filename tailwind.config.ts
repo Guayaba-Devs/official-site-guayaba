@@ -83,7 +83,7 @@ const config: Config = {
             transform: "translateX(0)",
           },
           to: {
-            transform: "translateX(calc(-100% - var(--gap)))",
+            transform: "translateX(-50%)",
           },
         },
         "marquee-vertical": {

@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import teamData from "@/data/team.json";
+import { gsap } from "gsap";
 import {
   IconBrandGithub,
   IconBrandInstagram,
@@ -44,11 +45,9 @@ interface Headquarters {
 }
 
 type HeadquartersStyle = {
-  gradient: string;
+  accent: string;
+  accentRgb: string;
   badge: string;
-  ring: string;
-  glow: string;
-  accentLight: string;
   text: string;
   icon: (className?: string) => JSX.Element;
 };
@@ -73,10 +72,7 @@ const normalizeSocials = (
   return socials
     .map((social) => {
       if (!isSocialPlatform(social.platform)) return null;
-      return {
-        platform: social.platform,
-        url: social.url,
-      };
+      return { platform: social.platform, url: social.url };
     })
     .filter((social): social is SocialLink => Boolean(social));
 };
@@ -87,59 +83,53 @@ const normalizeHeadquarters = (
   if (!headquarters) return [];
   return headquarters
     .filter((hq) => (hq.members?.length ?? 0) > 0)
-    .map((hq): Headquarters => ({
-      id: hq.id,
-      label: hq.label,
-      location: hq.location,
-      lead: hq.lead,
-      members:
-        hq.members?.map(
-          (member): TeamMember => ({
-            name: member.name,
-            role: member.role,
-            image: member.image,
-            socials: normalizeSocials(member.socials),
-          })
-        ) ?? [],
-    }));
+    .map(
+      (hq): Headquarters => ({
+        id: hq.id,
+        label: hq.label,
+        location: hq.location,
+        lead: hq.lead,
+        members:
+          hq.members?.map(
+            (member): TeamMember => ({
+              name: member.name,
+              role: member.role,
+              image: member.image,
+              socials: normalizeSocials(member.socials),
+            })
+          ) ?? [],
+      })
+    );
 };
 
 const HEADQUARTERS_STYLES: Record<string, HeadquartersStyle> = {
   principal: {
-    gradient: "from-primary via-primary to-secondary",
+    accent: "hsl(var(--primary))",
+    accentRgb: "139, 192, 74",
     badge: "from-primary to-secondary",
-    ring: "ring-primary/40",
-    glow: "from-primary/30 via-secondary/40 to-primary/30",
-    accentLight: "from-primary/20 to-secondary/20",
     text: "text-primary",
     icon: (className) => <IconBuilding className={className} />,
   },
   cdmx: {
-    gradient: "from-blue-500 via-purple-500 to-pink-500",
+    accent: "#8B5CF6",
+    accentRgb: "139, 92, 246",
     badge: "from-blue-500 to-purple-500",
-    ring: "ring-blue-400/40",
-    glow: "from-blue-500/30 via-purple-500/40 to-pink-500/30",
-    accentLight: "from-blue-500/20 to-purple-500/20",
-    text: "text-blue-400",
+    text: "text-purple-400",
     icon: (className) => <IconBuilding className={className} />,
   },
   chiapas: {
-    gradient: "from-emerald-500 via-green-500 to-teal-500",
+    accent: "#10B981",
+    accentRgb: "16, 185, 129",
     badge: "from-emerald-500 to-teal-500",
-    ring: "ring-emerald-400/40",
-    glow: "from-emerald-500/30 via-green-500/40 to-teal-500/30",
-    accentLight: "from-emerald-500/20 to-teal-500/20",
     text: "text-emerald-400",
     icon: (className) => <IconMapPin className={className} />,
   },
 };
 
 const DEFAULT_STYLE: HeadquartersStyle = {
-  gradient: "from-primary via-secondary to-primary",
+  accent: "hsl(var(--primary))",
+  accentRgb: "139, 192, 74",
   badge: "from-primary to-secondary",
-  ring: "ring-primary/40",
-  glow: "from-primary/30 via-secondary/40 to-primary/30",
-  accentLight: "from-primary/20 to-secondary/20",
   text: "text-primary",
   icon: (className) => <IconBuilding className={className} />,
 };
@@ -157,234 +147,294 @@ const getSocialIcon = (platform: SocialPlatform, className?: string) => {
   }
 };
 
-const useScrollPosition = (
-  ref: React.RefObject<HTMLDivElement>,
-  deps: unknown[]
-) => {
-  const [canScrollPrev, setCanScrollPrev] = useState(false);
-  const [canScrollNext, setCanScrollNext] = useState(false);
-
-  const updateScrollState = useCallback(() => {
-    const container = ref.current;
-    if (!container) return;
-
-    const { scrollLeft, scrollWidth, clientWidth } = container;
-    setCanScrollPrev(scrollLeft > 16);
-    setCanScrollNext(scrollLeft + clientWidth < scrollWidth - 16);
-  }, [ref]);
-
-  useEffect(() => {
-    updateScrollState();
-  }, deps); // eslint-disable-line react-hooks/exhaustive-deps
-
-  const handleScroll = useCallback(() => {
-    updateScrollState();
-  }, [updateScrollState]);
-
-  return { canScrollPrev, canScrollNext, handleScroll };
-};
-
-const TeamCard = ({
-  member,
-  styles,
-  locationLabel,
-}: {
-  member: TeamMember;
-  styles: HeadquartersStyle;
-  locationLabel: string;
-}) => {
-  return (
-    <article className="snap-start flex-shrink-0 pt-3 pb-6 w-[17rem] sm:w-[18.5rem] lg:w-[20rem] xl:w-[22rem]">
-      <div className="group relative h-full min-h-[22rem] sm:min-h-[24rem]">
-        <div
-          className={`absolute inset-x-0 top-0 z-10 h-1 bg-gradient-to-r ${styles.gradient} opacity-70 transition-opacity duration-300 group-hover:opacity-100`}
-        />
-
-        <div className="relative flex h-full flex-col justify-end overflow-hidden rounded-3xl border border-white/5 bg-black/20 backdrop-blur-sm shadow-xl transition-all duration-300 hover:-translate-y-3 hover:border-white/10">
-          <Image
-            src={member.image}
-            alt={member.name}
-            fill
-            className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
-            sizes="(max-width: 768px) 320px, 440px"
-            priority={false}
-            style={{ objectPosition: "center 25%" }}
-          />
-
-          <div
-            className={`absolute inset-0 bg-gradient-to-br ${styles.glow} opacity-30 mix-blend-screen`}
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/25 to-transparent" />
-
-          {/* Ciudad - Esquina superior izquierda */}
-          <div className="absolute left-3 top-3 z-20 sm:left-4 sm:top-4">
-            <span
-              className={`inline-flex items-center gap-1.5 rounded-full border border-white/30 bg-white/20 backdrop-blur-md px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-white shadow-lg`}
-            >
-              <span
-                className={`inline-flex h-1.5 w-1.5 rounded-full bg-gradient-to-r ${styles.badge}`}
-              />
-              {locationLabel}
-            </span>
-          </div>
-
-          {/* Redes sociales - Esquina superior derecha */}
-          {member.socials.length > 0 && (
-            <div className="absolute right-3 top-3 z-20 flex gap-2 sm:right-4 sm:top-4">
-              {member.socials.map((social) => {
-                const icon = getSocialIcon(
-                  social.platform,
-                  "h-4 w-4 sm:h-5 sm:w-5"
-                );
-                if (!icon) return null;
-
-                const socialLabel =
-                  social.platform.charAt(0).toUpperCase() +
-                  social.platform.slice(1);
-
-                return (
-                  <a
-                    key={`${member.name}-${social.platform}`}
-                    href={social.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group/social relative flex h-9 w-9 items-center justify-center overflow-hidden rounded-lg border border-white/30 bg-white/20 backdrop-blur-md text-white transition-all duration-300 hover:border-white/40 hover:bg-white/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-black shadow-lg"
-                    aria-label={`${socialLabel} de ${member.name}`}
-                  >
-                    <div
-                      className={`absolute inset-0 bg-gradient-to-r ${styles.gradient} opacity-0 transition-opacity duration-300 group-hover:opacity-40 group-focus-visible/social:opacity-50`}
-                    />
-                    <span aria-hidden className="relative z-10">
-                      {icon}
-                    </span>
-                    <span className="sr-only">{socialLabel}</span>
-                    <span className="pointer-events-none absolute -bottom-12 left-1/2 z-20 hidden min-w-[6rem] -translate-x-1/2 rounded-xl border border-white/15 bg-black/85 px-3 py-1 text-xs font-medium text-white shadow-lg transition-opacity duration-150 group-hover/social:flex group-focus-visible/social:flex">
-                      {socialLabel}
-                    </span>
-                  </a>
-                );
-              })}
-            </div>
-          )}
-
-          {/* Nombre y rol - Abajo */}
-          <div className="relative z-10 pb-4 px-4 sm:pb-5 sm:px-5">
-            <div className="space-y-1 rounded-xl border border-white/30 bg-white/20 backdrop-blur-md p-3 shadow-lg">
-              <h3 className="text-center text-base font-semibold text-white sm:text-lg">
-                {member.name}
-              </h3>
-              <p className="text-center text-xs text-white/80 sm:text-sm">
-                {member.role}
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </article>
-  );
-};
-
-const HeadquartersCarousel = ({
+const HeadquartersSpotlight = ({
   headquarters,
 }: {
   headquarters: Headquarters;
 }) => {
-  const scrollRef = useRef<HTMLDivElement>(null);
   const styles = HEADQUARTERS_STYLES[headquarters.id] ?? DEFAULT_STYLE;
+  const [activeIndex, setActiveIndex] = useState(0);
+  const imageRef = useRef<HTMLDivElement>(null);
+  const infoRef = useRef<HTMLDivElement>(null);
+  const isAnimating = useRef(false);
+  const members = headquarters.members;
+  const active = members[activeIndex];
 
-  const { canScrollPrev, canScrollNext, handleScroll } = useScrollPosition(
-    scrollRef,
-    [headquarters.members.length]
+  const navigateTo = useCallback(
+    (newIndex: number) => {
+      if (isAnimating.current || newIndex === activeIndex) return;
+      isAnimating.current = true;
+
+      const tl = gsap.timeline({
+        onComplete: () => {
+          isAnimating.current = false;
+        },
+      });
+
+      tl.to([imageRef.current, infoRef.current], {
+        opacity: 0,
+        y: 20,
+        duration: 0.25,
+        stagger: 0.05,
+        ease: "power2.in",
+        onComplete: () => setActiveIndex(newIndex),
+      });
+
+      tl.fromTo(
+        [imageRef.current, infoRef.current],
+        { opacity: 0, y: -20 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.35,
+          stagger: 0.08,
+          ease: "power2.out",
+          delay: 0.05,
+        }
+      );
+    },
+    [activeIndex]
   );
 
-  const scrollBy = (direction: "prev" | "next") => {
-    const container = scrollRef.current;
-    if (!container) return;
+  const prev = useCallback(() => {
+    navigateTo(activeIndex === 0 ? members.length - 1 : activeIndex - 1);
+  }, [activeIndex, members.length, navigateTo]);
 
-    const scrollAmount = container.clientWidth * 0.8;
-    container.scrollBy({
-      left: direction === "next" ? scrollAmount : -scrollAmount,
-      behavior: "smooth",
-    });
+  const next = useCallback(() => {
+    navigateTo(activeIndex === members.length - 1 ? 0 : activeIndex + 1);
+  }, [activeIndex, members.length, navigateTo]);
 
-    window.requestAnimationFrame(() => handleScroll());
-  };
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (!isAnimating.current) {
+        next();
+      }
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [next]);
 
-  if (headquarters.members.length === 0) {
-    return null;
-  }
+  if (members.length === 0) return null;
 
   return (
-    <section className="relative mb-16 sm:mb-20">
-      <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
-        <div className="flex flex-col gap-2">
-          <div className="flex items-center gap-3">
-            <span
-              className={`flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-r ${styles.badge} text-white shadow-lg`}
+    <section className="mb-24 last:mb-0">
+      {/* HQ Header - pill badge style */}
+      <div className="mb-8 flex items-center gap-3">
+        <span
+          className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-medium text-white"
+          style={{
+            background: `rgba(${styles.accentRgb}, 0.12)`,
+            border: `1px solid rgba(${styles.accentRgb}, 0.2)`,
+          }}
+        >
+          <span className={styles.text}>{styles.icon("h-4 w-4")}</span>
+          {headquarters.label}
+        </span>
+        <span className="text-sm text-gray-500">{headquarters.location}</span>
+      </div>
+
+      {/* Spotlight Card - very rounded like GitHub Mobile */}
+      <div
+        className="relative overflow-hidden border border-white/[0.08] backdrop-blur-sm"
+        style={{
+          borderRadius: "28px",
+          background: `linear-gradient(135deg, rgba(${styles.accentRgb}, 0.04) 0%, rgba(255,255,255,0.02) 50%, rgba(${styles.accentRgb}, 0.02) 100%)`,
+        }}
+      >
+        <div className="grid md:grid-cols-[1fr,1.2fr]">
+          {/* Image side - rounded inner container */}
+          <div ref={imageRef} className="relative p-4 sm:p-5 md:p-6">
+            <div
+              className="relative overflow-hidden min-h-[340px] sm:min-h-[420px] md:min-h-[480px]"
+              style={{ borderRadius: "20px" }}
             >
-              {styles.icon("h-5 w-5")}
-            </span>
-            <div>
-              <h3 className="text-2xl font-semibold text-white sm:text-3xl">
-                {headquarters.label}
-              </h3>
-              <span className={`text-sm font-medium ${styles.text}`}>
+              <Image
+                key={active.image}
+                src={active.image}
+                alt={active.name}
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 50vw"
+                style={{ objectPosition: "center 20%" }}
+                priority={activeIndex === 0}
+              />
+              {/* Bottom fade on image */}
+              <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/50 to-transparent" />
+
+              {/* Counter pill on image */}
+              <div className="absolute top-4 left-4 z-10">
+                <span
+                  className="inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-mono font-bold tracking-wider text-white"
+                  style={{
+                    background: "rgba(0,0,0,0.45)",
+                    backdropFilter: "blur(12px)",
+                    border: "1px solid rgba(255,255,255,0.12)",
+                  }}
+                >
+                  {String(activeIndex + 1).padStart(2, "0")}
+                  <span className="text-white/40">/</span>
+                  {String(members.length).padStart(2, "0")}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Info side */}
+          <div
+            ref={infoRef}
+            className="relative flex flex-col justify-between p-6 sm:p-8 md:py-10 md:pr-10 md:pl-4"
+          >
+            {/* Top: Role pill + Name */}
+            <div className="space-y-5">
+              <span
+                className="inline-flex rounded-full px-4 py-1.5 text-xs font-semibold uppercase tracking-wider"
+                style={{
+                  color: styles.accent,
+                  background: `rgba(${styles.accentRgb}, 0.1)`,
+                  border: `1px solid rgba(${styles.accentRgb}, 0.15)`,
+                }}
+              >
+                {active.role}
+              </span>
+
+              <h4 className="text-3xl font-bold text-white sm:text-4xl lg:text-5xl leading-[1.1]">
+                {active.name}
+              </h4>
+
+              {/* Location pill */}
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3.5 py-1.5 text-xs text-gray-400">
+                <IconMapPin className="h-3.5 w-3.5" />
                 {headquarters.location}
               </span>
             </div>
+
+            {/* Bottom: Socials + Navigation */}
+            <div className="mt-10 space-y-6">
+              {/* Social links - pill shaped */}
+              {active.socials.length > 0 && (
+                <div className="flex flex-wrap gap-2.5">
+                  {active.socials.map((social) => {
+                    const icon = getSocialIcon(social.platform, "h-4 w-4");
+                    if (!icon) return null;
+                    const label =
+                      social.platform.charAt(0).toUpperCase() +
+                      social.platform.slice(1);
+                    return (
+                      <a
+                        key={`${active.name}-${social.platform}`}
+                        href={social.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-gray-400 transition-all duration-200 hover:border-white/20 hover:bg-white/10 hover:text-white"
+                        aria-label={`${label} de ${active.name}`}
+                      >
+                        {icon}
+                        <span>{label}</span>
+                      </a>
+                    );
+                  })}
+                </div>
+              )}
+
+              {/* Navigation */}
+              <div className="flex items-center justify-between pt-2">
+                {/* Dots */}
+                <div className="flex gap-2">
+                  {members.map((_, i) => (
+                    <button
+                      key={i}
+                      type="button"
+                      onClick={() => navigateTo(i)}
+                      aria-label={`Ver a ${members[i].name}`}
+                      className="relative h-2.5 transition-all duration-300"
+                      style={{ width: i === activeIndex ? "2.5rem" : "0.625rem" }}
+                    >
+                      <span
+                        className="absolute inset-0 rounded-full transition-all duration-300"
+                        style={{
+                          background:
+                            i === activeIndex
+                              ? styles.accent
+                              : "rgba(255,255,255,0.12)",
+                        }}
+                      />
+                    </button>
+                  ))}
+                </div>
+
+                {/* Arrow pills */}
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={prev}
+                    aria-label="Miembro anterior"
+                    className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-gray-400 transition-all duration-200 hover:border-white/20 hover:bg-white/10 hover:text-white"
+                  >
+                    <IconChevronLeft className="h-5 w-5" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={next}
+                    aria-label="Siguiente miembro"
+                    className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-gray-400 transition-all duration-200 hover:border-white/20 hover:bg-white/10 hover:text-white"
+                  >
+                    <IconChevronRight className="h-5 w-5" />
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
-          {headquarters.lead && (
-            <p className="max-w-xl text-sm text-gray-400 sm:text-base">
-              {headquarters.lead}
-            </p>
-          )}
         </div>
 
-        <div className="flex gap-2">
-          <button
-            type="button"
-            aria-label="Equipo anterior"
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition disabled:opacity-30"
-            onClick={() => scrollBy("prev")}
-            disabled={!canScrollPrev}
+        {/* Thumbnail strip - circular avatars */}
+        {members.length > 1 && (
+          <div
+            className="border-t border-white/[0.06] px-6 py-5 sm:px-8 overflow-x-auto"
+            style={{ background: "rgba(0,0,0,0.15)" }}
           >
-            <IconChevronLeft className="h-5 w-5" />
-          </button>
-          <button
-            type="button"
-            aria-label="Equipo siguiente"
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition disabled:opacity-30"
-            onClick={() => scrollBy("next")}
-            disabled={!canScrollNext}
-          >
-            <IconChevronRight className="h-5 w-5" />
-          </button>
-        </div>
-      </div>
-
-      <div className="relative">
-        <div
-          className={`pointer-events-none absolute inset-y-6 left-0 w-16 rounded-full bg-gradient-to-r ${styles.accentLight} opacity-0 transition-opacity duration-300 sm:opacity-70`}
-        />
-        <div
-          className={`pointer-events-none absolute inset-y-6 right-0 w-16 rounded-full bg-gradient-to-l ${styles.accentLight} opacity-0 transition-opacity duration-300 sm:opacity-70`}
-        />
-
-        <div
-          ref={scrollRef}
-          className="flex snap-x snap-mandatory gap-5 overflow-x-auto scroll-smooth px-2 py-3 pb-6 sm:gap-6 sm:px-3"
-          onScroll={handleScroll}
-        >
-          {headquarters.members.map((member) => (
-            <TeamCard
-              key={member.name}
-              member={member}
-              styles={styles}
-              locationLabel={headquarters.location}
-            />
-          ))}
-          <div className="snap-end flex-shrink-0" aria-hidden />
-        </div>
+            <div className="flex items-center gap-4">
+              {members.map((member, i) => (
+                <button
+                  key={member.name}
+                  type="button"
+                  onClick={() => navigateTo(i)}
+                  className="group flex flex-shrink-0 flex-col items-center gap-2 transition-all duration-300"
+                  aria-label={`Ver a ${member.name}`}
+                >
+                  <div
+                    className={`relative overflow-hidden rounded-full transition-all duration-300 ${
+                      i === activeIndex
+                        ? "h-14 w-14 sm:h-16 sm:w-16"
+                        : "h-11 w-11 sm:h-12 sm:w-12 opacity-50 group-hover:opacity-80"
+                    }`}
+                    style={
+                      i === activeIndex
+                        ? {
+                            boxShadow: `0 0 0 2.5px rgba(${styles.accentRgb}, 0.6), 0 4px 12px rgba(${styles.accentRgb}, 0.15)`,
+                          }
+                        : { boxShadow: "0 0 0 1.5px rgba(255,255,255,0.1)" }
+                    }
+                  >
+                    <Image
+                      src={member.image}
+                      alt={member.name}
+                      fill
+                      className="object-cover"
+                      sizes="64px"
+                      style={{ objectPosition: "center 20%" }}
+                    />
+                  </div>
+                  <span
+                    className={`text-[10px] font-medium transition-all duration-300 max-w-[5rem] truncate ${
+                      i === activeIndex ? "text-white" : "text-gray-500"
+                    }`}
+                  >
+                    {member.name.split(" ")[0]}
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );
@@ -407,13 +457,106 @@ export const TeamSection = () => {
       id="team"
       className="relative w-full overflow-hidden bg-gradient-to-b from-background via-background/95 to-background py-16 sm:py-24 scroll-mt-24"
     >
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute left-[10%] top-16 h-40 w-40 rounded-full bg-primary/15 blur-[120px]" />
-        <div className="absolute right-[8%] bottom-24 h-48 w-48 rounded-full bg-secondary/15 blur-[140px]" />
+      {/* Background visual elements */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        {/* Glows - scattered across the section */}
+        {/* Large ambient */}
+        <div className="absolute -left-20 top-32 h-72 w-72 rounded-full bg-primary/15 blur-[100px]" />
+        <div className="absolute -right-16 top-[45%] h-80 w-80 rounded-full bg-secondary/12 blur-[110px]" />
+        <div className="absolute -left-10 bottom-[15%] h-60 w-60 rounded-full bg-purple-500/10 blur-[100px]" />
+
+        {/* Medium scattered */}
+        <div className="absolute right-[12%] top-20 h-40 w-40 rounded-full bg-primary/10 blur-[80px]" />
+        <div className="absolute left-[25%] top-[18%] h-32 w-32 rounded-full bg-secondary/10 blur-[70px]" />
+        <div className="absolute right-[30%] top-[35%] h-36 w-36 rounded-full bg-purple-400/8 blur-[75px]" />
+        <div className="absolute left-[8%] top-[50%] h-44 w-44 rounded-full bg-blue-500/8 blur-[85px]" />
+        <div className="absolute right-[6%] top-[62%] h-36 w-36 rounded-full bg-primary/12 blur-[70px]" />
+        <div className="absolute left-[20%] top-[75%] h-40 w-40 rounded-full bg-emerald-500/8 blur-[80px]" />
+        <div className="absolute right-[18%] bottom-[10%] h-48 w-48 rounded-full bg-secondary/10 blur-[90px]" />
+
+        {/* Small accent flares */}
+        <div className="absolute left-[5%] top-[12%] h-16 w-16 rounded-full bg-primary/25 blur-[40px]" />
+        <div className="absolute right-[8%] top-[28%] h-14 w-14 rounded-full bg-secondary/20 blur-[35px]" />
+        <div className="absolute left-[35%] top-[40%] h-12 w-12 rounded-full bg-white/10 blur-[30px]" />
+        <div className="absolute right-[25%] top-[55%] h-16 w-16 rounded-full bg-primary/20 blur-[40px]" />
+        <div className="absolute left-[15%] top-[65%] h-14 w-14 rounded-full bg-purple-400/15 blur-[35px]" />
+        <div className="absolute right-[10%] top-[78%] h-12 w-12 rounded-full bg-emerald-400/15 blur-[30px]" />
+        <div className="absolute left-[40%] bottom-[8%] h-16 w-16 rounded-full bg-secondary/20 blur-[40px]" />
+        <div className="absolute right-[35%] top-[15%] h-10 w-10 rounded-full bg-blue-400/18 blur-[28px]" />
+        <div className="absolute left-[45%] top-[88%] h-14 w-14 rounded-full bg-primary/15 blur-[35px]" />
+
+        {/* Left decorative lines */}
+        <div className="hidden lg:block absolute left-10 top-40 w-[2px] h-52 bg-gradient-to-b from-transparent via-white/10 to-transparent" />
+        <div className="hidden lg:block absolute left-16 top-72 w-[2px] h-32 bg-gradient-to-b from-transparent via-primary/30 to-transparent" />
+        <div className="hidden lg:block absolute left-10 top-[58%] w-[2px] h-44 bg-gradient-to-b from-transparent via-white/10 to-transparent" />
+
+        {/* Right decorative lines */}
+        <div className="hidden lg:block absolute right-10 top-52 w-[2px] h-48 bg-gradient-to-b from-transparent via-white/10 to-transparent" />
+        <div className="hidden lg:block absolute right-16 top-[38%] w-[2px] h-28 bg-gradient-to-b from-transparent via-secondary/25 to-transparent" />
+        <div className="hidden lg:block absolute right-10 bottom-36 w-[2px] h-40 bg-gradient-to-b from-transparent via-white/10 to-transparent" />
+
+        {/* Dots - left side */}
+        <div className="hidden lg:block absolute left-12 top-36 h-2 w-2 rounded-full bg-primary/40" />
+        <div className="hidden lg:block absolute left-20 top-[48%] h-2.5 w-2.5 rounded-full bg-white/15" />
+        <div className="hidden lg:block absolute left-8 top-[68%] h-2 w-2 rounded-full bg-secondary/30" />
+        <div className="hidden lg:block absolute left-24 bottom-28 h-1.5 w-1.5 rounded-full bg-primary/25" />
+
+        {/* Dots - right side */}
+        <div className="hidden lg:block absolute right-14 top-40 h-2 w-2 rounded-full bg-white/15" />
+        <div className="hidden lg:block absolute right-8 top-[52%] h-2.5 w-2.5 rounded-full bg-primary/30" />
+        <div className="hidden lg:block absolute right-22 top-[72%] h-2 w-2 rounded-full bg-secondary/25" />
+        <div className="hidden lg:block absolute right-12 bottom-44 h-1.5 w-1.5 rounded-full bg-white/20" />
+
+        {/* Corner brackets - top left */}
+        <div className="hidden xl:block absolute left-14 top-48">
+          <div className="h-12 w-[2px] bg-white/10" />
+          <div className="absolute top-0 left-0 h-[2px] w-12 bg-white/10" />
+        </div>
+
+        {/* Corner brackets - top right */}
+        <div className="hidden xl:block absolute right-14 top-[30%]">
+          <div className="h-12 w-[2px] bg-white/10 ml-[46px]" />
+          <div className="absolute top-0 right-0 h-[2px] w-12 bg-white/10" />
+        </div>
+
+        {/* Corner brackets - bottom left */}
+        <div className="hidden xl:block absolute left-14 bottom-[25%]">
+          <div className="h-12 w-[2px] bg-white/10" />
+          <div className="absolute bottom-0 left-0 h-[2px] w-12 bg-white/10" />
+        </div>
+
+        {/* Corner brackets - bottom right */}
+        <div className="hidden xl:block absolute right-14 bottom-40">
+          <div className="h-12 w-[2px] bg-white/10 ml-[46px]" />
+          <div className="absolute bottom-0 right-0 h-[2px] w-12 bg-white/10" />
+        </div>
+
+        {/* Grid pattern on sides */}
+        <div
+          className="hidden lg:block absolute left-0 top-0 bottom-0 w-32 opacity-[0.04]"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)",
+            backgroundSize: "28px 28px",
+          }}
+        />
+        <div
+          className="hidden lg:block absolute right-0 top-0 bottom-0 w-32 opacity-[0.04]"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)",
+            backgroundSize: "28px 28px",
+          }}
+        />
+
+        {/* Rings / circles */}
+        <div className="hidden lg:block absolute left-6 top-[42%] h-20 w-20 rounded-full border border-white/[0.06]" />
+        <div className="hidden lg:block absolute right-4 top-[60%] h-16 w-16 rounded-full border border-primary/10" />
+        <div className="hidden xl:block absolute left-2 bottom-[30%] h-28 w-28 rounded-full border border-secondary/[0.07]" />
       </div>
 
-      <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8">
-        <header className="mx-auto mb-14 max-w-3xl text-center sm:mb-16">
+      <div className="container relative z-10 mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+        <header className="mx-auto mb-14 max-w-2xl text-center sm:mb-16">
           <p className="text-sm uppercase tracking-[0.3em] text-gray-400">
             Personas Guayaba
           </p>
@@ -421,16 +564,13 @@ export const TeamSection = () => {
             Nuestro Equipo
           </h2>
           <p className="mt-4 text-base text-gray-400 sm:text-lg">
-            Conoce las mentes que impulsan las iniciativas desde cada sede. Cada
-            tarjeta trae enlaces directos para que conectes con ellas.
+            Conoce a quienes impulsan cada sede. Navega entre perfiles y
+            conecta directamente con ellos.
           </p>
         </header>
 
-        {headquartersList.map((headquarters) => (
-          <HeadquartersCarousel
-            key={headquarters.id}
-            headquarters={headquarters}
-          />
+        {headquartersList.map((hq) => (
+          <HeadquartersSpotlight key={hq.id} headquarters={hq} />
         ))}
       </div>
     </section>
