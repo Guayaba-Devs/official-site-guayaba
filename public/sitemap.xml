@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://guayabadevs.com</loc>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://guayabadevs.com/events/guayaba-day</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://guayabadevs.com/events/cinsoft</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://guayabadevs.com/events/notion-github</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://guayabadevs.com/events/compufest</loc>
+    <priority>0.7</priority>
+  </url>
+</urlset>
