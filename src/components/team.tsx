@@ -173,25 +173,19 @@ const HeadquartersSpotlight = ({
 
       tl.to([imageRef.current, infoRef.current], {
         opacity: 0,
-        y: 20,
         duration: 0.25,
         stagger: 0.05,
         ease: "power2.in",
         onComplete: () => setActiveIndex(newIndex),
       });
 
-      tl.fromTo(
-        [imageRef.current, infoRef.current],
-        { opacity: 0, y: -20 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.35,
-          stagger: 0.08,
-          ease: "power2.out",
-          delay: 0.05,
-        }
-      );
+      tl.to([imageRef.current, infoRef.current], {
+        opacity: 1,
+        duration: 0.3,
+        stagger: 0.08,
+        ease: "power2.out",
+        delay: 0.05,
+      });
     },
     [activeIndex]
   );
@@ -278,10 +272,10 @@ const HeadquartersSpotlight = ({
             </div>
           </div>
 
-          {/* Info side */}
+          {/* Info side - fixed min-height to prevent layout shift */}
           <div
             ref={infoRef}
-            className="relative flex flex-col justify-between p-6 sm:p-8 md:py-10 md:pr-10 md:pl-4"
+            className="relative flex flex-col justify-between p-6 sm:p-8 md:py-10 md:pr-10 md:pl-4 min-h-[340px] sm:min-h-[420px] md:min-h-[480px]"
           >
             {/* Top: Role pill + Name */}
             <div className="space-y-5">
@@ -296,7 +290,7 @@ const HeadquartersSpotlight = ({
                 {active.role}
               </span>
 
-              <h4 className="text-3xl font-bold text-white sm:text-4xl lg:text-5xl leading-[1.1]">
+              <h4 className="text-3xl font-bold text-white sm:text-4xl lg:text-5xl leading-[1.1] min-h-[2.2em]">
                 {active.name}
               </h4>
 
@@ -309,9 +303,9 @@ const HeadquartersSpotlight = ({
 
             {/* Bottom: Socials + Navigation */}
             <div className="mt-10 space-y-6">
-              {/* Social links - pill shaped */}
+              {/* Social links - pill shaped, fixed height */}
               {active.socials.length > 0 && (
-                <div className="flex flex-wrap gap-2.5">
+                <div className="flex flex-wrap gap-2.5 min-h-[40px]">
                   {active.socials.map((social) => {
                     const icon = getSocialIcon(social.platform, "h-4 w-4");
                     if (!icon) return null;
@@ -385,7 +379,7 @@ const HeadquartersSpotlight = ({
           </div>
         </div>
 
-        {/* Thumbnail strip - circular avatars */}
+        {/* Thumbnail strip - circular avatars, fixed height */}
         {members.length > 1 && (
           <div
             className="border-t border-white/[0.06] px-6 py-5 sm:px-8 overflow-x-auto"
@@ -397,21 +391,21 @@ const HeadquartersSpotlight = ({
                   key={member.name}
                   type="button"
                   onClick={() => navigateTo(i)}
-                  className="group flex flex-shrink-0 flex-col items-center gap-2 transition-all duration-300"
+                  className="group flex flex-shrink-0 flex-col items-center gap-2"
                   aria-label={`Ver a ${member.name}`}
                 >
                   <div
-                    className={`relative overflow-hidden rounded-full transition-all duration-300 ${
-                      i === activeIndex
-                        ? "h-14 w-14 sm:h-16 sm:w-16"
-                        : "h-11 w-11 sm:h-12 sm:w-12 opacity-50 group-hover:opacity-80"
-                    }`}
+                    className="relative h-14 w-14 sm:h-16 sm:w-16 overflow-hidden rounded-full transition-all duration-300"
                     style={
                       i === activeIndex
                         ? {
                             boxShadow: `0 0 0 2.5px rgba(${styles.accentRgb}, 0.6), 0 4px 12px rgba(${styles.accentRgb}, 0.15)`,
+                            opacity: 1,
                           }
-                        : { boxShadow: "0 0 0 1.5px rgba(255,255,255,0.1)" }
+                        : {
+                            boxShadow: "0 0 0 1.5px rgba(255,255,255,0.1)",
+                            opacity: 0.5,
+                          }
                     }
                   >
                     <Image
@@ -424,7 +418,7 @@ const HeadquartersSpotlight = ({
                     />
                   </div>
                   <span
-                    className={`text-[10px] font-medium transition-all duration-300 max-w-[5rem] truncate ${
+                    className={`text-[10px] font-medium transition-colors duration-300 max-w-[5rem] truncate ${
                       i === activeIndex ? "text-white" : "text-gray-500"
                     }`}
                   >
