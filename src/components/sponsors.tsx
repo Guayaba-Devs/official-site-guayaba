@@ -111,11 +111,15 @@ export const Sponsors = () => {
 
       {/* Marquee CSS puro — loop infinito real */}
       <div className="relative py-8 w-full">
-        {/* Fade edges */}
-        <div className="absolute left-0 top-0 bottom-0 w-24 md:w-40 z-10 pointer-events-none bg-gradient-to-r from-primary to-transparent" />
-        <div className="absolute right-0 top-0 bottom-0 w-24 md:w-40 z-10 pointer-events-none bg-gradient-to-l from-secondary to-transparent" />
-
-        <div className="overflow-hidden w-full">
+        <div
+          className="overflow-hidden w-full"
+          style={{
+            maskImage:
+              "linear-gradient(to right, transparent, black 15%, black 85%, transparent)",
+            WebkitMaskImage:
+              "linear-gradient(to right, transparent, black 15%, black 85%, transparent)",
+          }}
+        >
           <div
             className="flex animate-marquee"
             style={{ "--duration": "20s" } as React.CSSProperties}
