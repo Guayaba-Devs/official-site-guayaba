@@ -106,9 +106,27 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="es" className="dark">
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              name: "Guayaba Devs",
+              url: "https://guayabadevs.com",
+              logo: "https://guayabadevs.com/images/mascota.png",
+              description:
+                "Comunidad de desarrolladores que impulsa talento tech en México a través de eventos, mentorías y proyectos reales.",
+              sameAs: [
+                "https://github.com/Guayaba-Devs",
+                "https://www.instagram.com/guayaba_devs_official/",
+              ],
+            }),
+          }}
+        />
         <link rel="preconnect" href="https://res.cloudinary.com" />
         <link rel="dns-prefetch" href="https://res.cloudinary.com" />
       </head>

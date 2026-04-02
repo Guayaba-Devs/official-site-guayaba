@@ -40,11 +40,23 @@ export async function generateMetadata({ params }: EventPageProps): Promise<Meta
     openGraph: {
       title: `${event.title} · Guayaba Devs`,
       description: event.highlight,
+      type: "article",
+      siteName: "Guayaba Devs",
+      locale: "es_MX",
       images: [
         {
           url: event.hero,
+          width: 1200,
+          height: 630,
+          alt: event.title,
         },
       ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${event.title} · Guayaba Devs`,
+      description: event.highlight,
+      images: [event.hero],
     },
   };
 }
