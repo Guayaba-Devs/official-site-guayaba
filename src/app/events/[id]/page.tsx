@@ -83,14 +83,14 @@ export default async function EventPage({ params }: EventPageProps) {
             className="object-cover"
             priority
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-black/30" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/30" />
 
           {/* Title overlay */}
           <div className="absolute inset-x-0 bottom-0 z-10">
             <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 pb-10">
               <Link
                 href="/events"
-                className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium text-white backdrop-blur-md transition-all hover:bg-white/10 mb-5"
+                className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium !text-white backdrop-blur-md transition-all hover:bg-white/10 mb-5"
                 style={{
                   background: "rgba(0,0,0,0.35)",
                   border: "1px solid rgba(255,255,255,0.12)",
@@ -101,7 +101,7 @@ export default async function EventPage({ params }: EventPageProps) {
               </Link>
               <div className="flex flex-wrap items-center gap-3 mb-4">
                 <span
-                  className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium text-white backdrop-blur-md"
+                  className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium !text-white backdrop-blur-md"
                   style={{
                     background: "rgba(0,0,0,0.4)",
                     border: "1px solid rgba(255,255,255,0.12)",
@@ -111,7 +111,7 @@ export default async function EventPage({ params }: EventPageProps) {
                   {event.date}
                 </span>
                 <span
-                  className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium text-white backdrop-blur-md"
+                  className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium !text-white backdrop-blur-md"
                   style={{
                     background: "rgba(0,0,0,0.4)",
                     border: "1px solid rgba(255,255,255,0.12)",

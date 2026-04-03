@@ -165,7 +165,7 @@ export const Newsletter = () => {
                 href={WHATSAPP_LINK}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex w-full items-center justify-center gap-3 rounded-full bg-[#25D366] px-6 py-4 text-base font-semibold text-white transition-all duration-200 hover:bg-[#1fb855] hover:shadow-lg hover:shadow-green-500/20 hover:-translate-y-0.5 active:translate-y-0"
+                className="flex w-full items-center justify-center gap-3 rounded-full bg-[#25D366] px-6 py-4 text-base font-semibold !text-white transition-all duration-200 hover:bg-[#1fb855] hover:shadow-lg hover:shadow-green-500/20 hover:-translate-y-0.5 active:translate-y-0"
               >
                 <svg
                   className="h-5 w-5"

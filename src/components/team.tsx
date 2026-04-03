@@ -13,6 +13,7 @@ import {
   IconChevronRight,
   IconMapPin,
 } from "@tabler/icons-react";
+import { useTheme } from "@/lib/theme";
 
 type SocialPlatform =
   | "github"
@@ -152,6 +153,8 @@ const HeadquartersSpotlight = ({
 }: {
   headquarters: Headquarters;
 }) => {
+  const { theme } = useTheme();
+  const isLight = theme === "light";
   const styles = HEADQUARTERS_STYLES[headquarters.id] ?? DEFAULT_STYLE;
   const [activeIndex, setActiveIndex] = useState(0);
   const imageRef = useRef<HTMLDivElement>(null);
@@ -214,7 +217,7 @@ const HeadquartersSpotlight = ({
       {/* HQ Header - pill badge style */}
       <div className="mb-8 flex items-center gap-3">
         <span
-          className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-medium text-white"
+          className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-medium text-foreground"
           style={{
             background: `rgba(${styles.accentRgb}, 0.12)`,
             border: `1px solid rgba(${styles.accentRgb}, 0.2)`,
@@ -231,7 +234,9 @@ const HeadquartersSpotlight = ({
         className="relative overflow-hidden border border-white/[0.08] backdrop-blur-sm"
         style={{
           borderRadius: "28px",
-          background: `linear-gradient(135deg, rgba(${styles.accentRgb}, 0.04) 0%, rgba(255,255,255,0.02) 50%, rgba(${styles.accentRgb}, 0.02) 100%)`,
+          background: isLight
+            ? `linear-gradient(135deg, rgba(${styles.accentRgb}, 0.08) 0%, hsl(173 45% 95% / 0.5) 50%, rgba(${styles.accentRgb}, 0.05) 100%)`
+            : `linear-gradient(135deg, rgba(${styles.accentRgb}, 0.04) 0%, rgba(255,255,255,0.02) 50%, rgba(${styles.accentRgb}, 0.02) 100%)`,
         }}
       >
         <div className="grid md:grid-cols-[1fr,1.2fr]">
@@ -257,7 +262,7 @@ const HeadquartersSpotlight = ({
               {/* Counter pill on image */}
               <div className="absolute top-4 left-4 z-10">
                 <span
-                  className="inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-mono font-bold tracking-wider text-white"
+                  className="inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-mono font-bold tracking-wider !text-white"
                   style={{
                     background: "rgba(0,0,0,0.45)",
                     backdropFilter: "blur(12px)",
@@ -348,7 +353,9 @@ const HeadquartersSpotlight = ({
                           background:
                             i === activeIndex
                               ? styles.accent
-                              : "rgba(255,255,255,0.12)",
+                              : isLight
+                                ? "hsl(173 50% 70% / 0.3)"
+                                : "rgba(255,255,255,0.12)",
                         }}
                       />
                     </button>
@@ -383,7 +390,7 @@ const HeadquartersSpotlight = ({
         {members.length > 1 && (
           <div
             className="border-t border-white/[0.06] px-6 py-5 sm:px-8 overflow-x-auto"
-            style={{ background: "rgba(0,0,0,0.15)" }}
+            style={{ background: isLight ? "hsl(173 45% 90% / 0.4)" : "rgba(0,0,0,0.15)" }}
           >
             <div className="flex items-center gap-4">
               {members.map((member, i) => (
@@ -403,7 +410,9 @@ const HeadquartersSpotlight = ({
                             opacity: 1,
                           }
                         : {
-                            boxShadow: "0 0 0 1.5px rgba(255,255,255,0.1)",
+                            boxShadow: isLight
+                              ? "0 0 0 1.5px hsl(173 50% 70% / 0.35)"
+                              : "0 0 0 1.5px rgba(255,255,255,0.1)",
                             opacity: 0.5,
                           }
                     }
@@ -435,6 +444,8 @@ const HeadquartersSpotlight = ({
 };
 
 export const TeamSection = () => {
+  const { theme } = useTheme();
+  const isLight = theme === "light";
   const data = teamData as TeamJSON;
 
   const headquartersList = useMemo<Headquarters[]>(
@@ -529,16 +540,18 @@ export const TeamSection = () => {
         <div
           className="hidden lg:block absolute left-0 top-0 bottom-0 w-32 opacity-[0.04]"
           style={{
-            backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)",
+            backgroundImage: isLight
+              ? "linear-gradient(hsl(173 50% 60% / 0.5) 1px, transparent 1px), linear-gradient(90deg, hsl(173 50% 60% / 0.5) 1px, transparent 1px)"
+              : "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)",
             backgroundSize: "28px 28px",
           }}
         />
         <div
           className="hidden lg:block absolute right-0 top-0 bottom-0 w-32 opacity-[0.04]"
           style={{
-            backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)",
+            backgroundImage: isLight
+              ? "linear-gradient(hsl(173 50% 60% / 0.5) 1px, transparent 1px), linear-gradient(90deg, hsl(173 50% 60% / 0.5) 1px, transparent 1px)"
+              : "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)",
             backgroundSize: "28px 28px",
           }}
         />
