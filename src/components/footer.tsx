@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 import { IconBrandGithub, IconBrandInstagram, IconBrandWhatsapp } from "@tabler/icons-react";
 
@@ -28,12 +29,18 @@ const socialMedia = [
 ];
 
 export const Footer = () => {
-  const scrollToSection = useCallback((hash: string) => {
+  const pathname = usePathname();
+  const router = useRouter();
+
+  const scrollToSection = useCallback((href: string) => {
+    const hash = href.replace("/", "");
     const element = document.querySelector(hash);
     if (element) {
       element.scrollIntoView({ behavior: "smooth", block: "start" });
+    } else if (pathname !== "/") {
+      router.push(href);
     }
-  }, []);
+  }, [pathname, router]);
 
   return (
     <footer className="relative overflow-hidden bg-background py-16 md:py-20">
@@ -50,7 +57,8 @@ export const Footer = () => {
                 src="/images/guayaba-cover.webp"
                 alt="Guayaba Devs Logo"
                 fill
-                className="object-contain"
+                sizes="144px"
+                className="object-contain bg-white rounded-lg p-1"
                 loading="lazy"
               />
             </div>
@@ -138,7 +146,7 @@ export const Footer = () => {
             comunidad.
           </span>
           <button
-            onClick={() => scrollToSection("#hero")}
+            onClick={() => scrollToSection("/#hero")}
             className="inline-flex items-center gap-1.5 rounded-full border border-white/[0.08] bg-white/[0.03] px-4 py-2 text-xs text-gray-400 transition-all duration-200 hover:border-white/15 hover:bg-white/[0.06] hover:text-white"
           >
             Volver arriba

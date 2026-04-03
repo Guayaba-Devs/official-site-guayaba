@@ -315,7 +315,8 @@ export const Hero = () => {
 
           <h1
             ref={titleRef}
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-4 sm:mb-6 bg-gradient-to-r from-primary via-primary to-secondary bg-clip-text text-transparent leading-tight drop-shadow-2xl will-change-transform"
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-4 sm:mb-6 bg-gradient-to-r from-primary via-primary to-secondary bg-clip-text text-transparent drop-shadow-2xl will-change-transform"
+            style={{ lineHeight: 1.2, paddingBottom: "0.1em" }}
           >
             Guayabadevs
           </h1>

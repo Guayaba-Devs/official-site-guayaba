@@ -55,17 +55,13 @@ export const AboutSection = () => {
               de tecnología y compartir conocimiento sin costo.
             </p>
           </div>
-          <div
-            className="relative overflow-hidden border border-white/[0.08] bg-white/[0.03]"
-            style={{ borderRadius: "24px" }}
-          >
+          <div className="bg-white overflow-hidden" style={{ borderRadius: "24px" }}>
             <Image
               src="/images/guayaba-cover.webp"
               alt="Guayaba Devs"
               width={600}
               height={400}
-              className="h-full w-full object-cover p-5"
-              style={{ borderRadius: "20px" }}
+              className="h-full w-full object-contain p-4"
               priority
             />
           </div>
