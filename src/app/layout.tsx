@@ -7,7 +7,7 @@ import { NavbarTop } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { PageTransition } from "@/components/page-transition";
 
-const siteUrl = "https://guayabadevs.com";
+const siteUrl = "https://guayabadev.com";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -117,8 +117,8 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "Organization",
               name: "Guayaba Devs",
-              url: "https://guayabadevs.com",
-              logo: "https://guayabadevs.com/images/mascota.png",
+              url: "https://guayabadev.com",
+              logo: "https://guayabadev.com/images/mascota.png",
               description:
                 "Comunidad de desarrolladores que impulsa talento tech en México a través de eventos, mentorías y proyectos reales.",
               sameAs: [
