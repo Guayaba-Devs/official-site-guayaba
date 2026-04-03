@@ -1,36 +1,78 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Guayaba Devs - Sitio Oficial 🍈
 
-## Getting Started
+Sitio web oficial de **Guayaba Devs**, una comunidad tech que conecta talento y construye espacios de aprendizaje en Mexico.
 
-First, run the development server:
+> [!NOTE]
+> 🤖 **Experimentando con IA para desarrollo.** Este proyecto esta siendo mejorado con herramientas de inteligencia artificial como parte de nuestra exploracion de nuevas tecnologias. Creemos en probar, iterar y compartir lo que aprendemos con la comunidad.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Stack tecnologico
+
+- **Framework** - [Next.js 16](https://nextjs.org/) (App Router, SSR/ISR)
+- **Estilos** - [Tailwind CSS](https://tailwindcss.com/)
+- **CMS** - [Sanity](https://www.sanity.io/) (headless, free tier)
+- **Animaciones** - [GSAP](https://gsap.com/) + ScrollTrigger
+- **Hosting** - [Vercel](https://vercel.com/)
+- **Lenguaje** - TypeScript
+
+## Arquitectura
+
+```
+src/
+├── app/                # Pages (App Router)
+│   ├── page.tsx        # Landing
+│   ├── events/         # Listado + detalle de eventos
+│   └── api/            # Webhook de revalidacion
+├── components/         # Componentes React
+├── data/               # Tipos y estilos compartidos
+└── lib/                # Cliente Sanity, queries, utilidades
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Los eventos se gestionan desde **Sanity Studio** y se actualizan en la web automaticamente via webhook, sin necesidad de rebuild manual.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Desarrollo local
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+# Clonar el repo
+git clone https://github.com/Guayaba-Devs/official-site-guayaba.git
+cd official-site-guayaba
 
-## Learn More
+# Instalar dependencias
+pnpm install
 
-To learn more about Next.js, take a look at the following resources:
+# Configurar variables de entorno
+cp .env.example .env.local
+# Edita .env.local con tus valores
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Levantar el servidor
+pnpm dev
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Abre [http://localhost:3000](http://localhost:3000) para ver el sitio.
 
-## Deploy on Vercel
+## Variables de entorno
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+| Variable | Descripcion |
+|----------|-------------|
+| `NEXT_PUBLIC_SANITY_PROJECT_ID` | ID del proyecto en Sanity |
+| `NEXT_PUBLIC_SANITY_DATASET` | Nombre del dataset (`production`) |
+| `SANITY_REVALIDATE_SECRET` | Secret para validar webhooks (solo server) |
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Como contribuir
+
+1. Haz **fork** del repositorio
+2. Crea una rama para tu feature (`git checkout -b feature/mi-mejora`)
+3. Haz commit de tus cambios (`git commit -m "feat: descripcion del cambio"`)
+4. Push a tu rama (`git push origin feature/mi-mejora`)
+5. Abre un **Pull Request**
+
+Seguimos [Conventional Commits](https://www.conventionalcommits.org/) para los mensajes de commit.
+
+## Comunidad
+
+- 🌐 [guayabadev.com](https://guayabadev.com)
+- 📸 [Instagram](https://www.instagram.com/guayaba_devs_official/)
+- 💻 [GitHub](https://github.com/Guayaba-Devs)
+
+---
+
+###### Made with :sparkling_heart: by Guayaba Dev Team :mexico:
