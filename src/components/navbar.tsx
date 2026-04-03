@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import { gsap } from "gsap";
 import Link from "next/link";
 import Image from "next/image";
@@ -16,10 +17,12 @@ export const navLinks = [
   { href: "/#newsletter", label: "Comunidad" },
 ];
 
-const SECTION_IDS = navLinks.map((l) => l.href.replace("#", ""));
+const SECTION_IDS = navLinks.map((l) => l.href.replace("/#", ""));
 
 export const NavbarTop = () => {
   const { theme, toggleTheme } = useTheme();
+  const pathname = usePathname();
+  const router = useRouter();
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("hero");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -199,12 +202,15 @@ export const NavbarTop = () => {
     }
   }, [isMenuOpen]);
 
-  const scrollToSection = useCallback((hash: string) => {
+  const scrollToSection = useCallback((href: string) => {
+    const hash = href.replace("/", "");
     const element = document.querySelector(hash);
     if (element) {
       element.scrollIntoView({ behavior: "smooth", block: "start" });
+    } else if (pathname !== "/") {
+      router.push(href);
     }
-  }, []);
+  }, [pathname, router]);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
@@ -253,7 +259,7 @@ export const NavbarTop = () => {
               />
 
               {navLinks.map((link) => {
-                const sectionId = link.href.replace("#", "");
+                const sectionId = link.href.replace("/#", "");
                 const isActive = activeSection === sectionId;
 
                 return (
@@ -312,7 +318,7 @@ export const NavbarTop = () => {
         <div className="flex flex-col h-full pt-24 px-6">
           <ul className="flex flex-col gap-2 mt-8">
             {navLinks.map((link, index) => {
-              const sectionId = link.href.replace("#", "");
+              const sectionId = link.href.replace("/#", "");
               const isActive = activeSection === sectionId;
 
               return (
