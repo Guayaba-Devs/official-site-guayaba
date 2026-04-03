@@ -54,9 +54,9 @@ function mapEvent(event: SanityEvent): EventItem {
   return {
     ...event,
     date: formatDateES(event.date),
-    hero: event.hero ? urlFor(event.hero).width(1200).quality(80).url() : "",
+    hero: event.hero ? urlFor(event.hero).width(2400).quality(90).auto("format").url() : "",
     gallery: event.gallery
-      ? event.gallery.map((img) => urlFor(img).width(800).quality(80).url())
+      ? event.gallery.map((img) => urlFor(img).width(1200).quality(85).auto("format").url())
       : [],
   };
 }
