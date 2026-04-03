@@ -8,12 +8,12 @@ import { IconMoon, IconSun } from "@tabler/icons-react";
 import { useTheme } from "@/lib/theme";
 
 export const navLinks = [
-  { href: "#hero", label: "Inicio" },
-  { href: "#about", label: "Sobre" },
-  { href: "#sponsors", label: "Sponsors" },
-  { href: "#team", label: "Equipo" },
-  { href: "#events", label: "Eventos" },
-  { href: "#newsletter", label: "Comunidad" },
+  { href: "/#hero", label: "Inicio" },
+  { href: "/#about", label: "Sobre" },
+  { href: "/#sponsors", label: "Sponsors" },
+  { href: "/#team", label: "Equipo" },
+  { href: "/#events", label: "Eventos" },
+  { href: "/#newsletter", label: "Comunidad" },
 ];
 
 const SECTION_IDS = navLinks.map((l) => l.href.replace("#", ""));
