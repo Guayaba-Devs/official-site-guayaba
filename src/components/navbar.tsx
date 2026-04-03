@@ -35,8 +35,11 @@ export const NavbarTop = () => {
   const indicatorRef = useRef<HTMLDivElement>(null);
   const navContainerRef = useRef<HTMLElement>(null);
 
-  // Active section detection
+  // Active section detection — re-run when pathname changes so observers
+  // attach to the freshly-mounted section elements after navigation.
   useEffect(() => {
+    if (pathname !== "/") return;
+
     const observers: IntersectionObserver[] = [];
 
     SECTION_IDS.forEach((id) => {
@@ -57,7 +60,7 @@ export const NavbarTop = () => {
     });
 
     return () => observers.forEach((o) => o.disconnect());
-  }, []);
+  }, [pathname]);
 
   // Animate pill indicator to active link
   useEffect(() => {
