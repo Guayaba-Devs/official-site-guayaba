@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/lib/theme";
 import { NavbarTop } from "@/components/navbar";
 import { Footer } from "@/components/footer";
+import { PageTransition } from "@/components/page-transition";
 
 const siteUrl = "https://guayabadevs.com";
 
@@ -138,7 +139,7 @@ export default function RootLayout({
       >
         <ThemeProvider>
           <NavbarTop />
-          {children}
+          <PageTransition>{children}</PageTransition>
           <Footer />
         </ThemeProvider>
       </body>

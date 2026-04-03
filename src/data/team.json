@@ -225,7 +225,7 @@
         {
           "name": "David huerta",
           "role": "Estudiante",
-          "image": "images/david.webp",
+          "image": "/images/david.webp",
           "socials": [
             {
               "platform": "github",

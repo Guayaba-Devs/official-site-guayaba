@@ -17,10 +17,7 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-export const Events = ({ events }: { events: EventItem[] }) => {
-  const sectionRef = useRef<HTMLElement>(null);
-  const titleRef = useRef<HTMLHeadingElement>(null);
-  const subtitleRef = useRef<HTMLParagraphElement>(null);
+export const EventsGrid = ({ events }: { events: EventItem[] }) => {
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
 
   const registerCard = useCallback(
@@ -35,47 +32,9 @@ export const Events = ({ events }: { events: EventItem[] }) => {
   }
 
   useEffect(() => {
-    if (!sectionRef.current) return;
-
     const ctx = gsap.context(() => {
-      if (titleRef.current) {
-        gsap.fromTo(
-          titleRef.current,
-          { y: 30, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 0.8,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: sectionRef.current,
-              start: "top 80%",
-            },
-          }
-        );
-      }
-
-      if (subtitleRef.current) {
-        gsap.fromTo(
-          subtitleRef.current,
-          { y: 20, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 0.7,
-            delay: 0.1,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: sectionRef.current,
-              start: "top 75%",
-            },
-          }
-        );
-      }
-
       cardsRef.current.forEach((card, index) => {
         if (!card) return;
-
         gsap.fromTo(
           card,
           { opacity: 0, y: 40 },
@@ -84,7 +43,7 @@ export const Events = ({ events }: { events: EventItem[] }) => {
             y: 0,
             duration: 0.6,
             ease: "power2.out",
-            delay: index * 0.1,
+            delay: index * 0.08,
             scrollTrigger: {
               trigger: card,
               start: "top 88%",
@@ -92,61 +51,20 @@ export const Events = ({ events }: { events: EventItem[] }) => {
           }
         );
       });
-    }, sectionRef);
-
+    });
     return () => ctx.revert();
   }, []);
 
   return (
-    <section
-      id="events"
-      ref={sectionRef}
-      className="relative w-full overflow-hidden bg-gradient-to-b from-background via-background to-background/95 py-20 md:py-28 scroll-mt-24"
-    >
-      <div className="absolute inset-x-0 top-10 h-40 bg-primary/5 blur-3xl" />
-
-      <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <header className="mx-auto mb-16 max-w-3xl text-center">
-          <span className="inline-flex rounded-full bg-primary/10 border border-primary/20 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-primary mb-4">
-            Historias
-          </span>
-          <h2
-            ref={titleRef}
-            className="text-4xl font-bold text-white sm:text-5xl lg:text-6xl"
-          >
-            Nuestros Eventos
-          </h2>
-          <p
-            ref={subtitleRef}
-            className="mt-4 text-base text-gray-400 sm:text-lg"
-          >
-            Contamos historias de comunidad: workshops, hackrooms, ferias y
-            lanzamientos que ocurrieron gracias a personas que creen en
-            construir juntas.
-          </p>
-        </header>
-
-        <div className="grid gap-6 sm:gap-7 md:grid-cols-2">
-          {events.map((event, index) => (
-            <EventCard
-              key={event.id}
-              event={event}
-              register={(node) => registerCard(node, index)}
-            />
-          ))}
-        </div>
-
-        <div className="mt-12 text-center">
-          <Link
-            href="/events"
-            className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-6 py-3 text-sm font-medium text-primary transition-all hover:border-primary/40 hover:bg-primary/20"
-          >
-            Explorar todos los eventos
-            <IconArrowUpRight className="h-4 w-4" />
-          </Link>
-        </div>
-      </div>
-    </section>
+    <div className="grid gap-6 sm:gap-7 md:grid-cols-2">
+      {events.map((event, index) => (
+        <EventCard
+          key={event.id}
+          event={event}
+          register={(node) => registerCard(node, index)}
+        />
+      ))}
+    </div>
   );
 };
 

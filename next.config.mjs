@@ -7,21 +7,19 @@ const nextConfig = {
         hostname: "instagram.flov1-1.fna.fbcdn.net",
       },
       {
+        protocol: "https",
+        hostname: "scontent-dfw5-1.cdninstagram.com",
+      },
+      {
         hostname: "via.placeholder.com",
       },
       { hostname: "drive.google.com" },
+      {
+        protocol: "https",
+        hostname: "cdn.sanity.io",
+      },
     ],
-
-    domains: [
-      "instagram.flov1-1.fna.fbcdn.net",
-      "scontent-dfw5-1.cdninstagram.com",
-      "via.placeholder.com",
-      "instagram.com",
-    ],
-
-    unoptimized: true,
   },
-  output: "export",
   basePath: process.env.NEXT_PUBLIC_BASE_PATH || "",
 };
 
