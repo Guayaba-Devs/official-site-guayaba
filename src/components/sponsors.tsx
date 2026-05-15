@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Image from "next/image";
 import { gsap } from "gsap";
 
 interface Sponsor {
@@ -29,10 +30,13 @@ const sponsors: Sponsor[] = [
 
 const SponsorLogo = ({ sponsor }: { sponsor: Sponsor }) => (
   <div className="flex-shrink-0 flex items-center justify-center px-6 md:px-10">
-    <img
+    <Image
       src={sponsor.src}
       alt={sponsor.alt}
-      className="h-10 md:h-14 w-auto max-w-[140px] md:max-w-[180px] object-contain opacity-80 hover:opacity-100 hover:scale-110 transition-all duration-300"
+      width={180}
+      height={56}
+      style={{ width: "auto" }}
+      className="h-10 md:h-14 max-w-[140px] md:max-w-[180px] object-contain opacity-80 hover:opacity-100 hover:scale-110 transition-all duration-300"
       loading="lazy"
     />
   </div>
@@ -93,7 +97,7 @@ export const Sponsors = () => {
         <div className="text-center">
           <h2
             ref={titleRef}
-            className="text-4xl font-bold text-white sm:text-5xl lg:text-6xl mb-4"
+            className="text-4xl font-semibold text-white sm:text-5xl lg:text-6xl mb-4"
             style={{ opacity: 0 }}
           >
             Con el respaldo de líderes en la industria
@@ -125,10 +129,10 @@ export const Sponsors = () => {
             style={{ "--duration": "20s" } as React.CSSProperties}
           >
             {/* Se repite 4 veces para garantizar continuidad en cualquier pantalla */}
-            {[...Array(4)].map((_, setIndex) =>
-              sponsors.map((sponsor, i) => (
+            {Array.from({ length: 4 }).flatMap((_, setIndex) =>
+              sponsors.map((sponsor) => (
                 <SponsorLogo
-                  key={`${setIndex}-${i}`}
+                  key={`${setIndex}-${sponsor.src}`}
                   sponsor={sponsor}
                 />
               ))

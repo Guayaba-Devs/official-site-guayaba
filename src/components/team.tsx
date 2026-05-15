@@ -70,37 +70,39 @@ const normalizeSocials = (
   socials?: { platform: string; url: string }[]
 ): SocialLink[] => {
   if (!socials) return [];
-  return socials
-    .map((social) => {
-      if (!isSocialPlatform(social.platform)) return null;
-      return { platform: social.platform, url: social.url };
-    })
-    .filter((social): social is SocialLink => Boolean(social));
+  const result: SocialLink[] = [];
+  for (const social of socials) {
+    if (isSocialPlatform(social.platform)) {
+      result.push({ platform: social.platform, url: social.url });
+    }
+  }
+  return result;
 };
 
 const normalizeHeadquarters = (
   headquarters?: TeamJSON["headquarters"]
 ): Headquarters[] => {
   if (!headquarters) return [];
-  return headquarters
-    .filter((hq) => (hq.members?.length ?? 0) > 0)
-    .map(
-      (hq): Headquarters => ({
-        id: hq.id,
-        label: hq.label,
-        location: hq.location,
-        lead: hq.lead,
-        members:
-          hq.members?.map(
-            (member): TeamMember => ({
-              name: member.name,
-              role: member.role,
-              image: member.image,
-              socials: normalizeSocials(member.socials),
-            })
-          ) ?? [],
-      })
-    );
+  const result: Headquarters[] = [];
+  for (const hq of headquarters) {
+    if ((hq.members?.length ?? 0) === 0) continue;
+    result.push({
+      id: hq.id,
+      label: hq.label,
+      location: hq.location,
+      lead: hq.lead,
+      members:
+        hq.members?.map(
+          (member): TeamMember => ({
+            name: member.name,
+            role: member.role,
+            image: member.image,
+            socials: normalizeSocials(member.socials),
+          })
+        ) ?? [],
+    });
+  }
+  return result;
 };
 
 const HEADQUARTERS_STYLES: Record<string, HeadquartersStyle> = {
@@ -223,10 +225,10 @@ const HeadquartersSpotlight = ({
             border: `1px solid rgba(${styles.accentRgb}, 0.2)`,
           }}
         >
-          <span className={styles.text}>{styles.icon("h-4 w-4")}</span>
+          <span className={styles.text}>{styles.icon("size-4")}</span>
           {headquarters.label}
         </span>
-        <span className="text-sm text-gray-500">{headquarters.location}</span>
+        <span className="text-sm text-zinc-500">{headquarters.location}</span>
       </div>
 
       {/* Spotlight Card - very rounded like GitHub Mobile */}
@@ -262,10 +264,10 @@ const HeadquartersSpotlight = ({
               {/* Counter pill on image */}
               <div className="absolute top-4 left-4 z-10">
                 <span
-                  className="inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-mono font-bold tracking-wider !text-white"
+                  className="inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-mono font-semibold tracking-wider !text-white"
                   style={{
                     background: "rgba(0,0,0,0.45)",
-                    backdropFilter: "blur(12px)",
+                    backdropFilter: "blur(8px)",
                     border: "1px solid rgba(255,255,255,0.12)",
                   }}
                 >
@@ -295,13 +297,13 @@ const HeadquartersSpotlight = ({
                 {active.role}
               </span>
 
-              <h4 className="text-3xl font-bold text-white sm:text-4xl lg:text-5xl leading-[1.1] min-h-[2.2em]">
+              <h4 className="text-3xl font-semibold text-white sm:text-4xl lg:text-5xl leading-[1.1] min-h-[2.2em]">
                 {active.name}
               </h4>
 
               {/* Location pill */}
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3.5 py-1.5 text-xs text-gray-400">
-                <IconMapPin className="h-3.5 w-3.5" />
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3.5 py-1.5 text-xs text-zinc-400">
+                <IconMapPin className="size-3.5" />
                 {headquarters.location}
               </span>
             </div>
@@ -312,7 +314,7 @@ const HeadquartersSpotlight = ({
               {active.socials.length > 0 && (
                 <div className="flex flex-wrap gap-2.5 min-h-[40px]">
                   {active.socials.map((social) => {
-                    const icon = getSocialIcon(social.platform, "h-4 w-4");
+                    const icon = getSocialIcon(social.platform, "size-4");
                     if (!icon) return null;
                     const label =
                       social.platform.charAt(0).toUpperCase() +
@@ -323,7 +325,7 @@ const HeadquartersSpotlight = ({
                         href={social.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-gray-400 transition-all duration-200 hover:border-white/20 hover:bg-white/10 hover:text-white"
+                        className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-zinc-400 transition-all duration-200 hover:border-white/20 hover:bg-white/10 hover:text-white"
                         aria-label={`${label} de ${active.name}`}
                       >
                         {icon}
@@ -338,12 +340,12 @@ const HeadquartersSpotlight = ({
               <div className="flex items-center justify-between pt-2">
                 {/* Dots */}
                 <div className="flex gap-2">
-                  {members.map((_, i) => (
+                  {members.map((member, i) => (
                     <button
-                      key={i}
+                      key={member.name}
                       type="button"
                       onClick={() => navigateTo(i)}
-                      aria-label={`Ver a ${members[i].name}`}
+                      aria-label={`Ver a ${member.name}`}
                       className="relative h-2.5 transition-all duration-300"
                       style={{ width: i === activeIndex ? "2.5rem" : "0.625rem" }}
                     >
@@ -368,17 +370,17 @@ const HeadquartersSpotlight = ({
                     type="button"
                     onClick={prev}
                     aria-label="Miembro anterior"
-                    className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-gray-400 transition-all duration-200 hover:border-white/20 hover:bg-white/10 hover:text-white"
+                    className="flex size-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-zinc-400 transition-all duration-200 hover:border-white/20 hover:bg-white/10 hover:text-white"
                   >
-                    <IconChevronLeft className="h-5 w-5" />
+                    <IconChevronLeft className="size-5" />
                   </button>
                   <button
                     type="button"
                     onClick={next}
                     aria-label="Siguiente miembro"
-                    className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-gray-400 transition-all duration-200 hover:border-white/20 hover:bg-white/10 hover:text-white"
+                    className="flex size-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-zinc-400 transition-all duration-200 hover:border-white/20 hover:bg-white/10 hover:text-white"
                   >
-                    <IconChevronRight className="h-5 w-5" />
+                    <IconChevronRight className="size-5" />
                   </button>
                 </div>
               </div>
@@ -402,7 +404,7 @@ const HeadquartersSpotlight = ({
                   aria-label={`Ver a ${member.name}`}
                 >
                   <div
-                    className="relative h-14 w-14 sm:h-16 sm:w-16 overflow-hidden rounded-full transition-all duration-300"
+                    className="relative size-14 sm:size-16 overflow-hidden rounded-full transition-all duration-300"
                     style={
                       i === activeIndex
                         ? {
@@ -428,7 +430,7 @@ const HeadquartersSpotlight = ({
                   </div>
                   <span
                     className={`text-[10px] font-medium transition-colors duration-300 max-w-[5rem] truncate ${
-                      i === activeIndex ? "text-white" : "text-gray-500"
+                      i === activeIndex ? "text-white" : "text-zinc-500"
                     }`}
                   >
                     {member.name.split(" ")[0]}
@@ -466,29 +468,29 @@ export const TeamSection = () => {
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         {/* Glows - scattered across the section */}
         {/* Large ambient */}
-        <div className="absolute -left-20 top-32 h-72 w-72 rounded-full bg-primary/15 blur-[100px]" />
-        <div className="absolute -right-16 top-[45%] h-80 w-80 rounded-full bg-secondary/12 blur-[110px]" />
-        <div className="absolute -left-10 bottom-[15%] h-60 w-60 rounded-full bg-purple-500/10 blur-[100px]" />
+        <div className="absolute -left-20 top-32 size-72 rounded-full bg-primary/15 blur-[100px]" />
+        <div className="absolute -right-16 top-[45%] size-80 rounded-full bg-secondary/12 blur-[110px]" />
+        <div className="absolute -left-10 bottom-[15%] size-60 rounded-full bg-purple-500/10 blur-[100px]" />
 
         {/* Medium scattered */}
-        <div className="absolute right-[12%] top-20 h-40 w-40 rounded-full bg-primary/10 blur-[80px]" />
-        <div className="absolute left-[25%] top-[18%] h-32 w-32 rounded-full bg-secondary/10 blur-[70px]" />
-        <div className="absolute right-[30%] top-[35%] h-36 w-36 rounded-full bg-purple-400/8 blur-[75px]" />
-        <div className="absolute left-[8%] top-[50%] h-44 w-44 rounded-full bg-blue-500/8 blur-[85px]" />
-        <div className="absolute right-[6%] top-[62%] h-36 w-36 rounded-full bg-primary/12 blur-[70px]" />
-        <div className="absolute left-[20%] top-[75%] h-40 w-40 rounded-full bg-emerald-500/8 blur-[80px]" />
-        <div className="absolute right-[18%] bottom-[10%] h-48 w-48 rounded-full bg-secondary/10 blur-[90px]" />
+        <div className="absolute right-[12%] top-20 size-40 rounded-full bg-primary/10 blur-[80px]" />
+        <div className="absolute left-[25%] top-[18%] size-32 rounded-full bg-secondary/10 blur-[70px]" />
+        <div className="absolute right-[30%] top-[35%] size-36 rounded-full bg-purple-400/8 blur-[75px]" />
+        <div className="absolute left-[8%] top-[50%] size-44 rounded-full bg-blue-500/8 blur-[85px]" />
+        <div className="absolute right-[6%] top-[62%] size-36 rounded-full bg-primary/12 blur-[70px]" />
+        <div className="absolute left-[20%] top-[75%] size-40 rounded-full bg-emerald-500/8 blur-[80px]" />
+        <div className="absolute right-[18%] bottom-[10%] size-48 rounded-full bg-secondary/10 blur-[90px]" />
 
         {/* Small accent flares */}
-        <div className="absolute left-[5%] top-[12%] h-16 w-16 rounded-full bg-primary/25 blur-[40px]" />
-        <div className="absolute right-[8%] top-[28%] h-14 w-14 rounded-full bg-secondary/20 blur-[35px]" />
-        <div className="absolute left-[35%] top-[40%] h-12 w-12 rounded-full bg-white/10 blur-[30px]" />
-        <div className="absolute right-[25%] top-[55%] h-16 w-16 rounded-full bg-primary/20 blur-[40px]" />
-        <div className="absolute left-[15%] top-[65%] h-14 w-14 rounded-full bg-purple-400/15 blur-[35px]" />
-        <div className="absolute right-[10%] top-[78%] h-12 w-12 rounded-full bg-emerald-400/15 blur-[30px]" />
-        <div className="absolute left-[40%] bottom-[8%] h-16 w-16 rounded-full bg-secondary/20 blur-[40px]" />
-        <div className="absolute right-[35%] top-[15%] h-10 w-10 rounded-full bg-blue-400/18 blur-[28px]" />
-        <div className="absolute left-[45%] top-[88%] h-14 w-14 rounded-full bg-primary/15 blur-[35px]" />
+        <div className="absolute left-[5%] top-[12%] size-16 rounded-full bg-primary/25 blur-[40px]" />
+        <div className="absolute right-[8%] top-[28%] size-14 rounded-full bg-secondary/20 blur-[35px]" />
+        <div className="absolute left-[35%] top-[40%] size-12 rounded-full bg-white/10 blur-[30px]" />
+        <div className="absolute right-[25%] top-[55%] size-16 rounded-full bg-primary/20 blur-[40px]" />
+        <div className="absolute left-[15%] top-[65%] size-14 rounded-full bg-purple-400/15 blur-[35px]" />
+        <div className="absolute right-[10%] top-[78%] size-12 rounded-full bg-emerald-400/15 blur-[30px]" />
+        <div className="absolute left-[40%] bottom-[8%] size-16 rounded-full bg-secondary/20 blur-[40px]" />
+        <div className="absolute right-[35%] top-[15%] size-10 rounded-full bg-blue-400/18 blur-[28px]" />
+        <div className="absolute left-[45%] top-[88%] size-14 rounded-full bg-primary/15 blur-[35px]" />
 
         {/* Left decorative lines */}
         <div className="hidden lg:block absolute left-10 top-40 w-[2px] h-52 bg-gradient-to-b from-transparent via-white/10 to-transparent" />
@@ -501,16 +503,16 @@ export const TeamSection = () => {
         <div className="hidden lg:block absolute right-10 bottom-36 w-[2px] h-40 bg-gradient-to-b from-transparent via-white/10 to-transparent" />
 
         {/* Dots - left side */}
-        <div className="hidden lg:block absolute left-12 top-36 h-2 w-2 rounded-full bg-primary/40" />
-        <div className="hidden lg:block absolute left-20 top-[48%] h-2.5 w-2.5 rounded-full bg-white/15" />
-        <div className="hidden lg:block absolute left-8 top-[68%] h-2 w-2 rounded-full bg-secondary/30" />
-        <div className="hidden lg:block absolute left-24 bottom-28 h-1.5 w-1.5 rounded-full bg-primary/25" />
+        <div className="hidden lg:block absolute left-12 top-36 size-2 rounded-full bg-primary/40" />
+        <div className="hidden lg:block absolute left-20 top-[48%] size-2.5 rounded-full bg-white/15" />
+        <div className="hidden lg:block absolute left-8 top-[68%] size-2 rounded-full bg-secondary/30" />
+        <div className="hidden lg:block absolute left-24 bottom-28 size-1.5 rounded-full bg-primary/25" />
 
         {/* Dots - right side */}
-        <div className="hidden lg:block absolute right-14 top-40 h-2 w-2 rounded-full bg-white/15" />
-        <div className="hidden lg:block absolute right-8 top-[52%] h-2.5 w-2.5 rounded-full bg-primary/30" />
-        <div className="hidden lg:block absolute right-22 top-[72%] h-2 w-2 rounded-full bg-secondary/25" />
-        <div className="hidden lg:block absolute right-12 bottom-44 h-1.5 w-1.5 rounded-full bg-white/20" />
+        <div className="hidden lg:block absolute right-14 top-40 size-2 rounded-full bg-white/15" />
+        <div className="hidden lg:block absolute right-8 top-[52%] size-2.5 rounded-full bg-primary/30" />
+        <div className="hidden lg:block absolute right-22 top-[72%] size-2 rounded-full bg-secondary/25" />
+        <div className="hidden lg:block absolute right-12 bottom-44 size-1.5 rounded-full bg-white/20" />
 
         {/* Corner brackets - top left */}
         <div className="hidden xl:block absolute left-14 top-48">
@@ -557,9 +559,9 @@ export const TeamSection = () => {
         />
 
         {/* Rings / circles */}
-        <div className="hidden lg:block absolute left-6 top-[42%] h-20 w-20 rounded-full border border-white/[0.06]" />
-        <div className="hidden lg:block absolute right-4 top-[60%] h-16 w-16 rounded-full border border-primary/10" />
-        <div className="hidden xl:block absolute left-2 bottom-[30%] h-28 w-28 rounded-full border border-secondary/[0.07]" />
+        <div className="hidden lg:block absolute left-6 top-[42%] size-20 rounded-full border border-white/[0.06]" />
+        <div className="hidden lg:block absolute right-4 top-[60%] size-16 rounded-full border border-primary/10" />
+        <div className="hidden xl:block absolute left-2 bottom-[30%] size-28 rounded-full border border-secondary/[0.07]" />
       </div>
 
       <div className="container relative z-10 mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
@@ -567,10 +569,10 @@ export const TeamSection = () => {
           <span className="inline-flex rounded-full bg-primary/10 border border-primary/20 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-primary">
             Personas Guayaba
           </span>
-          <h2 className="mt-4 text-4xl font-bold text-white sm:text-5xl lg:text-6xl">
+          <h2 className="mt-4 text-4xl font-semibold text-white sm:text-5xl lg:text-6xl">
             Nuestro Equipo
           </h2>
-          <p className="mt-4 text-base text-gray-400 sm:text-lg">
+          <p className="mt-4 text-base text-zinc-400 sm:text-lg">
             Conoce a quienes impulsan cada sede. Navega entre perfiles y
             conecta directamente con ellos.
           </p>

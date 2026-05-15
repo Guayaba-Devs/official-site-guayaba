@@ -81,7 +81,7 @@ export const Newsletter = () => {
       className="relative py-20 md:py-28 px-4 sm:px-6 lg:px-8 overflow-hidden scroll-mt-24 bg-background"
     >
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-primary/10 rounded-full blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-[500px] bg-primary/10 rounded-full blur-3xl" />
       </div>
 
       <div ref={containerRef} className="max-w-5xl mx-auto relative z-10">
@@ -89,13 +89,13 @@ export const Newsletter = () => {
         <div className="text-center mb-14">
           <h2
             ref={titleRef}
-            className="text-4xl font-bold sm:text-5xl lg:text-6xl mb-4 text-white"
+            className="text-4xl font-semibold sm:text-5xl lg:text-6xl mb-4 text-white"
           >
             Únete a la comunidad
           </h2>
           <p
             ref={subtitleRef}
-            className="text-base text-gray-400 sm:text-lg max-w-2xl mx-auto"
+            className="text-base text-zinc-400 sm:text-lg max-w-2xl mx-auto"
           >
             Conéctate con otros devs, entérate de eventos y comparte
             conocimiento en nuestro canal de WhatsApp
@@ -113,6 +113,7 @@ export const Newsletter = () => {
               src="/images/mascota.png"
               alt="mascota guayabadevs"
               fill
+              sizes="(max-width: 768px) 280px, 40vw"
               className="object-contain"
               quality={75}
             />
@@ -127,16 +128,16 @@ export const Newsletter = () => {
             <div className="space-y-6">
               <div>
                 <span className="inline-flex items-center gap-2 px-4 py-1.5 mb-5 border border-green-500/30 bg-green-500/10 rounded-full">
-                  <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
+                  <span className="size-1.5 bg-green-500 rounded-full animate-pulse" />
                   <span className="text-xs font-medium text-green-400">
                     Canal activo
                   </span>
                 </span>
 
-                <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">
+                <h3 className="text-2xl md:text-3xl font-semibold text-white mb-3">
                   Nuestro canal de WhatsApp
                 </h3>
-                <p className="text-gray-400 text-sm md:text-base leading-relaxed">
+                <p className="text-zinc-400 text-sm md:text-base leading-relaxed">
                   Sé el primero en conocer nuestros eventos, workshops y
                   contenido exclusivo. Comparte ideas, resuelve dudas y conecta
                   con la comunidad Guayaba.
@@ -153,7 +154,7 @@ export const Newsletter = () => {
                 ].map((tag) => (
                   <span
                     key={tag}
-                    className="inline-flex rounded-full border border-white/[0.08] bg-white/[0.04] px-3.5 py-1.5 text-xs text-gray-400"
+                    className="inline-flex rounded-full border border-white/[0.08] bg-white/[0.04] px-3.5 py-1.5 text-xs text-zinc-400"
                   >
                     {tag}
                   </span>
@@ -168,7 +169,7 @@ export const Newsletter = () => {
                 className="flex w-full items-center justify-center gap-3 rounded-full bg-[#25D366] px-6 py-4 text-base font-semibold !text-white transition-all duration-200 hover:bg-[#1fb855] hover:shadow-lg hover:shadow-green-500/20 hover:-translate-y-0.5 active:translate-y-0"
               >
                 <svg
-                  className="h-5 w-5"
+                  className="size-5"
                   viewBox="0 0 24 24"
                   fill="currentColor"
                 >
@@ -177,7 +178,7 @@ export const Newsletter = () => {
                 Unirse al canal de WhatsApp
               </a>
 
-              <p className="text-center text-xs text-gray-500">
+              <p className="text-center text-xs text-zinc-500">
                 Gratis y sin spam. Solo contenido de valor para la comunidad.
               </p>
             </div>
@@ -196,10 +197,10 @@ export const Newsletter = () => {
               className="py-4 px-3 border border-white/[0.06] bg-white/[0.02]"
               style={{ borderRadius: "22px" }}
             >
-              <div className="text-2xl md:text-3xl font-bold text-primary mb-1">
+              <div className="text-2xl md:text-3xl font-semibold text-primary mb-1">
                 {stat.number}
               </div>
-              <div className="text-gray-500 text-xs md:text-sm">
+              <div className="text-zinc-500 text-xs md:text-sm">
                 {stat.label}
               </div>
             </div>

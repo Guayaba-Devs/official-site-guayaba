@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Inter as FontSans } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/lib/theme";
@@ -85,21 +86,21 @@ export const viewport: Viewport = {
   colorScheme: "dark light",
 };
 
-// Inline script to set theme before paint — prevents flash
-const themeScript = `
-(function(){
-  try {
-    var t = localStorage.getItem('theme');
-    if (t === 'light') {
-      document.documentElement.classList.remove('dark');
-    } else {
-      document.documentElement.classList.add('dark');
-    }
-  } catch(e) {
-    document.documentElement.classList.add('dark');
-  }
-})();
-`;
+const themeScript = `(function(){try{var t=localStorage.getItem('theme');if(t==='light'){document.documentElement.classList.remove('dark');}else{document.documentElement.classList.add('dark');}}catch(e){document.documentElement.classList.add('dark');}})();`;
+
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "Guayaba Devs",
+  url: "https://guayabadev.com",
+  logo: "https://guayabadev.com/images/mascota.png",
+  description:
+    "Comunidad de desarrolladores que impulsa talento tech en México a través de eventos, mentorías y proyectos reales.",
+  sameAs: [
+    "https://github.com/Guayaba-Devs",
+    "https://www.instagram.com/guayaba_devs_official/",
+  ],
+};
 
 export default function RootLayout({
   children,
@@ -107,25 +108,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" className="dark">
+    <html lang="es" className="dark" suppressHydrationWarning>
       <head>
-        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        <Script id="theme-init" strategy="beforeInteractive">
+          {themeScript}
+        </Script>
         <script
           type="application/ld+json"
+          // eslint-disable-next-line react/no-danger -- JSON-LD structured data (Next.js recommended pattern)
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "Organization",
-              name: "Guayaba Devs",
-              url: "https://guayabadev.com",
-              logo: "https://guayabadev.com/images/mascota.png",
-              description:
-                "Comunidad de desarrolladores que impulsa talento tech en México a través de eventos, mentorías y proyectos reales.",
-              sameAs: [
-                "https://github.com/Guayaba-Devs",
-                "https://www.instagram.com/guayaba_devs_official/",
-              ],
-            }),
+            __html: JSON.stringify(organizationSchema),
           }}
         />
         <link rel="preconnect" href="https://res.cloudinary.com" />

@@ -18,10 +18,10 @@ export default async function EventsPage() {
           <span className="inline-flex rounded-full bg-primary/10 border border-primary/20 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-primary mb-4">
             Historias
           </span>
-          <h1 className="text-4xl font-bold text-white sm:text-5xl lg:text-6xl">
+          <h1 className="text-4xl font-semibold text-white sm:text-5xl lg:text-6xl">
             Todos los Eventos
           </h1>
-          <p className="mt-4 text-base text-gray-400 sm:text-lg">
+          <p className="mt-4 text-base text-zinc-400 sm:text-lg">
             Workshops, hackrooms, ferias y lanzamientos que ocurrieron gracias a
             personas que creen en construir juntas.
           </p>

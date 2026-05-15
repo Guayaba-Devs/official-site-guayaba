@@ -112,13 +112,13 @@ export const Events = ({ events }: { events: EventItem[] }) => {
           </span>
           <h2
             ref={titleRef}
-            className="text-4xl font-bold text-white sm:text-5xl lg:text-6xl"
+            className="text-4xl font-semibold text-white sm:text-5xl lg:text-6xl"
           >
             Nuestros Eventos
           </h2>
           <p
             ref={subtitleRef}
-            className="mt-4 text-base text-gray-400 sm:text-lg"
+            className="mt-4 text-base text-zinc-400 sm:text-lg"
           >
             Contamos historias de comunidad: workshops, hackrooms, ferias y
             lanzamientos que ocurrieron gracias a personas que creen en
@@ -142,7 +142,7 @@ export const Events = ({ events }: { events: EventItem[] }) => {
             className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-6 py-3 text-sm font-medium text-primary transition-all hover:border-primary/40 hover:bg-primary/20"
           >
             Explorar todos los eventos
-            <IconArrowUpRight className="h-4 w-4" />
+            <IconArrowUpRight className="size-4" />
           </Link>
         </div>
       </div>
@@ -189,7 +189,7 @@ const EventCard = ({
 
           {/* Title overlay on image */}
           <div className="absolute inset-x-0 bottom-0 p-5 md:p-6">
-            <h3 className="text-xl font-bold text-white md:text-2xl !text-white">
+            <h3 className="text-xl font-semibold text-white md:text-2xl !text-white">
               {event.title}
             </h3>
           </div>
@@ -198,20 +198,20 @@ const EventCard = ({
         {/* Content */}
         <div className="flex flex-1 flex-col gap-4 p-5 md:p-6">
           {/* Meta row */}
-          <div className="flex flex-wrap items-center gap-3 text-xs text-gray-500">
+          <div className="flex flex-wrap items-center gap-3 text-xs text-zinc-500">
             <span className="inline-flex items-center gap-1.5">
-              <IconCalendarEvent className="h-3.5 w-3.5" />
+              <IconCalendarEvent className="size-3.5" />
               {event.date}
             </span>
-            <span className="h-1 w-1 rounded-full bg-gray-600" />
+            <span className="size-1 rounded-full bg-zinc-600" />
             <span className="inline-flex items-center gap-1.5">
-              <IconMapPin className="h-3.5 w-3.5" />
+              <IconMapPin className="size-3.5" />
               {event.location}
             </span>
           </div>
 
           {/* Highlight */}
-          <p className="text-sm text-gray-400 leading-relaxed">
+          <p className="text-sm text-zinc-400 leading-relaxed">
             {event.highlight}
           </p>
 
@@ -221,15 +221,15 @@ const EventCard = ({
               {event.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="rounded-full border border-white/[0.06] bg-white/[0.03] px-2.5 py-0.5 text-[11px] text-gray-500"
+                  className="rounded-full border border-white/[0.06] bg-white/[0.03] px-2.5 py-0.5 text-[11px] text-zinc-500"
                 >
                   {tag}
                 </span>
               ))}
             </div>
 
-            <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/5 text-gray-500 transition-all duration-200 group-hover/card:border-primary/30 group-hover/card:bg-primary/10 group-hover/card:text-primary">
-              <IconArrowUpRight className="h-4 w-4" />
+            <span className="flex size-8 flex-shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/5 text-zinc-500 transition-all duration-200 group-hover/card:border-primary/30 group-hover/card:bg-primary/10 group-hover/card:text-primary">
+              <IconArrowUpRight className="size-4" />
             </span>
           </div>
         </div>

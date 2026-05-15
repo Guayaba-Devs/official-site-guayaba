@@ -80,6 +80,7 @@ export default async function EventPage({ params }: EventPageProps) {
             src={event.hero}
             alt={event.title}
             fill
+            sizes="100vw"
             className="object-cover"
             priority
           />
@@ -96,7 +97,7 @@ export default async function EventPage({ params }: EventPageProps) {
                   border: "1px solid rgba(255,255,255,0.12)",
                 }}
               >
-                <IconArrowLeft className="h-4 w-4" />
+                <IconArrowLeft className="size-4" />
                 Eventos
               </Link>
               <div className="flex flex-wrap items-center gap-3 mb-4">
@@ -107,7 +108,7 @@ export default async function EventPage({ params }: EventPageProps) {
                     border: "1px solid rgba(255,255,255,0.12)",
                   }}
                 >
-                  <IconCalendarEvent className="h-3.5 w-3.5" />
+                  <IconCalendarEvent className="size-3.5" />
                   {event.date}
                 </span>
                 <span
@@ -117,11 +118,11 @@ export default async function EventPage({ params }: EventPageProps) {
                     border: "1px solid rgba(255,255,255,0.12)",
                   }}
                 >
-                  <IconMapPin className="h-3.5 w-3.5" />
+                  <IconMapPin className="size-3.5" />
                   {event.location}
                 </span>
               </div>
-              <h1 className="text-4xl font-bold text-white sm:text-5xl lg:text-6xl !text-white">
+              <h1 className="text-4xl font-semibold text-white sm:text-5xl lg:text-6xl !text-white">
                 {event.title}
               </h1>
             </div>
@@ -137,20 +138,20 @@ export default async function EventPage({ params }: EventPageProps) {
               href="/events"
               className="inline-flex items-center gap-2 text-sm font-medium text-primary transition hover:text-secondary mb-8"
             >
-              <IconArrowLeft className="h-4 w-4" />
+              <IconArrowLeft className="size-4" />
               Eventos
             </Link>
             <div className="flex flex-wrap items-center gap-3 mb-4">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-white/5 border border-white/10 px-3 py-1.5 text-xs text-gray-400">
-                <IconCalendarEvent className="h-3.5 w-3.5" />
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-white/5 border border-white/10 px-3 py-1.5 text-xs text-zinc-400">
+                <IconCalendarEvent className="size-3.5" />
                 {event.date}
               </span>
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-white/5 border border-white/10 px-3 py-1.5 text-xs text-gray-400">
-                <IconMapPin className="h-3.5 w-3.5" />
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-white/5 border border-white/10 px-3 py-1.5 text-xs text-zinc-400">
+                <IconMapPin className="size-3.5" />
                 {event.location}
               </span>
             </div>
-            <h1 className="text-4xl font-bold text-white sm:text-5xl lg:text-6xl">
+            <h1 className="text-4xl font-semibold text-white sm:text-5xl lg:text-6xl">
               {event.title}
             </h1>
           </div>
@@ -163,7 +164,7 @@ export default async function EventPage({ params }: EventPageProps) {
           {/* Main content */}
           <div className="space-y-8">
             {/* Highlight */}
-            <p className="text-lg text-gray-300 leading-relaxed md:text-xl">
+            <p className="text-lg text-zinc-300 leading-relaxed md:text-xl">
               {event.highlight}
             </p>
 
@@ -175,7 +176,7 @@ export default async function EventPage({ params }: EventPageProps) {
               <h2 className="text-xl font-semibold text-white">
                 Sobre el evento
               </h2>
-              <p className="text-base text-gray-400 leading-relaxed">
+              <p className="text-base text-zinc-400 leading-relaxed">
                 {event.description}
               </p>
             </div>
@@ -189,7 +190,7 @@ export default async function EventPage({ params }: EventPageProps) {
                 <div className="grid gap-4 sm:grid-cols-2">
                   {galleryImages.map((image, index) => (
                     <div
-                      key={`gallery-${index}`}
+                      key={image}
                       className="overflow-hidden border border-white/[0.08] bg-white/[0.03]"
                       style={{ borderRadius: "16px" }}
                     >
@@ -198,6 +199,7 @@ export default async function EventPage({ params }: EventPageProps) {
                           src={image}
                           alt={`${event.title} - foto ${index + 1}`}
                           fill
+                          sizes="(max-width: 640px) 100vw, 50vw"
                           className="object-cover"
                         />
                       </div>
@@ -215,15 +217,15 @@ export default async function EventPage({ params }: EventPageProps) {
               className="border border-white/[0.08] bg-white/[0.03] p-6 space-y-5"
               style={{ borderRadius: "20px" }}
             >
-              <h3 className="text-sm font-semibold uppercase tracking-widest text-gray-500">
+              <h3 className="text-sm font-semibold uppercase tracking-widest text-zinc-500">
                 Detalles
               </h3>
 
               <div className="space-y-4">
                 <div className="space-y-1.5">
-                  <span className="text-xs text-gray-500">Fecha</span>
+                  <span className="text-xs text-zinc-500">Fecha</span>
                   <p className="text-sm text-white flex items-center gap-2">
-                    <IconCalendarEvent className="h-4 w-4 text-gray-500" />
+                    <IconCalendarEvent className="size-4 text-zinc-500" />
                     {event.date}
                   </p>
                 </div>
@@ -231,9 +233,9 @@ export default async function EventPage({ params }: EventPageProps) {
                 <div className="h-px bg-white/[0.06]" />
 
                 <div className="space-y-1.5">
-                  <span className="text-xs text-gray-500">Ubicación</span>
+                  <span className="text-xs text-zinc-500">Ubicación</span>
                   <p className="text-sm text-white flex items-center gap-2">
-                    <IconMapPin className="h-4 w-4 text-gray-500" />
+                    <IconMapPin className="size-4 text-zinc-500" />
                     {event.location}
                   </p>
                 </div>
@@ -241,12 +243,12 @@ export default async function EventPage({ params }: EventPageProps) {
                 <div className="h-px bg-white/[0.06]" />
 
                 <div className="space-y-2">
-                  <span className="text-xs text-gray-500">Tags</span>
+                  <span className="text-xs text-zinc-500">Tags</span>
                   <div className="flex flex-wrap gap-1.5">
                     {event.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="rounded-full border border-white/[0.06] bg-white/[0.03] px-2.5 py-0.5 text-[11px] text-gray-500"
+                        className="rounded-full border border-white/[0.06] bg-white/[0.03] px-2.5 py-0.5 text-[11px] text-zinc-500"
                       >
                         {tag}
                       </span>
@@ -264,18 +266,18 @@ export default async function EventPage({ params }: EventPageProps) {
                 rel="noopener noreferrer"
                 className="flex items-center justify-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-5 py-3 text-sm font-medium text-primary transition-all hover:border-primary/40 hover:bg-primary/20 w-full"
               >
-                <IconBrandInstagram className="h-4 w-4" />
+                <IconBrandInstagram className="size-4" />
                 Ver recap
-                <IconExternalLink className="h-3.5 w-3.5" />
+                <IconExternalLink className="size-3.5" />
               </a>
             )}
 
             {/* Back link */}
             <Link
               href="/events"
-              className="flex items-center justify-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-medium text-gray-400 transition-all hover:border-white/20 hover:text-white w-full"
+              className="flex items-center justify-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-medium text-zinc-400 transition-all hover:border-white/20 hover:text-white w-full"
             >
-              <IconArrowLeft className="h-4 w-4" />
+              <IconArrowLeft className="size-4" />
               Todos los eventos
             </Link>
           </aside>

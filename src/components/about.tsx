@@ -45,10 +45,10 @@ export const AboutSection = () => {
             <span className="inline-flex rounded-full bg-primary/10 border border-primary/20 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-primary">
               Sobre Guayaba
             </span>
-            <h2 className="text-4xl font-bold text-white sm:text-5xl lg:text-6xl">
+            <h2 className="text-4xl font-semibold text-white sm:text-5xl lg:text-6xl">
               Conectamos talento tech que quiere crecer acompañado
             </h2>
-            <p className="text-base text-gray-400 sm:text-lg leading-relaxed">
+            <p className="text-base text-zinc-400 sm:text-lg leading-relaxed">
               Guayaba Devs surge de una comunidad estudiantil que encontró en la
               colaboración la mejor forma de aprender. Hoy operamos como una red
               abierta que une sedes, capítulos y aliados para impulsar proyectos
@@ -77,14 +77,14 @@ export const AboutSection = () => {
             <div className="space-y-8">
               {highlights.map((h) => (
                 <div key={h.number} className="flex gap-4">
-                  <span className="flex-shrink-0 text-2xl font-bold text-primary/30 leading-none pt-0.5">
+                  <span className="flex-shrink-0 text-2xl font-semibold text-primary/30 leading-none pt-0.5">
                     {h.number}
                   </span>
                   <div>
                     <h3 className="text-base font-semibold text-white mb-1.5">
                       {h.title}
                     </h3>
-                    <p className="text-sm text-gray-400 leading-relaxed">
+                    <p className="text-sm text-zinc-400 leading-relaxed">
                       {h.description}
                     </p>
                   </div>
@@ -98,7 +98,7 @@ export const AboutSection = () => {
                 <h3 className="text-2xl font-semibold text-white mb-3">
                   ¿Qué hacemos?
                 </h3>
-                <p className="text-sm text-gray-400 leading-relaxed">
+                <p className="text-sm text-zinc-400 leading-relaxed">
                   Actividades gratuitas para estudiantes y cualquier persona
                   interesada en tecnología.
                 </p>
@@ -108,9 +108,9 @@ export const AboutSection = () => {
                 {activities.map((item) => (
                   <span
                     key={item}
-                    className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.03] px-4 py-2 text-sm text-gray-400"
+                    className="inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.03] px-4 py-2 text-sm text-zinc-400"
                   >
-                    <span className="h-1.5 w-1.5 flex-shrink-0 rounded-full bg-primary" />
+                    <span className="size-1.5 flex-shrink-0 rounded-full bg-primary" />
                     {item}
                   </span>
                 ))}
@@ -119,7 +119,7 @@ export const AboutSection = () => {
               <div className="h-px bg-gradient-to-r from-white/[0.06] to-transparent" />
 
               <div>
-                <p className="text-sm text-gray-400 leading-relaxed mb-4">
+                <p className="text-sm text-zinc-400 leading-relaxed mb-4">
                   Súmate a un espacio donde practicar habilidades técnicas y
                   blandas con una comunidad que respalda tu crecimiento.
                 </p>
@@ -130,7 +130,7 @@ export const AboutSection = () => {
                   className="inline-flex items-center gap-2 rounded-full bg-primary/10 border border-primary/20 px-5 py-2.5 text-sm font-medium text-primary transition-all hover:bg-primary/15 hover:border-primary/30"
                 >
                   GitHub · Guayaba Devs
-                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <svg className="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M7 17L17 7M17 7H7M17 7v10" />
                   </svg>
                 </a>

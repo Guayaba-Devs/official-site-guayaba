@@ -22,16 +22,14 @@ const SECTION_IDS = navLinks.map((l) => l.href.replace("/#", ""));
 export const NavbarTop = () => {
   const { theme, toggleTheme } = useTheme();
   const pathname = usePathname();
-  const router = useRouter();
-  const [isScrolled, setIsScrolled] = useState(false);
+  const { push } = useRouter();
+  const isScrolledRef = useRef(false);
   const [activeSection, setActiveSection] = useState("hero");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navbarRef = useRef<HTMLElement>(null);
   const gradientOverlayRef = useRef<HTMLDivElement>(null);
   const logoRef = useRef<HTMLDivElement>(null);
   const hamburgerRef = useRef<HTMLButtonElement>(null);
-  const menuRef = useRef<HTMLDivElement>(null);
-  const menuItemsRef = useRef<HTMLLIElement[]>([]);
   const indicatorRef = useRef<HTMLDivElement>(null);
   const navContainerRef = useRef<HTMLElement>(null);
 
@@ -93,8 +91,8 @@ export const NavbarTop = () => {
       const scrollY = window.scrollY;
       const shouldBeScrolled = scrollY > 50;
 
-      if (shouldBeScrolled !== isScrolled) {
-        setIsScrolled(shouldBeScrolled);
+      if (shouldBeScrolled !== isScrolledRef.current) {
+        isScrolledRef.current = shouldBeScrolled;
 
         if (navbarRef.current) {
           gsap.to(navbarRef.current, {
@@ -118,7 +116,7 @@ export const NavbarTop = () => {
     handleScroll();
 
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [isScrolled]);
+  }, []);
 
   // Initial entrance animation
   useEffect(() => {
@@ -147,47 +145,6 @@ export const NavbarTop = () => {
     }
   }, []);
 
-  // Mobile menu animation
-  useEffect(() => {
-    if (menuRef.current) {
-      if (isMenuOpen) {
-        gsap.fromTo(
-          menuRef.current,
-          { x: "100%" },
-          { x: 0, duration: 0.4, ease: "power3.out" }
-        );
-
-        if (menuItemsRef.current.length > 0) {
-          gsap.fromTo(
-            menuItemsRef.current,
-            { opacity: 0, x: 50 },
-            {
-              opacity: 1,
-              x: 0,
-              duration: 0.3,
-              ease: "power2.out",
-              stagger: 0.08,
-              delay: 0.1,
-            }
-          );
-        }
-      } else {
-        gsap.to(menuRef.current, {
-          x: "100%",
-          duration: 0.3,
-          ease: "power2.in",
-        });
-
-        gsap.to(menuItemsRef.current, {
-          opacity: 0,
-          x: 50,
-          duration: 0.2,
-          stagger: 0.05,
-        });
-      }
-    }
-  }, [isMenuOpen]);
-
   // Hamburger animation
   useEffect(() => {
     if (hamburgerRef.current) {
@@ -211,9 +168,9 @@ export const NavbarTop = () => {
     if (element) {
       element.scrollIntoView({ behavior: "smooth", block: "start" });
     } else if (pathname !== "/") {
-      router.push(href);
+      push(href);
     }
-  }, [pathname, router]);
+  }, [pathname, push]);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
@@ -266,20 +223,17 @@ export const NavbarTop = () => {
                 const isActive = activeSection === sectionId;
 
                 return (
-                  <a
+                  <button
+                    type="button"
                     key={link.href}
-                    href={link.href}
                     data-section={sectionId}
                     className={`relative px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200 ${
                       isActive ? "text-white" : "text-white/70 hover:text-white"
                     }`}
-                    onClick={(event) => {
-                      event.preventDefault();
-                      scrollToSection(link.href);
-                    }}
+                    onClick={() => scrollToSection(link.href)}
                   >
                     {link.label}
-                  </a>
+                  </button>
                 );
               })}
             </nav>
@@ -288,19 +242,19 @@ export const NavbarTop = () => {
             <div className="flex items-center gap-2">
               <button
                 onClick={toggleTheme}
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition-all duration-200 hover:bg-white/10"
+                className="flex size-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition-all duration-200 hover:bg-white/10"
                 aria-label="Cambiar tema"
               >
                 {theme === "dark" ? (
-                  <IconSun className="h-[18px] w-[18px]" />
+                  <IconSun className="size-[18px]" />
                 ) : (
-                  <IconMoon className="h-[18px] w-[18px]" />
+                  <IconMoon className="size-[18px]" />
                 )}
               </button>
             <button
               ref={hamburgerRef}
               onClick={toggleMenu}
-              className="lg:hidden relative w-10 h-10 flex flex-col justify-center items-center gap-1.5 z-50"
+              className="lg:hidden relative size-10 flex flex-col justify-center items-center gap-1.5 z-50"
               aria-label="Toggle menu"
             >
               <span className="w-6 h-0.5 bg-white transition-all duration-300 origin-center" />
@@ -312,7 +266,72 @@ export const NavbarTop = () => {
         </div>
       </nav>
 
-      {/* Mobile menu */}
+      <MobileMenu
+        isOpen={isMenuOpen}
+        activeSection={activeSection}
+        onSelect={scrollToSection}
+        onClose={() => setIsMenuOpen(false)}
+      />
+    </>
+  );
+};
+
+const MobileMenu = ({
+  isOpen,
+  activeSection,
+  onSelect,
+  onClose,
+}: {
+  isOpen: boolean;
+  activeSection: string;
+  onSelect: (href: string) => void;
+  onClose: () => void;
+}) => {
+  const menuRef = useRef<HTMLDivElement>(null);
+  const menuItemsRef = useRef<HTMLLIElement[]>([]);
+
+  useEffect(() => {
+    if (!menuRef.current) return;
+
+    if (isOpen) {
+      gsap.fromTo(
+        menuRef.current,
+        { x: "100%" },
+        { x: 0, duration: 0.4, ease: "power3.out" }
+      );
+
+      if (menuItemsRef.current.length > 0) {
+        gsap.fromTo(
+          menuItemsRef.current,
+          { opacity: 0, x: 50 },
+          {
+            opacity: 1,
+            x: 0,
+            duration: 0.3,
+            ease: "power2.out",
+            stagger: 0.08,
+            delay: 0.1,
+          }
+        );
+      }
+    } else {
+      gsap.to(menuRef.current, {
+        x: "100%",
+        duration: 0.3,
+        ease: "power2.in",
+      });
+
+      gsap.to(menuItemsRef.current, {
+        opacity: 0,
+        x: 50,
+        duration: 0.2,
+        stagger: 0.05,
+      });
+    }
+  }, [isOpen]);
+
+  return (
+    <>
       <div
         ref={menuRef}
         className="fixed top-0 right-0 h-screen w-80 max-w-[85vw] bg-gradient-to-br from-background via-background/95 to-background/90 backdrop-blur-xl z-40 lg:hidden shadow-2xl"
@@ -332,24 +351,23 @@ export const NavbarTop = () => {
                   }}
                   className="opacity-0"
                 >
-                  <a
-                    href={link.href}
-                    onClick={(event) => {
-                      event.preventDefault();
-                      scrollToSection(link.href);
-                      setIsMenuOpen(false);
+                  <button
+                    type="button"
+                    onClick={() => {
+                      onSelect(link.href);
+                      onClose();
                     }}
-                    className={`flex items-center gap-3 py-4 px-4 text-lg font-semibold rounded-2xl transition-all duration-200 ${
+                    className={`flex w-full items-center gap-3 py-4 px-4 text-lg font-semibold rounded-2xl transition-all duration-200 ${
                       isActive
                         ? "text-white bg-white/10"
                         : "text-white/60 hover:text-white hover:bg-white/5"
                     }`}
                   >
                     {isActive && (
-                      <span className="h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
+                      <span className="size-1.5 rounded-full bg-primary flex-shrink-0" />
                     )}
                     {link.label}
-                  </a>
+                  </button>
                 </li>
               );
             })}
@@ -367,10 +385,12 @@ export const NavbarTop = () => {
         </div>
       </div>
 
-      {isMenuOpen && (
-        <div
+      {isOpen && (
+        <button
+          type="button"
+          aria-label="Cerrar menú"
           className="fixed inset-0 bg-black/50 backdrop-blur-sm z-30 lg:hidden"
-          onClick={toggleMenu}
+          onClick={onClose}
         />
       )}
     </>
